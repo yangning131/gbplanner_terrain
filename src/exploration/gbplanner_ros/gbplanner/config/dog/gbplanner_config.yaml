@@ -24,7 +24,7 @@ SensorParams:
   sensor_list:      ["VLP16"]
   VLP16:
     type:           kLidar
-    max_range:      6.0                #为了避免山顶free增益太大   增益射线范围改小   原本凹陷地形为20
+    max_range:      20.0               #为了避免山顶free增益太大   增益射线范围改小   原本凹陷地形为20
     center_offset:  [0.0, 0.0, 0.0]
     rotations:      [0.0, 0.0, 0.0]
     fov:            [rad(2*pi), rad(pi/18)]

@@ -55,7 +55,7 @@ Rrg::Rrg(const ros::NodeHandle& nh, const ros::NodeHandle& nh_private)
 
   //terrain
   FitPlaneArg fit_plane_arg;
-  fit_plane_arg.w_total_ = 0.1; //0.4凹陷地形
+  fit_plane_arg.w_total_ = 0.4; //0.4凹陷地形
   fit_plane_arg.w_flatness_ = 4000.0;
   fit_plane_arg.w_slope_ = 0.4;
   fit_plane_arg.w_sparsity_ = 0.4;
@@ -436,7 +436,7 @@ bool Rrg::sampleVertex(StateVec& state) {
 
              state[2] = sample_point[2];
 
-              if(terrain_cost<0.98)  ///凹陷地形效果较好为0.6
+              if(terrain_cost<0.6)  ///凹陷地形效果较好为0.6
               { 
                 // std::cout<<"terrain_cost:"<<terrain_cost<<std::endl;
 
@@ -523,7 +523,7 @@ bool Rrg::sampleVertex(RandomSampler& random_sampler, StateVec& root_state,
 
              sampled_state[2] = sample_point[2];
 
-              if(terrain_cost<0.98) ////0.6
+              if(terrain_cost<0.6) ////0.6
               {
                 // std::cout<<"terrain_cost:"<<terrain_cost<<std::endl;
 

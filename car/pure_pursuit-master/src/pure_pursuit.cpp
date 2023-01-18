@@ -380,6 +380,7 @@ void PurePursuit::receivePath(nav_msgs::Path new_path)
   {
    
     idx_ = 0;
+    std::cout<<"origin path size: "<<new_path.poses.size()<<std::endl;
     if (new_path.poses.size() > 0)
     {
       path_ = new_path;
