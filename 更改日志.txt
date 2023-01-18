@@ -1,0 +1,2 @@
+为了上传至github 将/home/ynp/gbplanner_ws/src/src/sim/rotors_simulator/rotors_description/meshes/m100 
+和/home/ynp/gbplanner_ws/src/dog/aliengo_config/maps TIM.ide 压缩了
