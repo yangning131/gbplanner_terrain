@@ -2,3 +2,11 @@
 和/home/ynp/gbplanner_ws/src/dog/aliengo_config/maps TIM.ide 压缩了
 
 dog 凹陷dell 配置
+
+
+1。某些情况机器狗不走
+原因：lookahead 角度差别大  差别大时只转弯 
+
+pure_p 降低mypath路径高度
+pure_pure 更改跟踪的角度和速度阈值
+pure_p 重新计算路径的orientation
