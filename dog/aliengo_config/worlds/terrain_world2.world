@@ -1,0 +1,2568 @@
+<sdf version='1.6'>
+  <world name='default'>
+    <light name='sun' type='directional'>
+      <cast_shadows>1</cast_shadows>
+      <pose frame=''>0 0 10 0 -0 0</pose>
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <attenuation>
+        <range>1000</range>
+        <constant>0.9</constant>
+        <linear>0.01</linear>
+        <quadratic>0.001</quadratic>
+      </attenuation>
+      <direction>-0.5 0.1 -0.9</direction>
+    </light>
+    <model name='Map2'>
+      <static>1</static>
+      <link name='link'>
+        <pose frame=''>0 0 0 0 -0 0</pose>
+        <collision name='collision'>
+          <geometry>
+            <mesh>
+              <uri>model://map2/meshes/map2.dae</uri>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='visual'>
+          <geometry>
+            <mesh>
+              <uri>model://map2/meshes/map2.dae</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <uri>model://map2/materials/scripts</uri>
+              <uri>model://map2/materials/textures</uri>
+              <name>Map2/Image</name>
+            </script>
+          </material>
+        </visual>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+    </model>
+    <gravity>0 0 -9.8</gravity>
+    <magnetic_field>6e-06 2.3e-05 -4.2e-05</magnetic_field>
+    <atmosphere type='adiabatic'/>
+    <physics name='default_physics' default='0' type='ode'>
+      <max_step_size>0.001</max_step_size>
+      <real_time_factor>1</real_time_factor>
+      <real_time_update_rate>1000</real_time_update_rate>
+    </physics>
+    <scene>
+      <ambient>0.4 0.4 0.4 1</ambient>
+      <background>0.7 0.7 0.7 1</background>
+      <shadows>1</shadows>
+    </scene>
+    <wind/>
+    <spherical_coordinates>
+      <surface_model>EARTH_WGS84</surface_model>
+      <latitude_deg>0</latitude_deg>
+      <longitude_deg>0</longitude_deg>
+      <elevation>0</elevation>
+      <heading_deg>0</heading_deg>
+    </spherical_coordinates>
+    <model name='/'>
+      <link name='base'>
+        <pose frame=''>0 0 0 0 -0 0</pose>
+        <inertial>
+          <pose frame=''>0.013776 0.003567 0.01068 0 -0 0</pose>
+          <mass>10.252</mass>
+          <inertia>
+            <ixx>0.052385</ixx>
+            <ixy>-0.000257398</ixy>
+            <ixz>0.00632453</ixz>
+            <iyy>0.199362</iyy>
+            <iyz>0.000466831</iyz>
+            <izz>0.195756</izz>
+          </inertia>
+        </inertial>
+        <collision name='base_fixed_joint_lump__trunk_collision'>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>0.647 0.15 0.112</size>
+            </box>
+          </geometry>
+          <surface>
+            <contact>
+              <ode>
+                <kp>1e+06</kp>
+                <kd>1</kd>
+              </ode>
+            </contact>
+            <friction>
+              <ode>
+                <mu>0.2</mu>
+                <mu2>0.2</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <collision name='base_fixed_joint_lump__camera_link_collision_1'>
+          <pose frame=''>0.3235 0 -0.066 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/opt/ros/melodic/share/hector_sensors_description/meshes/asus_camera/asus_camera_simple.dae</uri>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <collision name='base_fixed_joint_lump__velodyne_base_link_collision_2'>
+          <pose frame=''>0 0 0.12812 0 -0 0</pose>
+          <geometry>
+            <cylinder>
+              <length>0.14424</length>
+              <radius>0.04267</radius>
+            </cylinder>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='base_visual'>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>0.001 0.001 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Green</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <visual name='base_fixed_joint_lump__trunk_visual_1'>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/ynp/gbplanner_ws/src/dog/unitree_ros/robots/aliengo_description/meshes/trunk.dae</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <uri>__default__</uri>
+              <name>__default__</name>
+            </script>
+          </material>
+        </visual>
+        <visual name='base_fixed_joint_lump__camera_link_visual_2'>
+          <pose frame=''>0.3235 0 -0.066 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/opt/ros/melodic/share/hector_sensors_description/meshes/asus_camera/asus_camera_simple.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <visual name='base_fixed_joint_lump__velodyne_base_link_visual_3'>
+          <pose frame=''>0 0 0.056 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/ynp/gbplanner_ws/src/dog/velodyne_simulator/velodyne_description/meshes/HDL32E_base.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <visual name='base_fixed_joint_lump__velodyne_visual_4'>
+          <pose frame=''>0 0 0.056 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/ynp/gbplanner_ws/src/dog/velodyne_simulator/velodyne_description/meshes/HDL32E_scan.dae</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <uri>__default__</uri>
+              <name>__default__</name>
+            </script>
+          </material>
+        </visual>
+        <velocity_decay/>
+        <velocity_decay/>
+        <velocity_decay/>
+        <sensor name='camera' type='depth'>
+          <update_rate>20</update_rate>
+          <camera name='__default__'>
+            <horizontal_fov>1.09607</horizontal_fov>
+            <image>
+              <format>R8G8B8</format>
+              <width>640</width>
+              <height>480</height>
+            </image>
+            <clip>
+              <near>0.5</near>
+              <far>9</far>
+            </clip>
+          </camera>
+          <plugin name='camera_camera_controller' filename='libgazebo_ros_openni_kinect.so'>
+            <imageTopicName>camera/rgb/image_raw</imageTopicName>
+            <cameraInfoTopicName>camera/rgb/camera_info</cameraInfoTopicName>
+            <depthImageTopicName>camera/depth/image_raw</depthImageTopicName>
+            <depthImageCameraInfoTopicName>camera/depth/camera_info</depthImageCameraInfoTopicName>
+            <pointCloudTopicName>camera/depth/points</pointCloudTopicName>
+            <frameName>camera_depth_optical_frame</frameName>
+            <robotNamespace>/</robotNamespace>
+          </plugin>
+          <pose frame=''>0.3235 0.049 -0.066 0 -0 0</pose>
+        </sensor>
+        <velocity_decay/>
+        <gravity>1</gravity>
+        <velocity_decay/>
+        <sensor name='velodyne-HDL32E' type='gpu_ray'>
+          <visualize>0</visualize>
+          <update_rate>10</update_rate>
+          <ray>
+            <scan>
+              <horizontal>
+                <samples>1024</samples>
+                <resolution>1</resolution>
+                <min_angle>-3.14159</min_angle>
+                <max_angle>3.14159</max_angle>
+              </horizontal>
+              <vertical>
+                <samples>32</samples>
+                <resolution>1</resolution>
+                <min_angle>-0.535292</min_angle>
+                <max_angle>0.186227</max_angle>
+              </vertical>
+            </scan>
+            <range>
+              <min>0.3</min>
+              <max>131</max>
+              <resolution>0.001</resolution>
+            </range>
+            <noise>
+              <type>gaussian</type>
+              <mean>0</mean>
+              <stddev>0</stddev>
+            </noise>
+          </ray>
+          <plugin name='gazebo_ros_laser_controller' filename='libgazebo_ros_velodyne_gpu_laser.so'>
+            <topicName>/velodyne_points</topicName>
+            <frameName>velodyne</frameName>
+            <min_range>0.9</min_range>
+            <max_range>130.0</max_range>
+            <gaussianNoise>0.008</gaussianNoise>
+            <robotNamespace>/</robotNamespace>
+          </plugin>
+          <pose frame=''>0 0 0.14681 0 -0 0</pose>
+        </sensor>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <link name='FL_hip'>
+        <pose frame=''>0.2399 0.051 0 0 -0 0</pose>
+        <inertial>
+          <pose frame=''>-0.022191 0.015144 -1.5e-05 0 -0 0</pose>
+          <mass>1.993</mass>
+          <inertia>
+            <ixx>0.00290389</ixx>
+            <ixy>-7.185e-05</ixy>
+            <ixz>-1.262e-06</ixz>
+            <iyy>0.00490752</iyy>
+            <iyz>-1.75e-06</iyz>
+            <izz>0.00558694</izz>
+          </inertia>
+        </inertial>
+        <collision name='FL_hip_collision'>
+          <pose frame=''>0 0.083 0 1.5708 -0 0</pose>
+          <geometry>
+            <cylinder>
+              <length>0.0418</length>
+              <radius>0.046</radius>
+            </cylinder>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode>
+                <mu>0.2</mu>
+                <mu2>0.2</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='FL_hip_visual'>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/ynp/gbplanner_ws/src/dog/unitree_ros/robots/aliengo_description/meshes/hip.dae</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/DarkGrey</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <gravity>1</gravity>
+        <velocity_decay/>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='FL_hip_joint' type='revolute'>
+        <child>FL_hip</child>
+        <parent>base</parent>
+        <axis>
+          <xyz>1 0 0</xyz>
+          <limit>
+            <lower>-1.22173</lower>
+            <upper>1.22173</upper>
+            <effort>44</effort>
+            <velocity>20</velocity>
+          </limit>
+          <dynamics>
+            <damping>0</damping>
+            <friction>0</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <use_parent_model_frame>0</use_parent_model_frame>
+        </axis>
+      </joint>
+      <link name='FL_thigh'>
+        <pose frame=''>0.2399 0.134 0 0 -0 0</pose>
+        <inertial>
+          <pose frame=''>-0.005607 -0.003877 -0.048199 0 -0 0</pose>
+          <mass>0.639</mass>
+          <inertia>
+            <ixx>0.0056668</ixx>
+            <ixy>3.597e-06</ixy>
+            <ixz>0.000491446</ixz>
+            <iyy>0.00584723</iyy>
+            <iyz>1.0086e-05</iyz>
+            <izz>0.000369811</izz>
+          </inertia>
+        </inertial>
+        <collision name='FL_thigh_collision'>
+          <pose frame=''>0 0 -0.125 3.14159 1.57079 3.14159</pose>
+          <geometry>
+            <box>
+              <size>0.25 0.0374 0.043</size>
+            </box>
+          </geometry>
+          <surface>
+            <contact>
+              <ode>
+                <kp>1e+06</kp>
+                <kd>1</kd>
+              </ode>
+            </contact>
+            <friction>
+              <ode>
+                <mu>0.2</mu>
+                <mu2>0.2</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='FL_thigh_visual'>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/ynp/gbplanner_ws/src/dog/unitree_ros/robots/aliengo_description/meshes/thigh.dae</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/DarkGrey</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <gravity>1</gravity>
+        <velocity_decay/>
+        <self_collide>1</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='FL_thigh_joint' type='revolute'>
+        <child>FL_thigh</child>
+        <parent>FL_hip</parent>
+        <axis>
+          <xyz>0 1 0</xyz>
+          <limit>
+            <lower>-1e+16</lower>
+            <upper>1e+16</upper>
+          </limit>
+          <dynamics>
+            <damping>0</damping>
+            <friction>0</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <use_parent_model_frame>0</use_parent_model_frame>
+        </axis>
+      </joint>
+      <link name='FL_calf'>
+        <pose frame=''>0.2399 0.134 -0.25 0 -0 0</pose>
+        <inertial>
+          <pose frame=''>0.002156 4.9e-05 -0.166671 0 -0 0</pose>
+          <mass>0.267</mass>
+          <inertia>
+            <ixx>0.0068956</ixx>
+            <ixy>-1.11499e-08</ixy>
+            <ixz>-0.000101855</ixz>
+            <iyy>0.00690975</iyy>
+            <iyz>-1.65098e-06</iyz>
+            <izz>5.64019e-05</izz>
+          </inertia>
+        </inertial>
+        <collision name='FL_calf_collision'>
+          <pose frame=''>0 0 -0.125 3.14159 1.57079 3.14159</pose>
+          <geometry>
+            <box>
+              <size>0.25 0.0208 0.016</size>
+            </box>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode>
+                <mu>0.2</mu>
+                <mu2>0.2</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <collision name='FL_calf_fixed_joint_lump__FL_foot_collision_1'>
+          <pose frame=''>0 0 -0.25 0 -0 0</pose>
+          <geometry>
+            <sphere>
+              <radius>0.0265</radius>
+            </sphere>
+          </geometry>
+          <surface>
+            <contact>
+              <ode>
+                <kp>1e+06</kp>
+                <kd>1</kd>
+              </ode>
+            </contact>
+            <friction>
+              <ode>
+                <mu>0.6</mu>
+                <mu2>0.6</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='FL_calf_visual'>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/ynp/gbplanner_ws/src/dog/unitree_ros/robots/aliengo_description/meshes/calf.dae</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <uri>__default__</uri>
+              <name>__default__</name>
+            </script>
+          </material>
+        </visual>
+        <visual name='FL_calf_fixed_joint_lump__FL_foot_visual_1'>
+          <pose frame=''>0 0 -0.25 0 -0 0</pose>
+          <geometry>
+            <sphere>
+              <radius>0.0165</radius>
+            </sphere>
+          </geometry>
+          <plugin name='drawForcePlugin' filename='libunitreeDrawForcePlugin.so'>
+            <topicName>FL_foot_contact</topicName>
+            <robotNamespace>/</robotNamespace>
+          </plugin>
+          <material>
+            <script>
+              <name>Gazebo/DarkGrey</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <velocity_decay/>
+        <sensor name='FL_foot_contact' type='contact'>
+          <update_rate>100</update_rate>
+          <plugin name='contactPlugin' filename='libunitreeFootContactPlugin.so'>
+            <robotNamespace>/</robotNamespace>
+          </plugin>
+          <contact>
+            <collision>FL_calf_fixed_joint_lump__FL_foot_collision_1</collision>
+            <topic>__default_topic__</topic>
+          </contact>
+        </sensor>
+        <velocity_decay/>
+        <self_collide>1</self_collide>
+        <velocity_decay/>
+        <gravity>1</gravity>
+        <velocity_decay/>
+        <self_collide>1</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='FL_calf_joint' type='revolute'>
+        <child>FL_calf</child>
+        <parent>FL_thigh</parent>
+        <axis>
+          <xyz>0 1 0</xyz>
+          <limit>
+            <lower>-2.77507</lower>
+            <upper>-0.645772</upper>
+            <effort>55</effort>
+            <velocity>16</velocity>
+          </limit>
+          <dynamics>
+            <damping>0</damping>
+            <friction>0</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <use_parent_model_frame>0</use_parent_model_frame>
+        </axis>
+      </joint>
+      <link name='FR_hip'>
+        <pose frame=''>0.2399 -0.051 0 0 -0 0</pose>
+        <inertial>
+          <pose frame=''>-0.022191 -0.015144 -1.5e-05 0 -0 0</pose>
+          <mass>1.993</mass>
+          <inertia>
+            <ixx>0.00290389</ixx>
+            <ixy>7.185e-05</ixy>
+            <ixz>-1.262e-06</ixz>
+            <iyy>0.00490752</iyy>
+            <iyz>1.75e-06</iyz>
+            <izz>0.00558694</izz>
+          </inertia>
+        </inertial>
+        <collision name='FR_hip_collision'>
+          <pose frame=''>0 -0.083 0 1.5708 -0 0</pose>
+          <geometry>
+            <cylinder>
+              <length>0.0418</length>
+              <radius>0.046</radius>
+            </cylinder>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode>
+                <mu>0.2</mu>
+                <mu2>0.2</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='FR_hip_visual'>
+          <pose frame=''>0 0 0 -3.14159 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/ynp/gbplanner_ws/src/dog/unitree_ros/robots/aliengo_description/meshes/hip.dae</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/DarkGrey</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <gravity>1</gravity>
+        <velocity_decay/>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='FR_hip_joint' type='revolute'>
+        <child>FR_hip</child>
+        <parent>base</parent>
+        <axis>
+          <xyz>1 0 0</xyz>
+          <limit>
+            <lower>-1.22173</lower>
+            <upper>1.22173</upper>
+            <effort>44</effort>
+            <velocity>20</velocity>
+          </limit>
+          <dynamics>
+            <damping>0</damping>
+            <friction>0</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <use_parent_model_frame>0</use_parent_model_frame>
+        </axis>
+      </joint>
+      <link name='FR_thigh'>
+        <pose frame=''>0.2399 -0.134 0 0 -0 0</pose>
+        <inertial>
+          <pose frame=''>-0.005607 0.003877 -0.048199 0 -0 0</pose>
+          <mass>0.639</mass>
+          <inertia>
+            <ixx>0.0056668</ixx>
+            <ixy>-3.597e-06</ixy>
+            <ixz>0.000491446</ixz>
+            <iyy>0.00584723</iyy>
+            <iyz>-1.0086e-05</iyz>
+            <izz>0.000369811</izz>
+          </inertia>
+        </inertial>
+        <collision name='FR_thigh_collision'>
+          <pose frame=''>0 0 -0.125 3.14159 1.57079 3.14159</pose>
+          <geometry>
+            <box>
+              <size>0.25 0.0374 0.043</size>
+            </box>
+          </geometry>
+          <surface>
+            <contact>
+              <ode>
+                <kp>1e+06</kp>
+                <kd>1</kd>
+              </ode>
+            </contact>
+            <friction>
+              <ode>
+                <mu>0.2</mu>
+                <mu2>0.2</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='FR_thigh_visual'>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/ynp/gbplanner_ws/src/dog/unitree_ros/robots/aliengo_description/meshes/thigh_mirror.dae</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/DarkGrey</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <gravity>1</gravity>
+        <velocity_decay/>
+        <self_collide>1</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='FR_thigh_joint' type='revolute'>
+        <child>FR_thigh</child>
+        <parent>FR_hip</parent>
+        <axis>
+          <xyz>0 1 0</xyz>
+          <limit>
+            <lower>-1e+16</lower>
+            <upper>1e+16</upper>
+          </limit>
+          <dynamics>
+            <damping>0</damping>
+            <friction>0</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <use_parent_model_frame>0</use_parent_model_frame>
+        </axis>
+      </joint>
+      <link name='FR_calf'>
+        <pose frame=''>0.2399 -0.134 -0.25 0 -0 0</pose>
+        <inertial>
+          <pose frame=''>0.002156 4.9e-05 -0.166671 0 -0 0</pose>
+          <mass>0.267</mass>
+          <inertia>
+            <ixx>0.0068956</ixx>
+            <ixy>-1.11499e-08</ixy>
+            <ixz>-0.000101855</ixz>
+            <iyy>0.00690975</iyy>
+            <iyz>-1.65098e-06</iyz>
+            <izz>5.64019e-05</izz>
+          </inertia>
+        </inertial>
+        <collision name='FR_calf_collision'>
+          <pose frame=''>0 0 -0.125 3.14159 1.57079 3.14159</pose>
+          <geometry>
+            <box>
+              <size>0.25 0.0208 0.016</size>
+            </box>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode>
+                <mu>0.2</mu>
+                <mu2>0.2</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <collision name='FR_calf_fixed_joint_lump__FR_foot_collision_1'>
+          <pose frame=''>0 0 -0.25 0 -0 0</pose>
+          <geometry>
+            <sphere>
+              <radius>0.0265</radius>
+            </sphere>
+          </geometry>
+          <surface>
+            <contact>
+              <ode>
+                <kp>1e+06</kp>
+                <kd>1</kd>
+              </ode>
+            </contact>
+            <friction>
+              <ode>
+                <mu>0.6</mu>
+                <mu2>0.6</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='FR_calf_visual'>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/ynp/gbplanner_ws/src/dog/unitree_ros/robots/aliengo_description/meshes/calf.dae</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <uri>__default__</uri>
+              <name>__default__</name>
+            </script>
+          </material>
+        </visual>
+        <visual name='FR_calf_fixed_joint_lump__FR_foot_visual_1'>
+          <pose frame=''>0 0 -0.25 0 -0 0</pose>
+          <geometry>
+            <sphere>
+              <radius>0.0165</radius>
+            </sphere>
+          </geometry>
+          <plugin name='drawForcePlugin' filename='libunitreeDrawForcePlugin.so'>
+            <topicName>FR_foot_contact</topicName>
+            <robotNamespace>/</robotNamespace>
+          </plugin>
+          <material>
+            <script>
+              <name>Gazebo/DarkGrey</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <velocity_decay/>
+        <sensor name='FR_foot_contact' type='contact'>
+          <update_rate>100</update_rate>
+          <plugin name='contactPlugin' filename='libunitreeFootContactPlugin.so'>
+            <robotNamespace>/</robotNamespace>
+          </plugin>
+          <contact>
+            <collision>FR_calf_fixed_joint_lump__FR_foot_collision_1</collision>
+            <topic>__default_topic__</topic>
+          </contact>
+        </sensor>
+        <velocity_decay/>
+        <self_collide>1</self_collide>
+        <velocity_decay/>
+        <gravity>1</gravity>
+        <velocity_decay/>
+        <self_collide>1</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='FR_calf_joint' type='revolute'>
+        <child>FR_calf</child>
+        <parent>FR_thigh</parent>
+        <axis>
+          <xyz>0 1 0</xyz>
+          <limit>
+            <lower>-2.77507</lower>
+            <upper>-0.645772</upper>
+            <effort>55</effort>
+            <velocity>16</velocity>
+          </limit>
+          <dynamics>
+            <damping>0</damping>
+            <friction>0</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <use_parent_model_frame>0</use_parent_model_frame>
+        </axis>
+      </joint>
+      <link name='RL_hip'>
+        <pose frame=''>-0.2399 0.051 0 0 -0 0</pose>
+        <inertial>
+          <pose frame=''>0.022191 0.015144 -1.5e-05 0 -0 0</pose>
+          <mass>1.993</mass>
+          <inertia>
+            <ixx>0.00290389</ixx>
+            <ixy>7.185e-05</ixy>
+            <ixz>1.262e-06</ixz>
+            <iyy>0.00490752</iyy>
+            <iyz>-1.75e-06</iyz>
+            <izz>0.00558694</izz>
+          </inertia>
+        </inertial>
+        <collision name='RL_hip_collision'>
+          <pose frame=''>0 0.083 0 1.5708 -0 0</pose>
+          <geometry>
+            <cylinder>
+              <length>0.0418</length>
+              <radius>0.046</radius>
+            </cylinder>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode>
+                <mu>0.2</mu>
+                <mu2>0.2</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='RL_hip_visual'>
+          <pose frame=''>0 0 0 3.14159 -0 3.14159</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/ynp/gbplanner_ws/src/dog/unitree_ros/robots/aliengo_description/meshes/hip.dae</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/DarkGrey</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <gravity>1</gravity>
+        <velocity_decay/>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='RL_hip_joint' type='revolute'>
+        <child>RL_hip</child>
+        <parent>base</parent>
+        <axis>
+          <xyz>1 0 0</xyz>
+          <limit>
+            <lower>-1.22173</lower>
+            <upper>1.22173</upper>
+            <effort>44</effort>
+            <velocity>20</velocity>
+          </limit>
+          <dynamics>
+            <damping>0</damping>
+            <friction>0</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <use_parent_model_frame>0</use_parent_model_frame>
+        </axis>
+      </joint>
+      <link name='RL_thigh'>
+        <pose frame=''>-0.2399 0.134 0 0 -0 0</pose>
+        <inertial>
+          <pose frame=''>-0.005607 -0.003877 -0.048199 0 -0 0</pose>
+          <mass>0.639</mass>
+          <inertia>
+            <ixx>0.0056668</ixx>
+            <ixy>3.597e-06</ixy>
+            <ixz>0.000491446</ixz>
+            <iyy>0.00584723</iyy>
+            <iyz>1.0086e-05</iyz>
+            <izz>0.000369811</izz>
+          </inertia>
+        </inertial>
+        <collision name='RL_thigh_collision'>
+          <pose frame=''>0 0 -0.125 3.14159 1.57079 3.14159</pose>
+          <geometry>
+            <box>
+              <size>0.25 0.0374 0.043</size>
+            </box>
+          </geometry>
+          <surface>
+            <contact>
+              <ode>
+                <kp>1e+06</kp>
+                <kd>1</kd>
+              </ode>
+            </contact>
+            <friction>
+              <ode>
+                <mu>0.2</mu>
+                <mu2>0.2</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='RL_thigh_visual'>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/ynp/gbplanner_ws/src/dog/unitree_ros/robots/aliengo_description/meshes/thigh.dae</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/DarkGrey</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <gravity>1</gravity>
+        <velocity_decay/>
+        <self_collide>1</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='RL_thigh_joint' type='revolute'>
+        <child>RL_thigh</child>
+        <parent>RL_hip</parent>
+        <axis>
+          <xyz>0 1 0</xyz>
+          <limit>
+            <lower>-1e+16</lower>
+            <upper>1e+16</upper>
+          </limit>
+          <dynamics>
+            <damping>0</damping>
+            <friction>0</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <use_parent_model_frame>0</use_parent_model_frame>
+        </axis>
+      </joint>
+      <link name='RL_calf'>
+        <pose frame=''>-0.2399 0.134 -0.25 0 -0 0</pose>
+        <inertial>
+          <pose frame=''>0.002156 4.9e-05 -0.166671 0 -0 0</pose>
+          <mass>0.267</mass>
+          <inertia>
+            <ixx>0.0068956</ixx>
+            <ixy>-1.11499e-08</ixy>
+            <ixz>-0.000101855</ixz>
+            <iyy>0.00690975</iyy>
+            <iyz>-1.65098e-06</iyz>
+            <izz>5.64019e-05</izz>
+          </inertia>
+        </inertial>
+        <collision name='RL_calf_collision'>
+          <pose frame=''>0 0 -0.125 3.14159 1.57079 3.14159</pose>
+          <geometry>
+            <box>
+              <size>0.25 0.0208 0.016</size>
+            </box>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode>
+                <mu>0.2</mu>
+                <mu2>0.2</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <collision name='RL_calf_fixed_joint_lump__RL_foot_collision_1'>
+          <pose frame=''>0 0 -0.25 0 -0 0</pose>
+          <geometry>
+            <sphere>
+              <radius>0.0265</radius>
+            </sphere>
+          </geometry>
+          <surface>
+            <contact>
+              <ode>
+                <kp>1e+06</kp>
+                <kd>1</kd>
+              </ode>
+            </contact>
+            <friction>
+              <ode>
+                <mu>0.6</mu>
+                <mu2>0.6</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='RL_calf_visual'>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/ynp/gbplanner_ws/src/dog/unitree_ros/robots/aliengo_description/meshes/calf.dae</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <uri>__default__</uri>
+              <name>__default__</name>
+            </script>
+          </material>
+        </visual>
+        <visual name='RL_calf_fixed_joint_lump__RL_foot_visual_1'>
+          <pose frame=''>0 0 -0.25 0 -0 0</pose>
+          <geometry>
+            <sphere>
+              <radius>0.0165</radius>
+            </sphere>
+          </geometry>
+          <plugin name='drawForcePlugin' filename='libunitreeDrawForcePlugin.so'>
+            <topicName>RL_foot_contact</topicName>
+            <robotNamespace>/</robotNamespace>
+          </plugin>
+          <material>
+            <script>
+              <name>Gazebo/DarkGrey</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <velocity_decay/>
+        <sensor name='RL_foot_contact' type='contact'>
+          <update_rate>100</update_rate>
+          <plugin name='contactPlugin' filename='libunitreeFootContactPlugin.so'>
+            <robotNamespace>/</robotNamespace>
+          </plugin>
+          <contact>
+            <collision>RL_calf_fixed_joint_lump__RL_foot_collision_1</collision>
+            <topic>__default_topic__</topic>
+          </contact>
+        </sensor>
+        <velocity_decay/>
+        <self_collide>1</self_collide>
+        <velocity_decay/>
+        <gravity>1</gravity>
+        <velocity_decay/>
+        <self_collide>1</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='RL_calf_joint' type='revolute'>
+        <child>RL_calf</child>
+        <parent>RL_thigh</parent>
+        <axis>
+          <xyz>0 1 0</xyz>
+          <limit>
+            <lower>-2.77507</lower>
+            <upper>-0.645772</upper>
+            <effort>55</effort>
+            <velocity>16</velocity>
+          </limit>
+          <dynamics>
+            <damping>0</damping>
+            <friction>0</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <use_parent_model_frame>0</use_parent_model_frame>
+        </axis>
+      </joint>
+      <link name='RR_hip'>
+        <pose frame=''>-0.2399 -0.051 0 0 -0 0</pose>
+        <inertial>
+          <pose frame=''>0.022191 -0.015144 -1.5e-05 0 -0 0</pose>
+          <mass>1.993</mass>
+          <inertia>
+            <ixx>0.00290389</ixx>
+            <ixy>-7.185e-05</ixy>
+            <ixz>1.262e-06</ixz>
+            <iyy>0.00490752</iyy>
+            <iyz>1.75e-06</iyz>
+            <izz>0.00558694</izz>
+          </inertia>
+        </inertial>
+        <collision name='RR_hip_collision'>
+          <pose frame=''>0 -0.083 0 1.5708 -0 0</pose>
+          <geometry>
+            <cylinder>
+              <length>0.0418</length>
+              <radius>0.046</radius>
+            </cylinder>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode>
+                <mu>0.2</mu>
+                <mu2>0.2</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='RR_hip_visual'>
+          <pose frame=''>0 0 0 0 -0 3.14159</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/ynp/gbplanner_ws/src/dog/unitree_ros/robots/aliengo_description/meshes/hip.dae</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/DarkGrey</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <gravity>1</gravity>
+        <velocity_decay/>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='RR_hip_joint' type='revolute'>
+        <child>RR_hip</child>
+        <parent>base</parent>
+        <axis>
+          <xyz>1 0 0</xyz>
+          <limit>
+            <lower>-1.22173</lower>
+            <upper>1.22173</upper>
+            <effort>44</effort>
+            <velocity>20</velocity>
+          </limit>
+          <dynamics>
+            <damping>0</damping>
+            <friction>0</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <use_parent_model_frame>0</use_parent_model_frame>
+        </axis>
+      </joint>
+      <link name='RR_thigh'>
+        <pose frame=''>-0.2399 -0.134 0 0 -0 0</pose>
+        <inertial>
+          <pose frame=''>-0.005607 0.003877 -0.048199 0 -0 0</pose>
+          <mass>0.639</mass>
+          <inertia>
+            <ixx>0.0056668</ixx>
+            <ixy>-3.597e-06</ixy>
+            <ixz>0.000491446</ixz>
+            <iyy>0.00584723</iyy>
+            <iyz>-1.0086e-05</iyz>
+            <izz>0.000369811</izz>
+          </inertia>
+        </inertial>
+        <collision name='RR_thigh_collision'>
+          <pose frame=''>0 0 -0.125 3.14159 1.57079 3.14159</pose>
+          <geometry>
+            <box>
+              <size>0.25 0.0374 0.043</size>
+            </box>
+          </geometry>
+          <surface>
+            <contact>
+              <ode>
+                <kp>1e+06</kp>
+                <kd>1</kd>
+              </ode>
+            </contact>
+            <friction>
+              <ode>
+                <mu>0.2</mu>
+                <mu2>0.2</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='RR_thigh_visual'>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/ynp/gbplanner_ws/src/dog/unitree_ros/robots/aliengo_description/meshes/thigh_mirror.dae</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/DarkGrey</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <gravity>1</gravity>
+        <velocity_decay/>
+        <self_collide>1</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='RR_thigh_joint' type='revolute'>
+        <child>RR_thigh</child>
+        <parent>RR_hip</parent>
+        <axis>
+          <xyz>0 1 0</xyz>
+          <limit>
+            <lower>-1e+16</lower>
+            <upper>1e+16</upper>
+          </limit>
+          <dynamics>
+            <damping>0</damping>
+            <friction>0</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <use_parent_model_frame>0</use_parent_model_frame>
+        </axis>
+      </joint>
+      <link name='RR_calf'>
+        <pose frame=''>-0.2399 -0.134 -0.25 0 -0 0</pose>
+        <inertial>
+          <pose frame=''>0.002156 4.9e-05 -0.166671 0 -0 0</pose>
+          <mass>0.267</mass>
+          <inertia>
+            <ixx>0.0068956</ixx>
+            <ixy>-1.11499e-08</ixy>
+            <ixz>-0.000101855</ixz>
+            <iyy>0.00690975</iyy>
+            <iyz>-1.65098e-06</iyz>
+            <izz>5.64019e-05</izz>
+          </inertia>
+        </inertial>
+        <collision name='RR_calf_collision'>
+          <pose frame=''>0 0 -0.125 3.14159 1.57079 3.14159</pose>
+          <geometry>
+            <box>
+              <size>0.25 0.0208 0.016</size>
+            </box>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode>
+                <mu>0.2</mu>
+                <mu2>0.2</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <collision name='RR_calf_fixed_joint_lump__RR_foot_collision_1'>
+          <pose frame=''>0 0 -0.25 0 -0 0</pose>
+          <geometry>
+            <sphere>
+              <radius>0.0265</radius>
+            </sphere>
+          </geometry>
+          <surface>
+            <contact>
+              <ode>
+                <kp>1e+06</kp>
+                <kd>1</kd>
+              </ode>
+            </contact>
+            <friction>
+              <ode>
+                <mu>0.6</mu>
+                <mu2>0.6</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='RR_calf_visual'>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/ynp/gbplanner_ws/src/dog/unitree_ros/robots/aliengo_description/meshes/calf.dae</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <uri>__default__</uri>
+              <name>__default__</name>
+            </script>
+          </material>
+        </visual>
+        <visual name='RR_calf_fixed_joint_lump__RR_foot_visual_1'>
+          <pose frame=''>0 0 -0.25 0 -0 0</pose>
+          <geometry>
+            <sphere>
+              <radius>0.0165</radius>
+            </sphere>
+          </geometry>
+          <plugin name='drawForcePlugin' filename='libunitreeDrawForcePlugin.so'>
+            <topicName>RR_foot_contact</topicName>
+            <robotNamespace>/</robotNamespace>
+          </plugin>
+          <material>
+            <script>
+              <name>Gazebo/DarkGrey</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <velocity_decay/>
+        <sensor name='RR_foot_contact' type='contact'>
+          <update_rate>100</update_rate>
+          <plugin name='contactPlugin' filename='libunitreeFootContactPlugin.so'>
+            <robotNamespace>/</robotNamespace>
+          </plugin>
+          <contact>
+            <collision>RR_calf_fixed_joint_lump__RR_foot_collision_1</collision>
+            <topic>__default_topic__</topic>
+          </contact>
+        </sensor>
+        <velocity_decay/>
+        <self_collide>1</self_collide>
+        <velocity_decay/>
+        <gravity>1</gravity>
+        <velocity_decay/>
+        <self_collide>1</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='RR_calf_joint' type='revolute'>
+        <child>RR_calf</child>
+        <parent>RR_thigh</parent>
+        <axis>
+          <xyz>0 1 0</xyz>
+          <limit>
+            <lower>-2.77507</lower>
+            <upper>-0.645772</upper>
+            <effort>55</effort>
+            <velocity>16</velocity>
+          </limit>
+          <dynamics>
+            <damping>0</damping>
+            <friction>0</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <use_parent_model_frame>0</use_parent_model_frame>
+        </axis>
+      </joint>
+      <plugin name='gazebo_ros_control' filename='libgazebo_ros_control.so'>
+        <robotNamespace>/</robotNamespace>
+      </plugin>
+      <plugin name='3dplot' filename='libLinkPlot3DPlugin.so'>
+        <frequency>10</frequency>
+        <plot>
+          <link>base</link>
+          <pose>0 0 0 0 0 0</pose>
+          <material>Gazebo/Yellow</material>
+        </plot>
+        <robotNamespace>/</robotNamespace>
+      </plugin>
+      <plugin name='gazebo_ros_force' filename='libgazebo_ros_force.so'>
+        <topicName>/apply_force/trunk</topicName>
+        <robotNamespace>/</robotNamespace>
+        <bodyName>base</bodyName>
+        <xyzOffset>0 0 0</xyzOffset>
+        <rpyOffset>0 -0 0</rpyOffset>
+      </plugin>
+      <static>0</static>
+      <plugin name='imu_controller' filename='libhector_gazebo_ros_imu.so'>
+        <updateRate>50.0</updateRate>
+        <topicName>imu/data</topicName>
+        <accelDrift>0.005 0.005 0.005</accelDrift>
+        <accelGaussianNoise>0.005 0.005 0.005</accelGaussianNoise>
+        <rateDrift>0.005 0.005 0.005</rateDrift>
+        <rateGaussianNoise>0.005 0.005 0.005</rateGaussianNoise>
+        <headingDrift>0.005</headingDrift>
+        <headingGaussianNoise>0.005</headingGaussianNoise>
+        <robotNamespace>/</robotNamespace>
+        <bodyName>base</bodyName>
+        <xyzOffset>0 0 0</xyzOffset>
+        <rpyOffset>0 -0 0</rpyOffset>
+      </plugin>
+      <pose frame=''>-2 -2 2 0 -0 0</pose>
+    </model>
+    <model name='Map2_0'>
+      <static>1</static>
+      <link name='link'>
+        <pose frame=''>0 0 0 0 -0 0</pose>
+        <collision name='collision'>
+          <geometry>
+            <mesh>
+              <uri>model://map2/meshes/map2.dae</uri>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='visual'>
+          <geometry>
+            <mesh>
+              <uri>model://map2/meshes/map2.dae</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <uri>model://map2/materials/scripts</uri>
+              <uri>model://map2/materials/textures</uri>
+              <name>Map2/Image</name>
+            </script>
+          </material>
+        </visual>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <pose frame=''>15.454 0.074456 0 0 -0 0</pose>
+    </model>
+    <model name='walluse'>
+      <pose frame=''>0.848569 -3.41982 0 0 -0 0</pose>
+      <link name='Wall_0'>
+        <collision name='Wall_0_Collision'>
+          <geometry>
+            <box>
+              <size>12.75 0.15 2.5</size>
+            </box>
+          </geometry>
+          <pose frame=''>0 0 1.25 0 -0 0</pose>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='Wall_0_Visual'>
+          <pose frame=''>0 0 1.25 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>12.75 0.15 2.5</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Grey</name>
+            </script>
+            <ambient>1 1 1 1</ambient>
+          </material>
+          <meta>
+            <layer>0</layer>
+          </meta>
+        </visual>
+        <pose frame=''>0 0 0 0 -0 0</pose>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <static>1</static>
+    </model>
+    <model name='walluse_clone'>
+      <pose frame=''>1.09854 2.24298 0 0 -0 0</pose>
+      <link name='Wall_0'>
+        <collision name='Wall_0_Collision'>
+          <geometry>
+            <box>
+              <size>12.75 0.15 2.5</size>
+            </box>
+          </geometry>
+          <pose frame=''>0 0 1.25 0 -0 0</pose>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='Wall_0_Visual'>
+          <pose frame=''>0 0 1.25 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>12.75 0.15 2.5</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Grey</name>
+            </script>
+            <ambient>1 1 1 1</ambient>
+          </material>
+          <meta>
+            <layer>0</layer>
+          </meta>
+        </visual>
+        <pose frame=''>0 0 0 0 -0 0</pose>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <static>1</static>
+    </model>
+    <model name='walluse_clone_1'>
+      <pose frame=''>11.8457 -3.41662 0 0 -0 0</pose>
+      <link name='Wall_0'>
+        <collision name='Wall_0_Collision'>
+          <geometry>
+            <box>
+              <size>12.75 0.15 2.5</size>
+            </box>
+          </geometry>
+          <pose frame=''>0 0 1.25 0 -0 0</pose>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='Wall_0_Visual'>
+          <pose frame=''>0 0 1.25 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>12.75 0.15 2.5</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Grey</name>
+            </script>
+            <ambient>1 1 1 1</ambient>
+          </material>
+          <meta>
+            <layer>0</layer>
+          </meta>
+        </visual>
+        <pose frame=''>0 0 0 0 -0 0</pose>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <static>1</static>
+    </model>
+    <model name='walluse_clone_0'>
+      <pose frame=''>17.0076 5.9951 0 0 -0 0</pose>
+      <link name='Wall_0'>
+        <collision name='Wall_0_Collision'>
+          <geometry>
+            <box>
+              <size>12.75 0.15 2.5</size>
+            </box>
+          </geometry>
+          <pose frame=''>0 0 1.25 0 -0 0</pose>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='Wall_0_Visual'>
+          <pose frame=''>0 0 1.25 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>12.75 0.15 2.5</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Grey</name>
+            </script>
+            <ambient>1 1 1 1</ambient>
+          </material>
+          <meta>
+            <layer>0</layer>
+          </meta>
+        </visual>
+        <pose frame=''>0 0 0 0 -0 0</pose>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <static>1</static>
+    </model>
+    <model name='walluse_clone_1_clone'>
+      <pose frame=''>10.0005 13.5703 0 0 -0 0</pose>
+      <link name='Wall_0'>
+        <collision name='Wall_0_Collision'>
+          <geometry>
+            <box>
+              <size>12.75 0.15 2.5</size>
+            </box>
+          </geometry>
+          <pose frame=''>0 0 1.25 0 -0 0</pose>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='Wall_0_Visual'>
+          <pose frame=''>0 0 1.25 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>12.75 0.15 2.5</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Grey</name>
+            </script>
+            <ambient>1 1 1 1</ambient>
+          </material>
+          <meta>
+            <layer>0</layer>
+          </meta>
+        </visual>
+        <pose frame=''>0 0 0 0 -0 0</pose>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <static>1</static>
+    </model>
+    <model name='walluse_clone_0_clone_clone'>
+      <pose frame=''>5.98239 8.45043 0 0 -0 1.57672</pose>
+      <link name='Wall_0'>
+        <collision name='Wall_0_Collision'>
+          <geometry>
+            <box>
+              <size>12.75 0.15 2.5</size>
+            </box>
+          </geometry>
+          <pose frame=''>0 0 1.25 0 -0 0</pose>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='Wall_0_Visual'>
+          <pose frame=''>0 0 1.25 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>12.75 0.15 2.5</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Grey</name>
+            </script>
+            <ambient>1 1 1 1</ambient>
+          </material>
+          <meta>
+            <layer>0</layer>
+          </meta>
+        </visual>
+        <pose frame=''>0 0 0 0 -0 0</pose>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <static>1</static>
+    </model>
+    <state world_name='default'>
+      <sim_time>1463 642000000</sim_time>
+      <real_time>1478 527716046</real_time>
+      <wall_time>1673771443 195100342</wall_time>
+      <iterations>1463642</iterations>
+      <model name='/'>
+        <pose frame=''>-2.05382 -1.99251 0.365757 -0.011215 0.005681 -0.008119</pose>
+        <scale>1 1 1</scale>
+        <link name='FL_calf'>
+          <pose frame=''>-2.02086 -1.85743 0.225975 0.012039 -0.646332 -0.015418</pose>
+          <velocity>0.02543 -5.6e-05 -0.038465 -0.000485 0.112529 0.001103</velocity>
+          <acceleration>-0 0 0 -0.622143 1.20725 2.90271</acceleration>
+          <wrench>-0 0 0 0 -0 0</wrench>
+        </link>
+        <link name='FL_hip'>
+          <pose frame=''>-1.81352 -1.94346 0.363822 0.009621 0.005681 -0.008119</pose>
+          <velocity>-9.6e-05 3.2e-05 -2e-05 -0.001579 -1.5e-05 0.000124</velocity>
+          <acceleration>0 -0 -0 -0.723548 1.02644 -2.09614</acceleration>
+          <wrench>0 -0 -0 0 -0 0</wrench>
+        </link>
+        <link name='FL_thigh'>
+          <pose frame=''>-1.81285 -1.86047 0.364621 0.017344 0.982835 0.006256</pose>
+          <velocity>-0.000106 3.3e-05 -0.000151 -0.003059 -0.184145 -0.001598</velocity>
+          <acceleration>-0 0 -0 0.323372 0.162262 -0.26754</acceleration>
+          <wrench>-0 0 -0 0 -0 0</wrench>
+        </link>
+        <link name='FR_calf'>
+          <pose frame=''>-2.02018 -2.13099 0.224598 -0.037134 -0.654954 0.014668</pose>
+          <velocity>0.00949 -0.000248 -0.01387 0.001874 0.042219 -0.001132</velocity>
+          <acceleration>-0 -0 0 -2.41279 0.227084 -2.21138</acceleration>
+          <wrench>-0 -0 0 0 -0 0</wrench>
+        </link>
+        <link name='FR_hip'>
+          <pose frame=''>-1.81435 -2.04545 0.364966 -0.029468 0.005681 -0.008118</pose>
+          <velocity>-8.5e-05 3.2e-05 -0 0.001565 -4.1e-05 0.000101</velocity>
+          <acceleration>0 -0 -0 2.56658 -0.561131 -3.13435</acceleration>
+          <wrench>0 -0 -0 0 -0 0</wrench>
+        </link>
+        <link name='FR_thigh'>
+          <pose frame=''>-1.815 -2.12841 0.367412 -0.051525 0.961838 -0.050219</pose>
+          <velocity>-7.7e-05 2.9e-05 -0.00013 0.001028 -0.066951 0.002063</velocity>
+          <acceleration>-0 -0 0 1.03786 1.07289 1.56363</acceleration>
+          <wrench>-0 -0 0 0 -0 0</wrench>
+        </link>
+        <link name='RL_calf'>
+          <pose frame=''>-2.49188 -1.85469 0.215711 0.002244 -0.711981 -0.009582</pose>
+          <velocity>0.016464 -0.000176 -0.02192 0.000763 0.076326 8.1e-05</velocity>
+          <acceleration>-0 0 0 1.12995 -0.759327 0.241405</acceleration>
+          <wrench>-0 0 0 0 -0 0</wrench>
+        </link>
+        <link name='RL_hip'>
+          <pose frame=''>-2.2933 -1.93957 0.366548 0.001726 0.005681 -0.008119</pose>
+          <velocity>-9.7e-05 -2.1e-05 -3.4e-05 -0.000183 -2.8e-05 0.000119</velocity>
+          <acceleration>0 -0 -0 -1.34671 -0.507809 0.970203</acceleration>
+          <wrench>0 -0 -0 0 -0 0</wrench>
+        </link>
+        <link name='RL_thigh'>
+          <pose frame=''>-2.29263 -1.85657 0.366691 0.002851 0.92238 -0.005864</pose>
+          <velocity>-0.000106 -2.1e-05 -5e-05 -0.001036 -0.10975 1.8e-05</velocity>
+          <acceleration>-0 0 -0 1.38854 -0.177697 2.25423</acceleration>
+          <wrench>-0 0 -0 0 -0 0</wrench>
+        </link>
+        <link name='RR_calf'>
+          <pose frame=''>-2.49609 -2.12693 0.221723 -0.034703 -0.673805 0.013712</pose>
+          <velocity>0.00503 -0.000146 -0.007018 0.001019 0.022671 -0.00051</velocity>
+          <acceleration>0 -0 -0 -2.16573 0.118758 2.50938</acceleration>
+          <wrench>0 -0 -0 0 -0 0</wrench>
+        </link>
+        <link name='RR_hip'>
+          <pose frame=''>-2.29412 -2.04156 0.367692 -0.027066 0.005681 -0.008118</pose>
+          <velocity>-8.6e-05 -2.1e-05 -1.4e-05 0.000842 -3.5e-05 0.000106</velocity>
+          <acceleration>0 -0 0 2.92873 -0.465898 0.296511</acceleration>
+          <wrench>0 -0 0 0 -0 0</wrench>
+        </link>
+        <link name='RR_thigh'>
+          <pose frame=''>-2.29478 -2.12452 0.369938 -0.045588 0.935426 -0.044663</pose>
+          <velocity>-7.7e-05 -2.3e-05 -8.4e-05 0.000575 -0.034438 0.001038</velocity>
+          <acceleration>0 -0 -0 1.27721 -0.388744 -2.23378</acceleration>
+          <wrench>0 -0 -0 0 -0 0</wrench>
+        </link>
+        <link name='base'>
+          <pose frame=''>-2.05382 -1.99251 0.365757 -0.011215 0.005681 -0.008119</pose>
+          <velocity>-9.1e-05 6e-06 -1.7e-05 -0.000194 -2.7e-05 0.000112</velocity>
+          <acceleration>0 -0 0 -0.000108 -0.005395 -0.003556</acceleration>
+          <wrench>0 -0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='Map2'>
+        <pose frame=''>1.13644 -4.96965 0 0 0 -1.56405</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose frame=''>1.13644 -4.96965 0 0 0 -1.56405</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='Map2_0'>
+        <pose frame=''>15.62 -22.5282 0 0 -0 0</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose frame=''>15.62 -22.5282 0 0 -0 0</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='Map2_1_clone'>
+        <pose frame=''>7.08467 -12.1954 0 0 -0 3.13167</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose frame=''>7.08467 -12.1954 0 0 -0 3.13167</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='Map2_1_clone_clone'>
+        <pose frame=''>14.5257 -2.75884 0 0 -0 3.13167</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose frame=''>14.5257 -2.75884 0 0 -0 3.13167</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='walluse'>
+        <pose frame=''>-0.402663 -5.38696 0 0 -0 0</pose>
+        <scale>1 1 1</scale>
+        <link name='Wall_0'>
+          <pose frame=''>-0.402663 -5.38696 0 0 -0 0</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='walluse_clone'>
+        <pose frame=''>-0.015742 1.86843 0 0 -0 0</pose>
+        <scale>1 1 1</scale>
+        <link name='Wall_0'>
+          <pose frame=''>-0.015742 1.86843 0 0 -0 0</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='walluse_clone_0'>
+        <pose frame=''>10.8754 2.02396 0 0 -0 1.57672</pose>
+        <scale>1 1 1</scale>
+        <link name='Wall_0'>
+          <pose frame=''>10.8754 2.02396 0 0 -0 1.57672</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='walluse_clone_0_clone_0'>
+        <pose frame=''>5.85185 -11.8072 0 0 -0 1.57672</pose>
+        <scale>1 1 1</scale>
+        <link name='Wall_0'>
+          <pose frame=''>5.85185 -11.8072 0 0 -0 1.57672</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='walluse_clone_0_clone_0_clone'>
+        <pose frame=''>23.4569 -10.4273 0 0 -0 1.57672</pose>
+        <scale>1 1 1</scale>
+        <link name='Wall_0'>
+          <pose frame=''>23.4569 -10.4273 0 0 -0 1.57672</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='walluse_clone_0_clone_0_clone_0'>
+        <pose frame=''>5.90775 -22.8551 0 0 -0 1.57672</pose>
+        <scale>1 1 1</scale>
+        <link name='Wall_0'>
+          <pose frame=''>5.90775 -22.8551 0 0 -0 1.57672</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='walluse_clone_0_clone_0_clone_clone'>
+        <pose frame=''>15.2744 -23.063 0 0 -0 1.57672</pose>
+        <scale>1 1 1</scale>
+        <link name='Wall_0'>
+          <pose frame=''>15.2744 -23.063 0 0 -0 1.57672</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='walluse_clone_0_clone_clone'>
+        <pose frame=''>5.98239 8.45043 0 0 -0 1.57672</pose>
+        <scale>1 1 1</scale>
+        <link name='Wall_0'>
+          <pose frame=''>5.98239 8.45043 0 0 -0 1.57672</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='walluse_clone_1'>
+        <pose frame=''>9.00253 -29.3041 0 0 -0 0</pose>
+        <scale>1 1 1</scale>
+        <link name='Wall_0'>
+          <pose frame=''>9.00253 -29.3041 0 0 -0 0</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='walluse_clone_1_clone'>
+        <pose frame=''>4.66434 1.98266 0 0 -0 0</pose>
+        <scale>1 1 1</scale>
+        <link name='Wall_0'>
+          <pose frame=''>4.66434 1.98266 0 0 -0 0</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='walluse_clone_1_clone_0'>
+        <pose frame=''>6.98219 -11.2069 0 0 -0 0</pose>
+        <scale>1 1 1</scale>
+        <link name='Wall_0'>
+          <pose frame=''>6.98219 -11.2069 0 0 -0 0</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='walluse_clone_1_clone_clone_0'>
+        <pose frame=''>17.2356 -4.13812 0 0 -0 0</pose>
+        <scale>1 1 1</scale>
+        <link name='Wall_0'>
+          <pose frame=''>17.2356 -4.13812 0 0 -0 0</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='walluse_clone_1_clone_clone_0_clone_clone'>
+        <pose frame=''>21.6828 -16.6748 0 0 -0 0</pose>
+        <scale>1 1 1</scale>
+        <link name='Wall_0'>
+          <pose frame=''>21.6828 -16.6748 0 0 -0 0</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <light name='sun'>
+        <pose frame=''>0 0 10 0 -0 0</pose>
+      </light>
+    </state>
+    <gui fullscreen='0'>
+      <camera name='user_camera'>
+        <pose frame=''>16.0809 -26.0681 81.4366 0 1.4178 1.36913</pose>
+        <view_controller>orbit</view_controller>
+        <projection_type>perspective</projection_type>
+      </camera>
+    </gui>
+    <model name='walluse_clone_1_clone_clone_0'>
+      <pose frame=''>16.6868 -5.05617 0 0 -0 0</pose>
+      <link name='Wall_0'>
+        <collision name='Wall_0_Collision'>
+          <geometry>
+            <box>
+              <size>12.75 0.15 2.5</size>
+            </box>
+          </geometry>
+          <pose frame=''>0 0 1.25 0 -0 0</pose>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='Wall_0_Visual'>
+          <pose frame=''>0 0 1.25 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>12.75 0.15 2.5</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Grey</name>
+            </script>
+            <ambient>1 1 1 1</ambient>
+          </material>
+          <meta>
+            <layer>0</layer>
+          </meta>
+        </visual>
+        <pose frame=''>0 0 0 0 -0 0</pose>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <static>1</static>
+    </model>
+    <model name='walluse_clone_0_clone_0'>
+      <pose frame=''>5.85185 -11.8072 0 0 -0 1.57672</pose>
+      <link name='Wall_0'>
+        <collision name='Wall_0_Collision'>
+          <geometry>
+            <box>
+              <size>12.75 0.15 2.5</size>
+            </box>
+          </geometry>
+          <pose frame=''>0 0 1.25 0 -0 0</pose>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='Wall_0_Visual'>
+          <pose frame=''>0 0 1.25 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>12.75 0.15 2.5</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Grey</name>
+            </script>
+            <ambient>1 1 1 1</ambient>
+          </material>
+          <meta>
+            <layer>0</layer>
+          </meta>
+        </visual>
+        <pose frame=''>0 0 0 0 -0 0</pose>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <static>1</static>
+    </model>
+    <model name='Map2_1_clone'>
+      <static>1</static>
+      <link name='link'>
+        <pose frame=''>0 0 0 0 -0 0</pose>
+        <collision name='collision'>
+          <geometry>
+            <mesh>
+              <uri>model://map2/meshes/map2.dae</uri>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='visual'>
+          <geometry>
+            <mesh>
+              <uri>model://map2/meshes/map2.dae</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <uri>model://map2/materials/scripts</uri>
+              <uri>model://map2/materials/textures</uri>
+              <name>Map2/Image</name>
+            </script>
+          </material>
+        </visual>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <pose frame=''>45.8648 -5.74733 0 0 -0 3.13167</pose>
+    </model>
+    <model name='Map2_1_clone_clone'>
+      <static>1</static>
+      <link name='link'>
+        <pose frame=''>0 0 0 0 -0 0</pose>
+        <collision name='collision'>
+          <geometry>
+            <mesh>
+              <uri>model://map2/meshes/map2.dae</uri>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='visual'>
+          <geometry>
+            <mesh>
+              <uri>model://map2/meshes/map2.dae</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <uri>model://map2/materials/scripts</uri>
+              <uri>model://map2/materials/textures</uri>
+              <name>Map2/Image</name>
+            </script>
+          </material>
+        </visual>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <pose frame=''>14.5257 -2.75884 0 0 -0 3.13167</pose>
+    </model>
+    <model name='walluse_clone_0_clone_0_clone'>
+      <pose frame=''>23.4569 -10.4273 0 0 -0 1.57672</pose>
+      <link name='Wall_0'>
+        <collision name='Wall_0_Collision'>
+          <geometry>
+            <box>
+              <size>12.75 0.15 2.5</size>
+            </box>
+          </geometry>
+          <pose frame=''>0 0 1.25 0 -0 0</pose>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='Wall_0_Visual'>
+          <pose frame=''>0 0 1.25 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>12.75 0.15 2.5</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Grey</name>
+            </script>
+            <ambient>1 1 1 1</ambient>
+          </material>
+          <meta>
+            <layer>0</layer>
+          </meta>
+        </visual>
+        <pose frame=''>0 0 0 0 -0 0</pose>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <static>1</static>
+    </model>
+    <model name='walluse_clone_1_clone_0'>
+      <pose frame=''>5.37371 -12.6507 0 0 -0 0</pose>
+      <link name='Wall_0'>
+        <collision name='Wall_0_Collision'>
+          <geometry>
+            <box>
+              <size>12.75 0.15 2.5</size>
+            </box>
+          </geometry>
+          <pose frame=''>0 0 1.25 0 -0 0</pose>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='Wall_0_Visual'>
+          <pose frame=''>0 0 1.25 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>12.75 0.15 2.5</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Grey</name>
+            </script>
+            <ambient>1 1 1 1</ambient>
+          </material>
+          <meta>
+            <layer>0</layer>
+          </meta>
+        </visual>
+        <pose frame=''>0 0 0 0 -0 0</pose>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <static>1</static>
+    </model>
+    <model name='walluse_clone_0_clone_0_clone_clone'>
+      <pose frame=''>15.2744 -23.063 0 0 -0 1.57672</pose>
+      <link name='Wall_0'>
+        <collision name='Wall_0_Collision'>
+          <geometry>
+            <box>
+              <size>12.75 0.15 2.5</size>
+            </box>
+          </geometry>
+          <pose frame=''>0 0 1.25 0 -0 0</pose>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='Wall_0_Visual'>
+          <pose frame=''>0 0 1.25 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>12.75 0.15 2.5</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Grey</name>
+            </script>
+            <ambient>1 1 1 1</ambient>
+          </material>
+          <meta>
+            <layer>0</layer>
+          </meta>
+        </visual>
+        <pose frame=''>0 0 0 0 -0 0</pose>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <static>1</static>
+    </model>
+    <model name='walluse_clone_1_clone_clone_0_clone_clone'>
+      <pose frame=''>31.4846 -17.24 0 0 -0 0</pose>
+      <link name='Wall_0'>
+        <collision name='Wall_0_Collision'>
+          <geometry>
+            <box>
+              <size>12.75 0.15 2.5</size>
+            </box>
+          </geometry>
+          <pose frame=''>0 0 1.25 0 -0 0</pose>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='Wall_0_Visual'>
+          <pose frame=''>0 0 1.25 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>12.75 0.15 2.5</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Grey</name>
+            </script>
+            <ambient>1 1 1 1</ambient>
+          </material>
+          <meta>
+            <layer>0</layer>
+          </meta>
+        </visual>
+        <pose frame=''>0 0 0 0 -0 0</pose>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <static>1</static>
+    </model>
+    <model name='walluse_clone_0_clone_0_clone_0'>
+      <pose frame=''>5.90775 -22.8551 0 0 -0 1.57672</pose>
+      <link name='Wall_0'>
+        <collision name='Wall_0_Collision'>
+          <geometry>
+            <box>
+              <size>12.75 0.15 2.5</size>
+            </box>
+          </geometry>
+          <pose frame=''>0 0 1.25 0 -0 0</pose>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='Wall_0_Visual'>
+          <pose frame=''>0 0 1.25 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>12.75 0.15 2.5</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Grey</name>
+            </script>
+            <ambient>1 1 1 1</ambient>
+          </material>
+          <meta>
+            <layer>0</layer>
+          </meta>
+        </visual>
+        <pose frame=''>0 0 0 0 -0 0</pose>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <static>1</static>
+    </model>
+  </world>
+</sdf>

@@ -1,0 +1,21 @@
+{
+  "configurations": [
+    {
+      "browse": {
+        "databaseFilename": "",
+        "limitSymbolsToIncludedHeaders": true
+      },
+      "includePath": [
+        "/media/zlt/MyFiles/home/lexico_ws/devel/include",
+        "/opt/ros/kinetic/include",
+        "/media/zlt/MyFiles/home/lexico_ws/src/jackal_velodyne/include",
+        "/media/zlt/MyFiles/home/lexico_ws/src/lexicographic_planning/include",
+        "/media/zlt/MyFiles/home/lexico_ws/src/rrt_star_planner/include",
+        "/media/zlt/MyFiles/home/lexico_ws/src/spatio_temporal_voxel_layer/include",
+        "/media/zlt/MyFiles/home/lexico_ws/src/velodyne_simulator/velodyne_gazebo_plugins/include",
+        "/usr/include"
+      ],
+      "name": "Linux"
+    }
+  ]
+}

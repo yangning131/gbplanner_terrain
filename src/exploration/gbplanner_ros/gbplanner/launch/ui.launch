@@ -1,0 +1,5 @@
+<launch>
+
+  <node pkg="rviz" type="rviz" name="gbplanner_ui" output="screen" args="-d $(find gbplanner)/config/rviz/car.rviz"/>
+
+</launch>

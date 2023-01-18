@@ -1,0 +1,15 @@
+<launch>
+  <!-- All settings -->
+  <arg name="robot_name" default="dog"/>
+  <arg name="pci_file" default="$(find gbplanner)/config/$(arg robot_name)/planner_control_interface_sim_config.yaml"/>
+  <arg name="odometry_topic" default="/aft_mapped_to_init"/>
+
+  <node pkg="pci_mav" type="pci_mav_ros_node" name="pci_mav_ros_node" output="screen">
+    <remap from="command/trajectory" to="$(arg robot_name)/command/trajectory" />
+    <remap from="planner_server" to="gbplanner" />
+    <remap from="planner_homing_server" to="gbplanner/homing" />
+    <remap from="odometry" to="$(arg odometry_topic)"/>
+    <rosparam command="load" file="$(arg pci_file)" />
+  </node>
+
+</launch>

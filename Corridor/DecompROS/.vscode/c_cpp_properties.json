@@ -1,0 +1,19 @@
+{
+  "configurations": [
+    {
+      "browse": {
+        "databaseFilename": "",
+        "limitSymbolsToIncludedHeaders": true
+      },
+      "includePath": [
+        "/home/ynp/Corridor/devel_isolated/decomp_ros_msgs/include/**",
+        "/opt/ros/melodic/include/**",
+        "/home/ynp/Corridor/devel_isolated/decomp_util/include/**",
+        "/home/ynp/Corridor/src/DecompROS/decomp_ros_utils/include/**",
+        "/usr/include/**"
+      ],
+      "name": "ROS"
+    }
+  ],
+  "version": 4
+}

@@ -1,0 +1,35 @@
+{
+  "configurations": [
+    {
+      "browse": {
+        "databaseFilename": "${default}",
+        "limitSymbolsToIncludedHeaders": false
+      },
+      "includePath": [
+        "/home/baibai1/unitree_ws/devel/include/**",
+        "/home/baibai1/catkin_hw/devel/include/**",
+        "/opt/ros/melodic/include/**",
+        "/home/baibai1/unitree_ws/src/aliengo_config/include/**",
+        "/home/baibai1/unitree_ws/src/champ/champ/include/**",
+        "/home/baibai1/unitree_ws/src/champ/champ_base/include/**",
+        "/home/baibai1/unitree_ws/src/champ/champ_config/include/**",
+        "/home/baibai1/unitree_ws/src/jackal_velodyne/include/**",
+        "/home/baibai1/unitree_ws/src/lexicographic_planning/include/**",
+        "/home/baibai1/catkin_hw/src/quadrotor_msgs/include/**",
+        "/home/baibai1/unitree_ws/src/realsense_ros_gazebo/include/**",
+        "/home/baibai1/unitree_ws/src/unitree_ros/unitree_controller/include/**",
+        "/home/baibai1/unitree_ws/src/unitree_ros/unitree_legged_control/include/**",
+        "/home/baibai1/unitree_ws/src/unitree_ros/unitree_legged_real/include/**",
+        "/home/baibai1/unitree_ws/src/velodyne_simulator/velodyne_gazebo_plugins/include/**",
+        "/home/baibai1/unitree_ws/src/yocs_velocity_smoother/include/**",
+        "/usr/include/**"
+      ],
+      "name": "ROS",
+      "intelliSenseMode": "gcc-x64",
+      "compilerPath": "/usr/bin/gcc",
+      "cStandard": "gnu11",
+      "cppStandard": "c++14"
+    }
+  ],
+  "version": 4
+}

@@ -1,0 +1,42 @@
+{
+    "configurations": [
+        {
+            "browse": {
+                "databaseFilename": "",
+                "limitSymbolsToIncludedHeaders": true
+            },
+            "includePath": [
+                "/home/zlt/gbplanner_ws/devel/include/**",
+                "/opt/ros/kinetic/include/**",
+                "/home/zlt/gbplanner_ws/src/misc/eigen_checks/include/**",
+                "/home/zlt/gbplanner_ws/src/exploration/gbplanner_ros/gbplanner/include/**",
+                "/home/zlt/gbplanner_ws/src/car/hypharos_minicar-master/include/**",
+                "/home/zlt/gbplanner_ws/src/car/jackal_velodyne-master/include/**",
+                "/home/zlt/gbplanner_ws/src/exploration/gbplanner_ros/kdtree/include/**",
+                "/home/zlt/gbplanner_ws/src/car/lexicographic_planning-master/include/**",
+                "/home/zlt/gbplanner_ws/src/sim/lidar_simulator/lidar_gazebo_plugins/include/**",
+                "/home/zlt/gbplanner_ws/src/misc/mav_comm/mav_msgs/include/**",
+                "/home/zlt/gbplanner_ws/src/misc/mav_comm/mav_planning_msgs/include/**",
+                "/home/zlt/gbplanner_ws/src/misc/minkindr/minkindr/include/**",
+                "/home/zlt/gbplanner_ws/src/misc/minkindr_ros/minkindr_conversions/include/**",
+                "/home/zlt/gbplanner_ws/src/mapping/volumetric_mapping/octomap_world/include/**",
+                "/home/zlt/gbplanner_ws/src/exploration/pci_mav/include/**",
+                "/home/zlt/gbplanner_ws/src/exploration/gbplanner_ros/planner_control_interface/include/**",
+                "/home/zlt/gbplanner_ws/src/sim/rotors_simulator/rotors_control/include/**",
+                "/home/zlt/gbplanner_ws/src/sim/rotors_simulator/rotors_gazebo_plugins/include/**",
+                "/home/zlt/gbplanner_ws/src/sim/rotors_simulator/rotors_joy_interface/include/**",
+                "/home/zlt/gbplanner_ws/src/mapping/volumetric_mapping/volumetric_map_base/include/**",
+                "/home/zlt/gbplanner_ws/src/mapping/voxblox/voxblox/include/**",
+                "/home/zlt/gbplanner_ws/src/mapping/voxblox/voxblox_ros/include/**",
+                "/home/zlt/gbplanner_ws/src/mapping/voxblox/voxblox_rviz_plugin/include/**",
+                "/usr/include/**"
+            ],
+            "name": "ROS",
+            "intelliSenseMode": "gcc-x64",
+            "compilerPath": "/usr/bin/gcc",
+            "cStandard": "gnu11",
+            "cppStandard": "c++17"
+        }
+    ],
+    "version": 4
+}
