@@ -24,12 +24,12 @@ SensorParams:
   sensor_list:      ["VLP16"]
   VLP16:
     type:           kLidar
-    max_range:      20.0                #为了避免山顶free增益太大   增益射线范围改小   原本凹陷地形为20
+    max_range:      6.0                #为了避免山顶free增益太大   增益射线范围改小   原本凹陷地形为20
     center_offset:  [0.0, 0.0, 0.0]
     rotations:      [0.0, 0.0, 0.0]
     fov:            [rad(2*pi), rad(pi/18)]
     resolution:     [rad(5.0*pi/180), rad(5.0*pi/180)]
-    frontier_percentage_threshold: 0.4  #0.1
+    frontier_percentage_threshold: 0.1  #0.1
     frame_id: velodyne
 #-------------------------------------------------------------------------------
 # SAMPLING SPACE CONFIGURATION
@@ -39,12 +39,12 @@ SensorParams:
 BoundedSpaceParams:
   Global:
     type:           kCuboid
-    min_val:        [0.0 , -50.0, -2.0]          # [0.0 , -50.0, 0.0]凹陷地形较好
-    max_val:        [100.0, 50.0, 4.0]         # [100.0, 50.0, 3.0]凹陷地形较好
+    min_val:        [0.0 , -50.0, -1.0]          # [0.0 , -50.0, 0.0]凹陷地形较好
+    max_val:        [100.0, 50.0, 3.0]         # [100.0, 50.0, 3.0]凹陷地形较好
   Local:
     type:           kCuboid
-    min_val:        [-16.0, -16.0, -2.0]        #凹陷地形较好[-13.0, -13.0, 0.0]
-    max_val:        [16.0, 16.0, 4.0]          #凹陷地形较好[13.0, 13.0, 0.7]   . . 2.0固定的沿山路线
+    min_val:        [-13.0, -13.0, -1.0]        #凹陷地形较好[-13.0, -13.0, 0.0]
+    max_val:        [13.0, 13.0, 4.0]          #凹陷地形较好[13.0, 13.0, 0.7]   . . 2.0固定的沿山路线
     min_extension:  [-20.0, -20.0, 0.0]
     max_extension:  [20.0, 20.0, 0.0]          #凹陷地形较好[20.0, 20.0, 0.5]
   LocalSearch:
@@ -100,8 +100,8 @@ PlanningParams:
   edge_length_min:  0.2
   edge_length_max:  2.0 #                        5.0
   edge_overshoot:   0.0
-  num_vertices_max: 800  #500
-  num_edges_max:    4000 #3000 
+  num_vertices_max: 500  #500
+  num_edges_max:    3000 #3000 
   num_loops_cutoff: 2000
   num_loops_max:    20000
   nearest_range:    1.5 #                        3.0
