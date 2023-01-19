@@ -2,3 +2,12 @@
 和/home/ynp/gbplanner_ws/src/dog/aliengo_config/maps TIM.ide 压缩了
 
 此为差速度小车 山地探索程序及配置
+
+
+1。同机器狗类似 某些情况car不走
+原因：lookahead 角度差别大  差别大时只转弯 
+
+同机器狗 角度问题
+pure_p 降低mypath路径高度
+pure_pure 更改跟踪的角度和速度阈值
+pure_p 重新计算路径的orientation

@@ -436,7 +436,7 @@ bool Rrg::sampleVertex(StateVec& state) {
 
              state[2] = sample_point[2];
 
-              if(terrain_cost<0.98)  ///凹陷地形效果较好为0.6
+              if(terrain_cost<=1.0)  ///凹陷地形效果较好为0.6
               { 
                 // std::cout<<"terrain_cost:"<<terrain_cost<<std::endl;
 
@@ -523,7 +523,7 @@ bool Rrg::sampleVertex(RandomSampler& random_sampler, StateVec& root_state,
 
              sampled_state[2] = sample_point[2];
 
-              if(terrain_cost<0.98) ////0.6
+              if(terrain_cost<=1.0) ////0.6
               {
                 // std::cout<<"terrain_cost:"<<terrain_cost<<std::endl;
 

@@ -144,7 +144,8 @@ void PurePursuit::computeVelocities(nav_msgs::Odometry odom)
   // Get the current robot pose
 
    if (!path_.poses.empty())
-            {   double robot_yaw = tf::getYaw(odom.pose.pose.orientation);;
+            {   
+            double robot_yaw = tf::getYaw(odom.pose.pose.orientation);;
         
         double path_yaw=tf::getYaw(path_.poses.front().pose.orientation);
 
@@ -272,9 +273,9 @@ void PurePursuit::computeVelocities(nav_msgs::Odometry odom)
     tf_broadcaster_.sendTransform(lookahead_);
     
 
-       if(rotate==true)
+   if(rotate==true)
    {
-    cmd_vel_.linear.x = 0.0; 
+    cmd_vel_.linear.x = 0.1; 
     rotate=false;
    }
 
@@ -357,7 +358,7 @@ void PurePursuit::run()
 void PurePursuit::reconfigure(pure_pursuit::PurePursuitConfig &config, uint32_t level)
 {
   // v_max_ = config.max_linear_velocity;
-   v_max_ = 0.4;
+   v_max_ = 0.5;
 }
 
 int main(int argc, char**argv)

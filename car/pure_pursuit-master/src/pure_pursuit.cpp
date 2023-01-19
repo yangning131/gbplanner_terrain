@@ -17,6 +17,7 @@
 #include <nav_msgs/Path.h>
 #include <nav_msgs/Odometry.h>
 #include <ackermann_msgs/AckermannDriveStamped.h>
+#include <tf/tf.h>
 
 #include <kdl/frames.hpp>
 
@@ -43,6 +44,20 @@ public:
   {
     return sqrt(pow(x1 - x2,2) + pow(y1 - y2,2) );
   }
+
+  double cast_from_0_to_2PI_Angle(const double& ang)//余数  化为-2pi到2pi的数
+{
+    double angle = 0;
+    if (ang < -2.0 * M_PI || ang > 2.0 * M_PI) {
+        angle = fmod(ang, 2.0 * M_PI);
+    } else
+        angle = ang;
+
+    if (angle < 0) {
+        angle = 2.0 * M_PI + angle;
+    }
+    return angle;
+}
 
   //! Receive path to follow.
   void receivePath(nav_msgs::Path path);
@@ -78,6 +93,7 @@ private:
   double delta_, delta_vel_, acc_, jerk_, delta_max_;
   nav_msgs::Path path_;
   nav_msgs::Path path_show;
+  nav_msgs::Path path_p;
 
 
 
@@ -168,6 +184,9 @@ void PurePursuit::computeVelocities(nav_msgs::Odometry odom)
     path_show.header.frame_id="map";
     path_show.header.stamp=ros::Time::now();
 
+    path_p.header.frame_id="map";
+    path_p.header.stamp=ros::Time::now();
+
      if (goal_reached_)
      {    
           float min_dist = FLT_MAX;
@@ -189,7 +208,15 @@ void PurePursuit::computeVelocities(nav_msgs::Odometry odom)
             path_.poses.erase(path_.poses.begin(), path_.poses.begin() + min_id);
 
 
-          pub_path.publish(path_);
+            path_p = path_;
+            for(int i  =0 ;i< path_.poses.size();++i)
+            { 
+              path_p.poses[i].pose.position.z = path_.poses[i].pose.position.z - 0.4;//change
+              // path_show.poses[i].pose.position.z = 0.0;
+            }
+
+
+          pub_path.publish(path_p);
 
 
           path_show = path_;
@@ -380,9 +407,75 @@ void PurePursuit::receivePath(nav_msgs::Path new_path)
   {
    
     idx_ = 0;
+    std::cout<<"origin path size: "<<new_path.poses.size()<<std::endl;
     if (new_path.poses.size() > 0)
-    {
+    { 
+      //path dense
+      double pathdensity = 0.1;
+      double dis = 0, ang = 0;
+      double margin = pathdensity * 0.01;
+      double remaining = 0;
+      int nPoints = 0;
       path_ = new_path;
+      path_.poses.clear();
+      path_.poses.push_back(new_path.poses[0]);
+      size_t start = 0, next = 1;
+      while (next < new_path.poses.size())
+      {
+          dis += hypot(new_path.poses[next].pose.position.x - new_path.poses[next-1].pose.position.x, new_path.poses[next].pose.position.y - new_path.poses[next-1].pose.position.y) + remaining;
+          ang = atan2(new_path.poses[next].pose.position.y - new_path.poses[start].pose.position.y, new_path.poses[next].pose.position.x - new_path.poses[start].pose.position.x);
+
+          if (dis < pathdensity - margin)
+          {
+              next++;
+              remaining = 0;
+          } else if (dis > (pathdensity + margin))
+          {
+              geometry_msgs::PoseStamped point_start = new_path.poses[start];
+              nPoints = dis / pathdensity;
+              for (int j = 0; j < nPoints; j++)
+              {
+                  point_start.pose.position.x = point_start.pose.position.x + pathdensity * cos(ang);
+                  point_start.pose.position.y = point_start.pose.position.y + pathdensity * sin(ang);
+                  point_start.pose.orientation = tf::createQuaternionMsgFromYaw(ang);
+                  path_.poses.push_back(point_start);
+              }
+              remaining = dis - nPoints * pathdensity;
+              start++;
+              new_path.poses[start].pose.position = point_start.pose.position;
+              dis = 0;
+              next++;
+          } else {
+              dis = 0;
+              remaining = 0;
+              path_.poses.push_back(new_path.poses[next]);
+              next++;
+              start = next - 1;
+          }
+      }
+
+      //pathyaw caculate
+      if (path_.poses.size() >= 2)
+      {
+        if (path_.poses.size() == 2) {
+          double yaw = cast_from_0_to_2PI_Angle(atan2(path_.poses[1].pose.position.y - path_.poses[0].pose.position.y, path_.poses[1].pose.position.x - path_.poses[0].pose.position.x));//求两点间的角度，将当前角度转换到0～2pi
+          path_.poses[0].pose.orientation = tf::createQuaternionMsgFromYaw(yaw);
+          path_.poses[1].pose.orientation = path_.poses[0].pose.orientation;
+        }
+
+        double yaw = cast_from_0_to_2PI_Angle(atan2(path_.poses[1].pose.position.y - path_.poses[0].pose.position.y, path_.poses[1].pose.position.x - path_.poses[0].pose.position.x));//求两点间的角度，将当前角度转换到0～2pi
+        path_.poses[0].pose.orientation = tf::createQuaternionMsgFromYaw(yaw);
+
+        for (int j = 1; j < path_.poses.size() - 1; j++) {
+            double yaw = cast_from_0_to_2PI_Angle(atan2(path_.poses[j + 1].pose.position.y - path_.poses[j].pose.position.y, path_.poses[j + 1].pose.position.x - path_.poses[j].pose.position.x));//求两点间的角度，将当前角度转换到0～2pi
+            path_.poses[j].pose.orientation = tf::createQuaternionMsgFromYaw(yaw);
+        }
+
+        int j = (int)path_.poses.size() - 1;
+        path_.poses[j].pose.orientation = path_.poses[j-1].pose.orientation;
+
+      }
+      
       goal_reached_ = true;
     }
     else

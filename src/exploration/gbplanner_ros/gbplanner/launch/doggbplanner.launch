@@ -69,14 +69,14 @@
   <!-- <node pkg="tf" type="static_transform_publisher" name="camera_to_base" args="0 0 0.0  0 0 0 /aft_mapped /base 10" /> -->
 
   <!-- 山地 -->
-  <node pkg="tf" type="static_transform_publisher" name="camera_to_base" args="0 0 -0.47 0 0 0 /aft_mapped /base 10" />  
+  <node pkg="tf" type="static_transform_publisher" name="camera_to_base" args="0 0 0.2 0 0 0 /aft_mapped /base 10" />  
   
     <!-- 凹陷狗 -->
    <!-- <node pkg="tf" type="static_transform_publisher" name="camera_to_base" args="0 0 -0.2 0 0 0 /aft_mapped /base 10" />   -->
 
 
   
-  <node pkg="tf" type="static_transform_publisher" name="base_to_base_link" args="0 0 0 0 0 0 /base /base_link 10" />
+  <node pkg="tf" type="static_transform_publisher" name="base_to_base_link" args="0 0 -0.55 0 0 0 /base /base_link 10" />
 
 
     <node pkg="tf" type="static_transform_publisher" name="maptoodom" args="0 0 0 0 0 0 map odom 100" /> 
