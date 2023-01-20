@@ -149,7 +149,7 @@ void PurePursuit::computeVelocities(nav_msgs::Odometry odom)
         
         double path_yaw=tf::getYaw(path_.poses.front().pose.orientation);
 
-        if(abs(robot_yaw-path_yaw)>0.7854)
+        if(abs(robot_yaw-path_yaw)>1.5)//0.7854
             rotate = true;}
 
 
@@ -163,7 +163,13 @@ void PurePursuit::computeVelocities(nav_msgs::Odometry odom)
     {
       if (distance(path_.poses[idx_].pose.position, tf.transform.translation) > ld_)
       {
+        // double robot_yaw = tf::getYaw(odom.pose.pose.orientation);
+        
+        // double path_yaw=tf::getYaw(path_.poses[idx_].pose.orientation);
 
+        // if(abs(robot_yaw-path_yaw)>)//0.7854
+        //     rotate = true;
+        
         // Transformed lookahead to base_link frame is lateral error
         KDL::Frame F_bl_ld = transformToBaseLink(path_.poses[idx_].pose, tf.transform);
         lookahead_.transform.translation.x = F_bl_ld.p.x();

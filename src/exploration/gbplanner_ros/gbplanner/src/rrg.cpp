@@ -421,9 +421,6 @@ bool Rrg::sampleVertex(StateVec& state) {
               // state x,y,z,yaw
               //state x,y,z,yaw terrain_cost
       Eigen::Vector3d sample_point(state[0], state[1], state[2]);
-      float point_show = state[2];
-
-
 
       if (world->has_map_)
       {
@@ -436,7 +433,7 @@ bool Rrg::sampleVertex(StateVec& state) {
 
              state[2] = sample_point[2];
 
-              if(terrain_cost<0.98)  ///凹陷地形效果较好为0.6
+              if(terrain_cost<0.98)  // 0.98/凹陷地形效果较好为0.6
               { 
                 // std::cout<<"terrain_cost:"<<terrain_cost<<std::endl;
 
@@ -1313,21 +1310,67 @@ void Rrg::expandTreeStar(std::shared_ptr<GraphManager> graph_manager,
   // Check for collision of new connection plus some overshoot distance.
   Eigen::Vector3d origin(nearest_vertex->state[0], nearest_vertex->state[1],
                          nearest_vertex->state[2]);
-  Eigen::Vector3d direction(new_state[0] - origin[0], new_state[1] - origin[1],
+  Eigen::Vector3d direction_old(new_state[0] - origin[0], new_state[1] - origin[1],
                             new_state[2] - origin[2]);
-  double direction_norm = direction.norm();
-  if (direction_norm > planning_params_.edge_length_max) {
-    direction = planning_params_.edge_length_max * direction.normalized();
-  } else if (direction_norm <= planning_params_.edge_length_min) {
+  double direction_norm_old = direction_old.norm();
+  if (direction_norm_old > planning_params_.edge_length_max) {
+    direction_old = planning_params_.edge_length_max * direction_old.normalized();
+  } else if (direction_norm_old <= planning_params_.edge_length_min) {
     // Should not add short edge.
     rep.status = ExpandGraphStatus::kErrorShortEdge;
     return;
   }
   // Recalculate the distance.
-  direction_norm = direction.norm();
-  new_state[0] = origin[0] + direction[0];
-  new_state[1] = origin[1] + direction[1];
-  new_state[2] = origin[2] + direction[2];
+  direction_norm_old = direction_old.norm();
+  new_state[0] = origin[0] + direction_old[0];
+  new_state[1] = origin[1] + direction_old[1];
+  new_state[2] = origin[2] + direction_old[2];
+
+
+  //new_state terrain analyse
+  float terrain_cost = 2.0;
+  bool calculate_tecost = false;
+  Eigen::Vector3d sample_point(new_state[0], new_state[1], new_state[2]);
+  if (world->has_map_)
+  {
+      calculate_tecost = pf_rrt_star->planner(terrain_cost, sample_point);//return bool
+      if(calculate_tecost && terrain_cost<0.98) //0.98
+      {
+          new_state[2] = sample_point[2];
+      }
+      else{
+               rep.status = ExpandGraphStatus::kErrorGeofenceViolated;
+                return;
+      }  
+  }
+  else
+  {
+    rep.status = ExpandGraphStatus::kErrorGeofenceViolated;
+    return;
+  }
+
+  Eigen::Vector3d direction(new_state[0] - origin[0], new_state[1] - origin[1],
+                            new_state[2] - origin[2]);
+  double direction_norm = direction.norm();
+
+  //terrain slop judge
+  Eigen::Vector2d ground_direction(direction[0],direction[1]);
+  double ground_lane = ground_direction.norm();
+  double hight_change = abs(direction[2]);
+  double angle = std::atan(hight_change/ground_lane)*180/M_PI;
+  // std::cout<<"angle = :"<<angle<<std::endl;
+  //   if(angle>10.0)
+  // { 
+  //   std::cout<<"angle =================================================== :"<<angle<<std::endl;
+  // }
+  if(angle>26.0)//25
+  { 
+    // std::cout<<"angle = :"<<angle<<std::endl;
+    rep.status = ExpandGraphStatus::kErrorGeofenceViolated;
+    return;
+  }
+
+
   // Since we are buiding graph,
   // Consider to check the overshoot for both 2 directions except root node.
   Eigen::Vector3d overshoot_vec =

@@ -211,7 +211,7 @@ void PurePursuit::computeVelocities(nav_msgs::Odometry odom)
             path_p = path_;
             for(int i  =0 ;i< path_.poses.size();++i)
             { 
-              path_p.poses[i].pose.position.z = path_.poses[i].pose.position.z - 0.4;//change
+              path_p.poses[i].pose.position.z = path_.poses[i].pose.position.z - 0.2;//change
               // path_show.poses[i].pose.position.z = 0.0;
             }
 
