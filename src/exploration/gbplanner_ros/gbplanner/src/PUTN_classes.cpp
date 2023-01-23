@@ -36,8 +36,8 @@ Path::~Path(){}
 Plane::Plane(){}
 Plane::Plane(const Eigen::Vector3d &p_surface,World* world,const double &radius,const FitPlaneArg &arg)
 {   //每个点拟合一个半径的平面 求这个平面平整度  坡度   稀疏度
-    init_coord=project2plane(p_surface);//平面点
-    Vector3d ball_center = world->coordRounding(p_surface);//坐标
+    init_coord=project2plane(p_surface);//平面点  x ,y
+    Vector3d ball_center = world->coordRounding(p_surface);//采样点的三维坐标 
     float resolution = world->getResolution();
 
     int fit_num=static_cast<int>(radius/resolution);
@@ -53,9 +53,9 @@ Plane::Plane(const Eigen::Vector3d &p_surface,World* world,const double &radius,
             {   
                 Vector3d point=ball_center+resolution*Vector3d(i,j,k);
                 
-                if(world->isInsideBorder(point) && !world->isFree(point))//当前表面点的周围是否在边界内   是否是free的
+                if(world->isInsideBorder(point) && !world->isFree(point))//当前表面点的周围是否在边界内   是否是free的  有点云为false
                 {   
-                    plane_pts.push_back(point);
+                    plane_pts.push_back(point);  
                     if(!vac(i+fit_num,j+fit_num))
                     {   
                         vac(i+fit_num,j+fit_num)=true;
@@ -66,17 +66,17 @@ Plane::Plane(const Eigen::Vector3d &p_surface,World* world,const double &radius,
         }
     }
 
-    size_t pt_num=plane_pts.size();
+    size_t pt_num=plane_pts.size();  //3*resolution 2*2m 方块中的点云 个数        vac(i+fit_num,j+fit_num) 俯看平面点云个数
     Vector3d center;
     for(const auto&pt:plane_pts) center+=pt;
-    center /= pt_num;
+    center /= pt_num;               //求这些点云的中心坐标
     MatrixXd A(pt_num,3);
-    for(size_t i = 0; i < pt_num; i++) A.row(i)=plane_pts[i]-center;
+    for(size_t i = 0; i < pt_num; i++) A.row(i)=plane_pts[i]-center;//距离中心坐标
 
     JacobiSVD<MatrixXd> svd(A,ComputeFullV);
-    normal_vector=svd.matrixV().col(2);
+    normal_vector=svd.matrixV().col(2);                             //拟合平面的向量
     
-    //calculate indicator1:flatness      
+    //calculate indicator1:flatness      平面的平坦度：每个点云和平面向量的差距
     float flatness = 0;
     for(size_t i = 0; i < pt_num; i++) flatness+=powf(normal_vector.dot(A.row(i)),4);
     flatness /= (1+pt_num);
@@ -260,7 +260,7 @@ void World::setObs(const Vector3d &point)
 bool World::isFree(const Vector3d &point)
 {
     Vector3i idx = coord2index(point);
-    bool is_free = isInsideBorder(idx) && grid_map_[idx(0)][idx(1)][idx(2)];
+    bool is_free = isInsideBorder(idx) && grid_map_[idx(0)][idx(1)][idx(2)];  //有障碍物grid_map_为false
     return is_free;
 }
 

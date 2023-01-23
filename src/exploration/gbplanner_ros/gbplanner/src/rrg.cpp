@@ -71,7 +71,7 @@ Rrg::Rrg(const ros::NodeHandle& nh, const ros::NodeHandle& nh_private)
   world = new World(0.1);
   pf_rrt_star = new PFRRTStar(0.6, world);//0.6   0.9  
   pf_rrt_star->setFitPlaneArg(fit_plane_arg);
-  pf_rrt_star->setFitPlaneRadius(1.0);
+  pf_rrt_star->setFitPlaneRadius(0.4);//1.0
   //terrain
   //
   global_graph_update_timer_ =
