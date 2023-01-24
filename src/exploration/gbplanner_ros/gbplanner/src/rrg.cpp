@@ -1296,7 +1296,7 @@ bool Rrg::sampleVertex(RandomSampler& random_sampler, StateVec& root_state,
 
 
 void Rrg::expandTreeStar(std::shared_ptr<GraphManager> graph_manager,
-                         StateVec& new_state, ExpandGraphReport& rep) {
+                         StateVec& new_state, ExpandGraphReport& rep, Eigen::Vector4d& tcost_show) {
   // Find nearest neighbour
   Vertex* nearest_vertex = NULL;
   if (!graph_manager->getNearestVertex(&new_state, &nearest_vertex)) {
@@ -1337,6 +1337,8 @@ void Rrg::expandTreeStar(std::shared_ptr<GraphManager> graph_manager,
       if(calculate_tecost && terrain_cost<0.98) //0.98
       {
           new_state[2] = sample_point[2];
+          tcost_show = new_state;
+          tcost_show[3] = terrain_cost;
       }
       else{
                rep.status = ExpandGraphStatus::kErrorGeofenceViolated;
@@ -1407,7 +1409,8 @@ void Rrg::expandTreeStar(std::shared_ptr<GraphManager> graph_manager,
     std::vector<Vertex*> feasible_neigbors;
 
     Vertex* v_min = nearest_vertex;
-    double c_min = v_min->distance + direction_norm;
+    double c_min = v_min->distance + direction_norm + planning_params_.terrain_cost_expand_w*v_min->terrain_cost
+                    +planning_params_.terrain_slop_change_w*angle;
     origin << new_state[0], new_state[1], new_state[2];
 
     for (int i = 0; i < nearest_vertices.size(); ++i) {
@@ -1415,7 +1418,14 @@ void Rrg::expandTreeStar(std::shared_ptr<GraphManager> graph_manager,
           nearest_vertices[i]->state[1] - new_state[1],
           nearest_vertices[i]->state[2] - new_state[2];
       double d_norm = direction.norm();
+
+      ground_direction(direction[0],direction[1]);
+      ground_lane = ground_direction.norm();
+      hight_change = abs(direction[2]);
+      angle = std::atan(hight_change/ground_lane)*180/M_PI;
+
       if (d_norm == 0.0) continue;
+      if(angle>26.0) continue;
 
       Eigen::Vector3d p_start = origin + robot_params_.center_offset;
       Eigen::Vector3d p_end = origin + robot_params_.center_offset + direction;
@@ -1435,7 +1445,8 @@ void Rrg::expandTreeStar(std::shared_ptr<GraphManager> graph_manager,
             map_manager_->getPathStatus(p_start, p_end, robot_box_size_,
                                         true)) {
           feasible_neigbors.push_back(nearest_vertices[i]);
-          double cost_tmp = d_norm + nearest_vertices[i]->distance;
+          double cost_tmp = d_norm + nearest_vertices[i]->distance+ planning_params_.terrain_cost_expand_w*terrain_cost
+                    +planning_params_.terrain_slop_change_w*angle;
           if (cost_tmp < c_min) {
             v_min = nearest_vertices[i];
             c_min = cost_tmp;
@@ -1445,7 +1456,7 @@ void Rrg::expandTreeStar(std::shared_ptr<GraphManager> graph_manager,
     }
     // Add the vertex with shortest distance to the tree (graph).
     Vertex* new_vertex =
-        new Vertex(graph_manager->generateVertexID(), new_state);
+        new Vertex(graph_manager->generateVertexID(), new_state, terrain_cost);
     new_vertex->parent = v_min;
     new_vertex->distance = c_min;
     v_min->children.push_back(new_vertex);
@@ -1464,7 +1475,15 @@ void Rrg::expandTreeStar(std::shared_ptr<GraphManager> graph_manager,
       double d_norm = direction.norm();
       if (d_norm == 0.0) continue;
 
-      double cost_tmp = d_norm + new_vertex->distance;
+      ground_direction(direction[0],direction[1]);
+      ground_lane = ground_direction.norm();
+      hight_change = abs(direction[2]);
+      angle = std::atan(hight_change/ground_lane)*180/M_PI;
+
+      if(angle>26.0) continue;
+
+      double cost_tmp = d_norm + new_vertex->distance + planning_params_.terrain_cost_expand_w*new_vertex->terrain_cost
+                    +planning_params_.terrain_slop_change_w*angle;
       if (near_vertex->distance > cost_tmp) {
         graph_manager->removeEdge(near_vertex, near_vertex->parent);
         near_vertex->distance = cost_tmp;
@@ -1699,6 +1718,9 @@ Rrg::GraphStatus Rrg::buildGraph() {
   // while ((loop_count++ < planning_params_.num_loops_max) &&
   //        (num_vertices < planning_num_vertices_max_) &&
   //        (num_edges < planning_num_edges_max_)) {
+
+  std::vector<Eigen::Vector4d> terraincost_show;
+
   while ((loop_count++ < planning_params_.num_loops_max) &&
          (num_vertices < 100) &&
          (num_edges < planning_num_edges_max_)) {
@@ -1722,10 +1744,12 @@ Rrg::GraphStatus Rrg::buildGraph() {
     ExpandGraphReport rep;
     //expandGraph(local_graph_, new_state, rep);
     // 应该是另一种方式
-    expandTreeStar(local_graph_, new_state, rep);
+    Eigen::Vector4d tcost_show;
+    expandTreeStar(local_graph_, new_state, rep, tcost_show);
     if (rep.status == ExpandGraphStatus::kSuccess) {
       num_vertices += rep.num_vertices_added;
       num_edges += rep.num_edges_added;
+      terraincost_show.emplace_back(tcost_show);
     }
 
     if ((loop_count >= planning_params_.num_loops_cutoff) &&
@@ -1736,6 +1760,7 @@ Rrg::GraphStatus Rrg::buildGraph() {
 
 
   // visualization_->visualizepolys(polys);/////chnged  //corridor set
+  visualization_->visualizeTerraincost(terraincost_show);
 
      // 时间设置
   stat_->build_graph_time = GET_ELAPSED_TIME(ttime);

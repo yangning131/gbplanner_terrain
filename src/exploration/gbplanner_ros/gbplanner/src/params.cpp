@@ -829,6 +829,24 @@ bool PlanningParams::loadParams(std::string ns) {
     ROSPARAM_WARN(param_name, freespace_cloud_enable);
   }
 
+  param_name = ns + "/terrain_cost_expand_w";
+  if (!ros::param::get(param_name, terrain_cost_expand_w)) {
+    terrain_cost_expand_w = 1.0;
+    ROSPARAM_WARN(param_name, terrain_cost_expand_w);
+  }
+
+  param_name = ns + "/terrain_slop_change_w";
+  if (!ros::param::get(param_name, terrain_slop_change_w)) {
+    terrain_slop_change_w = 0.5;
+    ROSPARAM_WARN(param_name, terrain_slop_change_w);
+  }
+
+  param_name = ns + "/terrain_cost_evaluatepath_w";
+  if (!ros::param::get(param_name, terrain_cost_evaluatepath_w)) {
+    terrain_cost_evaluatepath_w = 1.0;
+    ROSPARAM_WARN(param_name, terrain_cost_evaluatepath_w);
+  }
+
   ROSPARAM_INFO("Done.");
   return true;
 }

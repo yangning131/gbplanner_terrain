@@ -126,7 +126,7 @@ class Rrg {
 
   // Expand the tree for RRT* algorithm.
   void expandTreeStar(std::shared_ptr<GraphManager> graph_manager,
-                      StateVec& new_state, ExpandGraphReport& rep);
+                      StateVec& new_state, ExpandGraphReport& rep, Eigen::Vector4d& tcost_show);
 
   // Add edges only from this vertex with collision checking.
   void expandGraphEdges(std::shared_ptr<GraphManager> graph_manager,

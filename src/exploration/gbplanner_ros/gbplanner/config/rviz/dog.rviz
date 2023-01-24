@@ -42,6 +42,7 @@ Panels:
         - /PointCloud22/Autocompute Value Bounds1
         - /PointCloud23
         - /PointCloud24
+        - /MarkerArray3
       Splitter Ratio: 0.6647058725357056
     Tree Height: 670
   - Class: rviz/Selection
@@ -121,6 +122,8 @@ Visualization Manager:
               Value: false
             imu_link:
               Value: false
+            lookahead:
+              Value: true
             map:
               Value: true
             mid_mount:
@@ -174,7 +177,8 @@ Visualization Manager:
                           {}
                       velodyne_base_link:
                         velodyne:
-                          {}
+                          lookahead:
+                            {}
               odom:
                 {}
           Update Interval: 0
@@ -240,16 +244,13 @@ Visualization Manager:
           Queue Size: 100
           Value: false
         - Class: rviz/MarkerArray
-          Enabled: true
+          Enabled: false
           Marker Topic: /vis/volumetric_gains
           Name: VolumetricGain
           Namespaces:
-            bound: false
-            free_voxels: true
-            occupied_voxels: true
-            unknown_voxels: true
+            {}
           Queue Size: 100
-          Value: true
+          Value: false
         - Class: rviz/MarkerArray
           Enabled: false
           Marker Topic: /vis/sensor_fov
@@ -447,13 +448,13 @@ Visualization Manager:
           Unreliable: false
           Value: false
         - Class: rviz/MarkerArray
-          Enabled: false
+          Enabled: true
           Marker Topic: /gbplanner_node/occupied_nodes
           Name: Occupied
           Namespaces:
-            {}
+            occupied_voxels: true
           Queue Size: 100
-          Value: false
+          Value: true
         - Alpha: 1
           Autocompute Intensity Bounds: true
           Autocompute Value Bounds:
@@ -925,8 +926,8 @@ Visualization Manager:
     - Alpha: 0.800000011920929
       Autocompute Intensity Bounds: true
       Autocompute Value Bounds:
-        Max Value: 2.2616569995880127
-        Min Value: -0.6383430361747742
+        Max Value: 1.7036428451538086
+        Min Value: -1.4963572025299072
         Value: true
       Axis: Z
       Channel Name: intensity
@@ -978,6 +979,14 @@ Visualization Manager:
       Use Fixed Frame: true
       Use rainbow: true
       Value: true
+    - Class: rviz/MarkerArray
+      Enabled: true
+      Marker Topic: /vis/terraincost
+      Name: MarkerArray
+      Namespaces:
+        terraincost: true
+      Queue Size: 100
+      Value: true
   Enabled: true
   Global Options:
     Background Color: 0; 0; 0
@@ -1006,25 +1015,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/ThirdPersonFollower
-      Distance: 78.50586700439453
+      Distance: 4.793521881103516
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 16.492469787597656
-        Y: 11.44189739227295
-        Z: 1.5770572645124048e-5
+        X: 10.71745777130127
+        Y: -2.144718885421753
+        Z: 1.6366619092877954e-5
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: -0.1852034330368042
+      Pitch: 0.7697970867156982
       Target Frame: <Fixed Frame>
       Value: ThirdPersonFollower (rviz)
-      Yaw: 0.06773319095373154
+      Yaw: 5.195889472961426
     Saved: ~
 Window Geometry:
   Displays:

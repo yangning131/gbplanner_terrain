@@ -98,6 +98,7 @@ class Visualization {
   void visualizeBlindModPath(const std::vector<geometry_msgs::Pose> &path);
 
   void visualizepolys(const vec_E<Polyhedron2D> &polys);
+   void visualizeTerraincost(const  std::vector<Eigen::Vector4d> terrain_costshow);
 
  private:
   ros::NodeHandle nh_;
@@ -135,6 +136,7 @@ class Visualization {
 
   ros::Publisher es_pub;
   ros::Publisher poly_pub;
+  ros::Publisher terraincost_pub_;
 
 
   std::string world_frame_id = "world";

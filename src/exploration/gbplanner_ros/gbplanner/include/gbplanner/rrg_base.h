@@ -145,8 +145,23 @@ struct Vertex {
     type = VertexType::kUnvisited;
     cluster_id = 0;
     dm = 0;
+    terrain_cost = 0.0;
   }
 
+  Vertex(int v_id, StateVec v_state, double cost) {
+    id = v_id;
+    state << v_state[0], v_state[1], v_state[2], v_state[3];
+    vol_gain.reset();
+    parent = NULL;
+    distance = 0;
+    is_leaf_vertex = true;
+    type = VertexType::kUnvisited;
+    cluster_id = 0;
+    dm = 0;
+    terrain_cost = cost;
+  }
+
+  double terrain_cost;
   // Unique positive ID for each vertex (root vertex is 0, others: increasing).
   int id;
   // State of the vertex: x, y, z, yaw.

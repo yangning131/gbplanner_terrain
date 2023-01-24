@@ -61,6 +61,9 @@ Visualization::Visualization(const ros::NodeHandle &nh,
   poly_pub = nh_.advertise<decomp_ros_msgs::PolyhedronArray>("polyhedron_array", 1, true);
   es_pub = nh_.advertise<decomp_ros_msgs::EllipsoidArray>("ellipsoid_array", 1, true);
 
+  terraincost_pub_ = nh_.advertise<visualization_msgs::MarkerArray>(
+      "vis/terraincost", 10);
+
 
 }
 
@@ -72,7 +75,44 @@ Visualization::Visualization(const ros::NodeHandle &nh,
       poly_msg.header.frame_id = "map";
       poly_pub.publish(poly_msg);
 
+  } 
+
+  void Visualization::visualizeTerraincost(const  std::vector<Eigen::Vector4d> terrain_costshow) {
+
+  if (terraincost_pub_.getNumSubscribers() < 1) return;
+
+  visualization_msgs::MarkerArray marker_array;
+
+  int marker_id = 0;
+  for (int id = 0; id < terrain_costshow.size(); ++id) {
+  
+
+      // terraincost
+      visualization_msgs::Marker marker;
+      marker.header.stamp = ros::Time::now();
+      marker.header.seq = 0;
+      marker.header.frame_id = "map";
+      marker.ns = "terraincost";
+      marker.action = visualization_msgs::Marker::ADD;
+      marker.type = visualization_msgs::Marker::TEXT_VIEW_FACING;
+      marker.scale.z = 0.15;  // text height
+      marker.color.r = 0.0;
+      marker.color.g = 0.0;
+      marker.color.b = 0.0;
+      marker.color.a = 1.0;
+      marker.lifetime = ros::Duration(shortest_paths_lifetime);
+      marker.frame_locked = false;
+      marker.pose.position.x = terrain_costshow[id][0];
+      marker.pose.position.y = terrain_costshow[id][1];
+      marker.pose.position.z = terrain_costshow[id][2] + 0.1;
+      std::string text_display = std::to_string(terrain_costshow[id][3]);
+
+      marker.text = text_display;
+      marker.id = marker_id++;
+      marker_array.markers.push_back(marker);
   }
+  terraincost_pub_.publish(marker_array);
+}
 
 void Visualization::visualizeWorkspace(StateVec &state,
                                        BoundedSpaceParams &global_ws,

@@ -243,6 +243,9 @@ struct PlanningParams {
   bool safety_aware_enable;
   bool path_safety_enhance_enable;
   bool freespace_cloud_enable;
+  double terrain_cost_expand_w;
+  double terrain_slop_change_w;
+  double terrain_cost_evaluatepath_w;
   std::string global_frame_id;
 
   /* Voxel size to compute exploration gain. Equal to map voxel size or bigger
