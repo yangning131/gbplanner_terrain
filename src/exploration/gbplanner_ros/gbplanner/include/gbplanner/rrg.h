@@ -311,6 +311,8 @@ class Rrg {
 
   void printShortestPath(int id);
 
+  double getslopcost(Vertex* v1, Vertex* v2);
+
   inline void truncateYaw(double& x) {
     if (x > M_PI)
       x -= 2 * M_PI;

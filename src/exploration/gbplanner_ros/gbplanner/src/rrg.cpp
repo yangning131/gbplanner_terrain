@@ -1808,6 +1808,18 @@ void Rrg::correctYaw() {
     }
   }
 }
+double Rrg::getslopcost(Vertex* v1, Vertex* v2)
+{ 
+  Eigen::Vector3d direction(v1->state[0] - v2->state[0], v1->state[1] - v2->state[1],
+                            v1->state[2] - v2->state[2]);
+  double direction_norm = direction.norm();
+
+  //terrain slop judge
+  Eigen::Vector2d ground_direction(direction[0],direction[1]);
+  double ground_lane = ground_direction.norm();
+  double hight_change = abs(direction[2]);
+  return std::atan(hight_change/ground_lane)*180/M_PI;
+}
 
 // 找路径
 Rrg::GraphStatus Rrg::evaluateGraph() {
@@ -1839,7 +1851,7 @@ Rrg::GraphStatus Rrg::evaluateGraph() {
   double best_gain = 0;
   int best_path_id = 0;
   int num_leaf_vertices = leaf_vertices.size();
-  for (int i = 0; i < num_leaf_vertices; ++i) {
+  for (int i = 0; i < num_leaf_vertices; ++i) { //每一个叶子节点对应一条最短路径
     int id = leaf_vertices[i]->id;
     std::vector<Vertex*> path;
     local_graph_->getShortestPath(id, local_graph_rep_, true, path);
@@ -1848,6 +1860,9 @@ Rrg::GraphStatus Rrg::evaluateGraph() {
       // At least 2 vertices: root + leaf.
       double path_gain = 0;
       double lambda = planning_params_.path_length_penalty;
+      double terrain_gain = 0;
+      double terrain_c = 0;
+      double slop_angle = 0;
       for (int ind = 0; ind < path_size; ++ind) {
         path.pop_back();
         Vertex* v_id = path[ind];
@@ -1855,7 +1870,15 @@ Rrg::GraphStatus Rrg::evaluateGraph() {
             local_graph_->getShortestDistance(v_id->id, local_graph_rep_);
         path_gain += v_id->vol_gain.gain * exp(-lambda * path_length);
         v_id->vol_gain.accumulative_gain = path_gain;
+
+        terrain_c += v_id->terrain_cost;
+        if(ind>0)
+        slop_angle += getslopcost(path[ind-1],path[ind]);
       }
+      terrain_gain = path_size/terrain_c + 5*path_size/slop_angle;
+
+      path_gain = path_gain + planning_params_.terrain_cost_evaluatepath_w*terrain_gain*path_size;
+      
       // Compare with exploring direction to penalty not-forward paths.
       // 
       if (planning_params_.type != PlanningModeType::kVerticalExploration) {

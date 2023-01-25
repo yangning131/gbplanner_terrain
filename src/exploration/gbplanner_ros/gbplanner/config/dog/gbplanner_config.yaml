@@ -110,7 +110,7 @@ PlanningParams:
   use_current_state: true
   use_ray_model_for_volumetric_gain: true
   path_length_penalty: 0.02
-  path_direction_penalty: 0.01   #0.01
+  path_direction_penalty: 0.02   #0.01
   exp_gain_voxel_size: 0.8   
   occupied_voxel_gain: 0.0
   free_voxel_gain:  2.0         #prefer directions towards more free voxels in case of the dead-end  2.0
@@ -127,7 +127,7 @@ PlanningParams:
   freespace_cloud_enable: true
   terrain_cost_expand_w: 1.0
   terrain_slop_change_w: 0.1
-  terrain_cost_evaluatepath_w: 1.0
+  terrain_cost_evaluatepath_w: 0.1 #0.0
 
 
 GeofenceParams:
