@@ -282,16 +282,13 @@ Visualization Manager:
           Queue Size: 100
           Value: true
         - Class: rviz/MarkerArray
-          Enabled: true
+          Enabled: false
           Marker Topic: /vis/robot_state
           Name: RobotState
           Namespaces:
-            extension: true
-            extension_aligned: true
-            heading: true
-            size: true
+            {}
           Queue Size: 100
-          Value: true
+          Value: false
         - Class: rviz/MarkerArray
           Enabled: false
           Marker Topic: /vis/planning_workspace
@@ -448,13 +445,13 @@ Visualization Manager:
           Unreliable: false
           Value: false
         - Class: rviz/MarkerArray
-          Enabled: true
+          Enabled: false
           Marker Topic: /gbplanner_node/occupied_nodes
           Name: Occupied
           Namespaces:
-            occupied_voxels: true
+            {}
           Queue Size: 100
-          Value: true
+          Value: false
         - Alpha: 1
           Autocompute Intensity Bounds: true
           Autocompute Value Bounds:
@@ -926,8 +923,8 @@ Visualization Manager:
     - Alpha: 0.800000011920929
       Autocompute Intensity Bounds: true
       Autocompute Value Bounds:
-        Max Value: 1.7036428451538086
-        Min Value: -1.4963572025299072
+        Max Value: 1.6903373003005981
+        Min Value: -0.6096627116203308
         Value: true
       Axis: Z
       Channel Name: intensity
@@ -984,7 +981,7 @@ Visualization Manager:
       Marker Topic: /vis/terraincost
       Name: MarkerArray
       Namespaces:
-        terraincost: true
+        {}
       Queue Size: 100
       Value: true
   Enabled: true
@@ -1015,16 +1012,16 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/ThirdPersonFollower
-      Distance: 4.793521881103516
+      Distance: 18.043447494506836
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 10.71745777130127
-        Y: -2.144718885421753
-        Z: 1.6366619092877954e-5
+        X: 10.938385963439941
+        Y: -3.7539851665496826
+        Z: 1.5412944776471704e-5
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
@@ -1033,7 +1030,7 @@ Visualization Manager:
       Pitch: 0.7697970867156982
       Target Frame: <Fixed Frame>
       Value: ThirdPersonFollower (rviz)
-      Yaw: 5.195889472961426
+      Yaw: 4.685883522033691
     Saved: ~
 Window Geometry:
   Displays:

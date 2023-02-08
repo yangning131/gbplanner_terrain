@@ -127,7 +127,7 @@ PlanningParams:
   freespace_cloud_enable: true
   terrain_cost_expand_w: 1.0
   terrain_slop_change_w: 0.1
-  terrain_cost_evaluatepath_w: 0.1 #0.0
+  terrain_cost_evaluatepath_w: 0.0
 
 
 GeofenceParams:
