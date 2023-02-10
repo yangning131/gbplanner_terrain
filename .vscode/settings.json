@@ -75,7 +75,8 @@
         "any": "cpp",
         "forward_list": "cpp",
         "valarray": "cpp",
-        "variant": "cpp"
+        "variant": "cpp",
+        "regex": "cpp"
     },
     "python.analysis.extraPaths": [
         "/home/ynp/gbplanner_ws/devel/lib/python2.7/dist-packages",

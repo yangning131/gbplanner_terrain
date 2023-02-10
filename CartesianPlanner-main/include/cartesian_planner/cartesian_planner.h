@@ -26,8 +26,8 @@ public:
     double x, y, theta, v, phi, a, omega;
   };
 
-  explicit CartesianPlanner(const CartesianPlannerConfig &config, const Env &env, const World &world)
-    : config_(config), opti_(config, env), env_(env){}
+  explicit CartesianPlanner(const CartesianPlannerConfig &config, const Env &env, const Wor &world)
+    : config_(config), opti_(config, env, world), env_(env){}
 
   bool Plan(const StartState &state, DiscretizedTrajectory &result);
 
@@ -41,7 +41,6 @@ private:
   CartesianPlannerConfig config_;
   TrajectoryOptimizer opti_;
   Env env_;
-  // World world_;
 
 };
 

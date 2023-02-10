@@ -28,13 +28,14 @@ using math::Box2d;
 
 class TrajectoryOptimizer {
 public:
-  TrajectoryOptimizer(const CartesianPlannerConfig &config, const Env &env);
+  TrajectoryOptimizer(const CartesianPlannerConfig &config, const Env &env, const Wor &world);
 
   bool OptimizeIteratively(const DiscretizedTrajectory &coarse, const Constraints &constraints, States &result);
 
 private:
   CartesianPlannerConfig config_;
   Env env_;
+  Wor world_;
   VehicleParam vehicle_;
   TrajectoryNLP nlp_;
 
@@ -48,7 +49,9 @@ private:
     Box2d box(bound);
     box.Shift({x, y});
 
-    return env_->CheckCollision(time, box);
+    // return env_->CheckCollision(time, box);
+    return world_->CheckStaticCollision(box);
+
   }
 
 };

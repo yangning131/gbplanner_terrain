@@ -297,6 +297,7 @@ void Environment::Visualize() {
 
 World::World(const float &resolution):resolution_(resolution)
 {
+    std::cout<<"class Word constuct done"<<std::endl;
     lowerbound_=INF*Vector3d::Ones();
     upperbound_=-INF*Vector3d::Ones();
     idx_count_=Vector3i::Zero();
@@ -420,6 +421,155 @@ bool World::project2surface(const float &x,const float &y,Vector3d* p_surface)
     return ifsuccess;
 }
 
+bool World::CheckStaticCollision(const math::Box2d &rect) {
+  // double xmax, ymax, xmin, ymin;
+  double path_height = -0.3;
+
+  double xmax = rect.center_x() + rect.half_length();
+  double ymax = rect.center_y() + rect.half_width();
+  double xmin = rect.center_x() - rect.half_length();
+  double ymin = rect.center_y() - rect.half_width();
+
+  int count_l = 0;
+  int count_r = 0;
+  double limt_min = path_height - 2*resolution_;
+  double limt_max = path_height + resolution_;
+  limt_min = max(lowerbound_(2),limt_min);
+  limt_max = min(upperbound_(2),limt_max);
+
+  for(double x = xmin ;x<=xmax ; x+=resolution_) 
+  {     
+        count_l++;
+        count_r++;
+
+        bool find_ground1 = false;
+        bool find_ground2 = false;
+
+        if(x<lowerbound_(0) || x>upperbound_(0) || ymin<lowerbound_(1) || ymin>upperbound_(1)|| ymax<lowerbound_(1) || ymax>upperbound_(1))
+            return true;
+        if(!isFree(x,ymin,path_height)||!isFree(x,ymax,path_height))
+        {
+            return true;
+        }
+        for(float z = limt_min ; z < limt_max ; z+=resolution_)
+        {
+              if(!isFree(x,ymin,z))
+              {
+                find_ground1 = true;
+                count_l = 0;
+              }
+              if(!isFree(x,ymax,z))
+              {
+                find_ground2 = true;
+                count_r = 0;
+              }
+              if(find_ground1&&find_ground2)  break;
+        }
+        //
+        // if(!find_ground1||!find_ground2)  return true;
+        //
+        if(count_l==2||count_r==2)
+        {
+          return true;
+        }
+        if(x==xmax&&(count_l!=0||count_r!=0))
+        {
+          return true;
+        }
+  }
+
+  int count_l_y = 0;
+  int count_r_y = 0;
+  for(double y = ymin ;y<=ymax ; y+=resolution_) 
+  {     
+        count_l_y++;
+        count_r_y++;
+        bool find_ground1 = false;
+        bool find_ground2 = false;
+
+        if(xmin<lowerbound_(0) || xmin>upperbound_(0)|| xmax<lowerbound_(0) || xmax>upperbound_(0) || y<lowerbound_(1) || y>upperbound_(1))
+            return true;
+        if(!isFree(xmin,y,path_height)||!isFree(xmax,y,path_height))
+        {
+            return true;
+        }
+        for(float z = limt_min ; z < limt_max ; z+=resolution_)
+        {
+              if(!isFree(xmin,y,z))
+              {
+                find_ground1 = true;
+                count_l_y = 0;
+              }
+              if(!isFree(xmax,y,z))
+              {
+                find_ground2 = true;
+                count_r_y = 0;
+
+              }
+              if(find_ground1&&find_ground2)  break;
+        }
+        //
+        // if(!find_ground1||!find_ground2)  return true;
+        //
+        if(count_l_y==2||count_r_y==2)
+        {
+          return true;
+        }
+        if(y==ymax&&(count_l_y!=0||count_r_y!=0))
+        {
+          return true;
+        }
+
+  }
+  // for(double x = xmin ;x<=xmax ; x+=getObstacle_map().info.resolution) 
+  // {     
+  //       int index_x = (int)round((x - getObstacle_map().info.origin.position.x) / getObstacle_map().info.resolution);
+  //       int index_y_min = (int)round((ymin - getObstacle_map().info.origin.position.y) / getObstacle_map().info.resolution);
+  //       int index_0 = index_x + index_y_min * getObstacle_map().info.width;
+  //       if (index_x < 0 || index_x >= getObstacle_map().info.width || index_y_min < 0 || index_y_min >= getObstacle_map().info.height)    
+  //            continue;
+  //       if (getObstacle_map().data[index_0] != 0)
+  //           return true;
+  // }
+
+  // for(double y = ymin ;y<=ymax ; y+=getObstacle_map().info.resolution)
+  // {
+  //       int index_x_min = (int)round((xmin - getObstacle_map().info.origin.position.x) / getObstacle_map().info.resolution);
+  //       int index_y = (int)round((y - getObstacle_map().info.origin.position.y) / getObstacle_map().info.resolution);
+  //       int index_0 = index_x_min + index_y * getObstacle_map().info.width;
+  //       if (index_x_min < 0 || index_x_min >= getObstacle_map().info.width || 
+  //           index_y < 0 || index_y >= getObstacle_map().info.height)
+  //           continue;
+  //       if (getObstacle_map().data[index_0] != 0)
+  //           return true;
+  // }
+  // for(double x = xmin ;x<=xmax ; x+=getObstacle_map().info.resolution) 
+  // {     
+  //       int index_x = (int)round((x - getObstacle_map().info.origin.position.x) / getObstacle_map().info.resolution);
+  //       int index_y_max = (int)round((ymax - getObstacle_map().info.origin.position.y) / getObstacle_map().info.resolution);
+  //       int index_1 = index_x + index_y_max * getObstacle_map().info.width;
+  //       if (index_x < 0 || index_x >= getObstacle_map().info.width ||
+  //           index_y_max < 0 || index_y_max >= getObstacle_map().info.height)    
+  //           continue;
+  //       if (getObstacle_map().data[index_1] != 0)
+  //           return true;
+  // }
+
+  // for(double y = ymin ;y<=ymax ; y+=getObstacle_map().info.resolution)
+  // {
+  //       int index_x_max = (int)round((xmax - getObstacle_map().info.origin.position.x) / getObstacle_map().info.resolution);
+  //       int index_y = (int)round((y - getObstacle_map().info.origin.position.y) / getObstacle_map().info.resolution);
+  //       int index_1 = index_x_max + index_y * getObstacle_map().info.width;
+  //       if ( index_x_max < 0 || index_x_max >= getObstacle_map().info.width||
+  //           index_y < 0 || index_y >= getObstacle_map().info.height)
+  //           continue;
+  //       if (getObstacle_map().data[index_1] != 0)
+  //           return true;
+  // }
+
+  return false;
+}
+
 bool World::isInsideBorder(const Vector3i &index)
 {
     return index(0) >= 0 &&
@@ -429,4 +579,41 @@ bool World::isInsideBorder(const Vector3i &index)
            index(1) < idx_count_(1)&&
            index(2) < idx_count_(2);
 }
+
+void World::visWorld( ros::Publisher* world_vis_pub)
+{
+  if (world_vis_pub == NULL || !has_map_)
+    return;
+  pcl::PointCloud<pcl::PointXYZ> cloud_vis;
+  for (int i = 0; i < idx_count_(0); i++)
+  {
+    for (int j = 0; j < idx_count_(1); j++)
+    {
+      for (int k = 0; k < idx_count_(2); k++)
+      {
+        Vector3i index(i, j, k);
+        if (!grid_map_[index(0)][index(1)][index(2)])
+        {
+          Vector3d coor_round = index2coord(index);
+          pcl::PointXYZ pt_add;
+          pt_add.x = coor_round(0);
+          pt_add.y = coor_round(1);
+          pt_add.z = coor_round(2);
+          cloud_vis.points.push_back(pt_add);
+        }
+      }
+    }
+  }
+
+  cloud_vis.width = cloud_vis.points.size();
+  cloud_vis.height = 1;
+  cloud_vis.is_dense = true;
+
+  sensor_msgs::PointCloud2 map_vis;
+  pcl::toROSMsg(cloud_vis, map_vis);
+
+  map_vis.header.frame_id = "/map";
+  world_vis_pub->publish(map_vis);
+}
+
 }

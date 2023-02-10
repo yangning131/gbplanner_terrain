@@ -6,6 +6,7 @@ Panels:
       Expanded:
         - /Global Options1
         - /Grid1
+        - /Grid1/Offset1
         - /Axes1/TF1
         - /Axes1/TF1/Frames1
         - /Axes1/TF1/Tree1
@@ -74,7 +75,7 @@ Visualization Manager:
   Class: ""
   Displays:
     - Alpha: 0.5
-      Cell Size: 1
+      Cell Size: 0.10000000149011612
       Class: rviz/Grid
       Color: 160; 160; 164
       Enabled: true
@@ -86,7 +87,7 @@ Visualization Manager:
       Offset:
         X: 0
         Y: 0
-        Z: 0
+        Z: -0.5
       Plane: XY
       Plane Cell Count: 100
       Reference Frame: <Fixed Frame>
@@ -122,8 +123,6 @@ Visualization Manager:
               Value: false
             imu_link:
               Value: false
-            lookahead:
-              Value: true
             map:
               Value: true
             mid_mount:
@@ -177,8 +176,7 @@ Visualization Manager:
                           {}
                       velodyne_base_link:
                         velodyne:
-                          lookahead:
-                            {}
+                          {}
               odom:
                 {}
           Update Interval: 0
@@ -272,13 +270,7 @@ Visualization Manager:
           Marker Topic: /vis/shortest_paths
           Name: ShortestPaths
           Namespaces:
-            best_leaf_vertices: true
-            frontiers: false
-            gain: false
-            heading: false
-            leaf_vertices: true
-            shortest_edges: true
-            vertices: true
+            {}
           Queue Size: 100
           Value: true
         - Class: rviz/MarkerArray
@@ -326,8 +318,7 @@ Visualization Manager:
           Marker Topic: /vis/sampler
           Name: Sampler
           Namespaces:
-            invalid_samples: false
-            valid_samples: true
+            {}
           Queue Size: 1000
           Value: true
         - Class: rviz/MarkerArray
@@ -464,7 +455,7 @@ Visualization Manager:
           Color: 255; 255; 255
           Color Transformer: Intensity
           Decay Time: 0
-          Enabled: true
+          Enabled: false
           Invert Rainbow: true
           Max Color: 255; 255; 255
           Min Color: 0; 0; 0
@@ -479,7 +470,7 @@ Visualization Manager:
           Unreliable: false
           Use Fixed Frame: true
           Use rainbow: true
-          Value: true
+          Value: false
       Enabled: true
       Name: Voxblox
     - Class: rviz/InteractiveMarkers
@@ -923,8 +914,8 @@ Visualization Manager:
     - Alpha: 0.800000011920929
       Autocompute Intensity Bounds: true
       Autocompute Value Bounds:
-        Max Value: 1.6903373003005981
-        Min Value: -0.6096627116203308
+        Max Value: 1.6516711711883545
+        Min Value: -0.6483288407325745
         Value: true
       Axis: Z
       Channel Name: intensity
@@ -941,8 +932,8 @@ Visualization Manager:
       Queue Size: 10
       Selectable: true
       Size (Pixels): 3
-      Size (m): 0.009999999776482582
-      Style: Points
+      Size (m): 0.10000000149011612
+      Style: Boxes
       Topic: /grid_map_vis
       Unreliable: false
       Use Fixed Frame: true
@@ -1012,25 +1003,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/ThirdPersonFollower
-      Distance: 18.043447494506836
+      Distance: 5.857923984527588
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 10.938385963439941
-        Y: -3.7539851665496826
-        Z: 1.5412944776471704e-5
+        X: 2.398266315460205
+        Y: -1.6370079517364502
+        Z: 1.6366619092877954e-5
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.7697970867156982
+      Pitch: 1.5697963237762451
       Target Frame: <Fixed Frame>
       Value: ThirdPersonFollower (rviz)
-      Yaw: 4.685883522033691
+      Yaw: 5.640856742858887
     Saved: ~
 Window Geometry:
   Displays:

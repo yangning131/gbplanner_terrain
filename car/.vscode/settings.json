@@ -12,6 +12,7 @@
         "istream": "cpp",
         "ostream": "cpp",
         "typeinfo": "cpp",
-        "cmath": "cpp"
+        "cmath": "cpp",
+        "deque": "cpp"
     }
 }

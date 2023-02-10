@@ -9,7 +9,6 @@
  *  IEEE Transactions on Intelligent Transportation Systems, 2022.
  ***********************************************************************************/
 
-#include <ros/ros.h>
 
 #include "geometry_msgs/PoseStamped.h"
 #include "cartesian_planner/CenterLine.h"
@@ -36,33 +35,25 @@ public:
   ros::Publisher path_pub_;
 
 
-
   explicit CartesianPlannerNode(const ros::NodeHandle &nh) : nh_(nh) {
     env_ = std::make_shared<Environment>(config_);
-    // world_ = std::make_shared<World>(0.1);
+    world_ = std::make_shared<World>(0.2);
 
-    planner_ = std::make_shared<CartesianPlanner>(config_, env_);
+    planner_ = std::make_shared<CartesianPlanner>(config_, env_, world_);
     
     obstacles_subscriber_ = nh_.subscribe("/obstacles", 1, &CartesianPlannerNode::ObstaclesCallback, this);
     dynamic_obstacles_subscriber_ = nh_.subscribe("/dynamic_obstacles", 1,
                                                   &CartesianPlannerNode::DynamicObstaclesCallback, this);//每个时间点对应障碍物的坐标
 
-    or_path_subscriber_ = nh_.subscribe("planning/planning/execute_path", 1, &CartesianPlannerNode::Pathcallback, this); //planning/planning/execute_path  planning/server/path_blueprint_smooth
+    or_path_subscriber_ = nh_.subscribe("planning/server/path_blueprint_smooth", 1, &CartesianPlannerNode::Pathcallback, this); //planning/planning/execute_path  planning/server/path_blueprint_smooth
     subObstacleMap_ = nh_.subscribe<nav_msgs::OccupancyGrid>("planning/obstacle/map_inflated", 5, &CartesianPlannerNode::mapHandler, this);
     
     cloud_terrain_sub = nh_.subscribe<sensor_msgs::PointCloud2>("/laser_cloud_map", 1,&CartesianPlannerNode::cloudHandler2,this);
 
-    pathUpdateTimer = nh_.createTimer(ros::Duration(0.2), &CartesianPlannerNode::updatePath, this);
+    pathUpdateTimer = nh_.createTimer(ros::Duration(0.3), &CartesianPlannerNode::updatePath, this);
     path_pub_ = nh_.advertise<nav_msgs::Path>("planning/planning/execute_path_op", 1);
+    grid_map_vis_pub = nh_.advertise<sensor_msgs::PointCloud2>("grid_map_vis_carte", 1);
 
-
-    // state_.x = 0.0;
-    // state_.y = 0.0;
-    // state_.theta = 0.0;
-    // state_.v = 0.0;
-    // state_.phi = 0.0;
-    // state_.a = 0.0;
-    // state_.omega = 0.0;
   }
 
 
@@ -130,8 +121,40 @@ public:
     }
 
   void cloudHandler2(const sensor_msgs::PointCloud2::ConstPtr& laserCloudMsg)
-    {
+    {   
 
+        double timeScanCur = laserCloudMsg->header.stamp.toSec();
+
+        sensor_msgs::PointCloud2 pointcloud_map;
+       
+        pointcloud_map = *laserCloudMsg;
+
+        pcl::PointCloud<pcl::PointXYZ> cloud;
+        pcl::fromROSMsg(pointcloud_map, cloud);
+        cloudQueue.push_back(cloud);
+        timeQueue.push_back(timeScanCur);
+
+        while (!timeQueue.empty())
+        {
+          if(timeScanCur - timeQueue.front()> 10.0)
+          {
+            cloudQueue.pop_front();
+            timeQueue.pop_front();
+          }else{
+            break;
+          }
+        }
+        pcl::PointCloud<pcl::PointXYZ> surroundMapCloud;
+        for(int i = 0 ;i<cloudQueue.size();i++)
+            surroundMapCloud += cloudQueue[i];
+
+        world_->initGridMap(surroundMapCloud);
+        for (const auto& pt : surroundMapCloud)
+        {
+          Eigen::Vector3d obstacle(pt.x, pt.y, pt.z);
+          world_->setObs(obstacle);//x ,y ,z 三个index
+        }
+        world_->visWorld( &grid_map_vis_pub);
     }
   void ObstaclesCallback(const ObstaclesConstPtr &msg) {
     env_->obstacles().clear();
@@ -194,6 +217,9 @@ double cast_from_0_to_2PI_Angle(const double& ang)
       receive = true;
   }
 
+
+
+
   void updatePath(const ros::TimerEvent& event)
   {
     std::lock_guard<std::mutex> lock(mtx);
@@ -247,12 +273,17 @@ private:
   ros::NodeHandle nh_;
   cartesian_planner::CartesianPlannerConfig config_;
   Env env_;
-  // World world_;
-
+  // cartesian_planner::World* world_;
+  Wor world_;
   std::shared_ptr<cartesian_planner::CartesianPlanner> planner_;
   CartesianPlanner::StartState state_;
 
   ros::Subscriber  obstacles_subscriber_, dynamic_obstacles_subscriber_, goal_subscriber_, subObstacleMap_, cloud_terrain_sub, or_path_subscriber_;
+
+  ros::Publisher grid_map_vis_pub;
+  std::deque<pcl::PointCloud<pcl::PointXYZ>> cloudQueue;
+  std::deque<double> timeQueue;
+
 
   void PlotVehicle(int id, const math::Pose &pt, double phi) {
     auto tires = GenerateTireBoxes({pt.x(), pt.y(), pt.theta()}, phi);

@@ -52,7 +52,10 @@
 #include <pcl_ros/filters/crop_box.h> 
 #include <pcl_conversions/pcl_conversions.h>
 #include <vector>
+#include <algorithm>
+#include <deque>
 // #include <utility>
+#include <ros/ros.h>
 
 
 namespace cartesian_planner {
@@ -125,7 +128,7 @@ public:
     //indicate whether the range of the grid map has been determined
     bool has_map_=false;
 
-    World(const float &resolution);
+    World(const float &resolution=0.1f);
     ~World();
 
     /**
@@ -182,6 +185,8 @@ public:
     bool isInsideBorder(const Eigen::Vector3i &index);
     bool isInsideBorder(const Eigen::Vector3d &point){return isInsideBorder(coord2index(point));}
 
+    void visWorld( ros::Publisher* world_vis_pub);
+
     /**
      * @brief get the low bound of the world
      * @param void
@@ -214,6 +219,7 @@ public:
         Eigen::Vector3i index = ( (coord-lowerbound_)/resolution_).cast<int>();            
         return index;
     }
+    bool CheckStaticCollision(const math::Box2d &rect);
 //protected:
     bool ***grid_map_=NULL;
 
@@ -229,4 +235,5 @@ public:
 
 
 using Env = std::shared_ptr<Environment>;
+using Wor = std::shared_ptr<World>; 
 }
