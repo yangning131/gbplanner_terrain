@@ -476,6 +476,12 @@ bool World::CheckStaticCollision(const math::Box2d &rect) {
         {
           return true;
         }
+
+        //******边缘***///
+        if(x==xmin&&(count_l!=0||count_r!=0))
+        {
+          return true;
+        }
   }
 
   int count_l_y = 0;
@@ -516,6 +522,12 @@ bool World::CheckStaticCollision(const math::Box2d &rect) {
           return true;
         }
         if(y==ymax&&(count_l_y!=0||count_r_y!=0))
+        {
+          return true;
+        }
+  
+        //******边缘***///
+        if(y==ymin&&(count_l_y!=0||count_r_y!=0))
         {
           return true;
         }
