@@ -46,13 +46,20 @@ void TrajectoryNLP::BuildIterativeNLP() {
   SX p_ref_x = SX::sym("ref_x", config_.nfe, 1);
   SX p_ref_y = SX::sym("ref_y", config_.nfe, 1);
   SX p_ref_theta = SX::sym("ref_theta", config_.nfe, 1);
+  SX p_fit_alpha = SX::sym("fit_alpha", config_.nfe, 1);
+
 
   auto hi = tf / config_.nfe;
   auto prev = Slice(0, config_.nfe - 1);
   auto next = Slice(1, config_.nfe);
-  auto g_x_kin = x(next) - (x(prev) + hi * v(prev) * cos(theta(prev)));
-  auto g_y_kin = y(next) - (y(prev) + hi * v(prev) * sin(theta(prev)));
-  auto g_theta_kin = theta(next) - (theta(prev) + hi * v(prev) * tan(phi(prev)) / config_.vehicle.wheel_base);
+  // auto g_x_kin = x(next) - (x(prev) + hi * v(prev) * cos(theta(prev)));
+  // auto g_y_kin = y(next) - (y(prev) + hi * v(prev) * sin(theta(prev)));
+  // auto g_theta_kin = theta(next) - (theta(prev) + hi * v(prev) * tan(phi(prev)) / config_.vehicle.wheel_base);
+
+  auto g_x_kin = x(next) - (x(prev) + hi * v(prev) * cos(theta(prev))*cos(p_fit_alpha(prev)));//cos(a)
+  auto g_y_kin = y(next) - (y(prev) + hi * v(prev) * sin(theta(prev))*cos(p_fit_alpha(prev)));
+  auto g_theta_kin = theta(next) - (theta(prev)+atan(1/cos(p_fit_alpha(prev))*tan(hi * v(prev) * tan(phi(prev)) / config_.vehicle.wheel_base)));
+
   auto g_v_kin = v(next) - (v(prev) + hi * a(prev));
   auto g_phi_kin = phi(next) - (phi(prev) + hi * omega(prev));
   auto g_a_kin = a(next) - (a(prev) + hi * jerk(prev));
@@ -71,13 +78,15 @@ void TrajectoryNLP::BuildIterativeNLP() {
     config_.opti_w_u * (sumsqr(jerk) + config_.opti_w_rw * sumsqr(omega)) +
     p_inf_w * infeasibility;
 
-  SX p = SX::vertcat({p_inf_w, p_ref_x, p_ref_y, p_ref_theta});
+  SX p = SX::vertcat({p_inf_w, p_ref_x, p_ref_y, p_ref_theta, p_fit_alpha});
   SX opti_x = SX::vertcat({x, y, theta, v, phi, a, omega, jerk, xf, yf, xr, yr});
+  SX opti_xand = SX::vertcat({x, y, theta, v, phi, a, omega, jerk, xf, yf, xr, yr, p_fit_alpha});
+
   SXDict nlp = {{"x", opti_x},
                 {"p", p},
                 {"f", f_obj}};
   iterative_solver_ = nlpsol("iterative_solver", "ipopt", nlp, nlp_config_);
-  infeasibility_evaluator_ = Function("inf", {opti_x}, {infeasibility}, {});
+  infeasibility_evaluator_ = Function("inf", {opti_xand}, {infeasibility}, {});
 }
 
 double TrajectoryNLP::SolveIteratively(double w_inf, const Constraints &constraints, const States &guess,
@@ -138,13 +147,14 @@ double TrajectoryNLP::SolveIteratively(double w_inf, const Constraints &constrai
     {guess.x, guess.y, guess.theta, guess.v, guess.phi, guess.a, guess.omega, guess.jerk, guess.xf, guess.yf, guess.xr,
      guess.yr});
 
-  DM ref_x(config_.nfe, 1), ref_y(config_.nfe, 1), ref_theta(config_.nfe, 1);
+  DM ref_x(config_.nfe, 1), ref_y(config_.nfe, 1), ref_theta(config_.nfe, 1), p_fit_alpha(config_.nfe, 1);
   for (int i = 0; i < config_.nfe; i++) {
     ref_x(i) = reference.data()[i].x;
     ref_y(i) = reference.data()[i].y;
     ref_theta(i) = reference.data()[i].theta;
+    p_fit_alpha(i) = guess.alpha[i];
   }
-  arg["p"] = DM::vertcat({w_inf, ref_x, ref_y, ref_theta});
+  arg["p"] = DM::vertcat({w_inf, ref_x, ref_y, ref_theta, p_fit_alpha});
   res = iterative_solver_(arg);
 
   DM opt = res.at("x");
@@ -176,7 +186,8 @@ double TrajectoryNLP::SolveIteratively(double w_inf, const Constraints &constrai
   }
 
   // evaluate infeasibility
-  std::vector<DM> arg_in = {opt};
+  DM optandalpha =  DM::vertcat({opt, p_fit_alpha});
+  std::vector<DM> arg_in = {optandalpha};
   auto arg_out = infeasibility_evaluator_(arg_in);
   return arg_out.front()->at(0);
 }

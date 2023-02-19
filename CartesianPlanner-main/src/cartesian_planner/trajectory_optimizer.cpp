@@ -29,8 +29,9 @@ bool TrajectoryOptimizer::OptimizeIteratively(const DiscretizedTrajectory &coars
   for (auto &pt: coarse.data()) {
     guess.x.push_back(pt.x);
     guess.y.push_back(pt.y);
+    guess.z.push_back(pt.z);
     guess.theta.push_back(pt.theta);
-  }
+  }//
 
   CalculateInitialGuess(guess);
 
@@ -40,7 +41,8 @@ bool TrajectoryOptimizer::OptimizeIteratively(const DiscretizedTrajectory &coars
   Constraints iterative_constraints = constraints;
 
   while (iter < config_.opti_iter_max) {
-    FormulateCorridorConstraints(guess, iterative_constraints);
+    CalculateheightAndalpha(guess);    //遍历guss  z and alpha     通过遍历对应的z值  +  height_robot   对z 值做一次平滑   减小珊格地图分辨率的影响！！！！！  later
+    FormulateCorridorConstraints(guess, iterative_constraints);//z  通过z值构建corridor
 
     double cur_infeasibility = nlp_.SolveIteratively(w_penalty, iterative_constraints, guess, coarse, guess);
     visualization::Plot(guess.x, guess.y, 0.1, visualization::Color::Green, iter, "Intermediate Trajectory");
@@ -61,10 +63,10 @@ bool TrajectoryOptimizer::OptimizeIteratively(const DiscretizedTrajectory &coars
 }
 
 void TrajectoryOptimizer::CalculateInitialGuess(States &states) const {
-  states.v.resize(config_.nfe, 0.0);
-  states.phi.resize(config_.nfe, 0.0);
 
   double hi = config_.tf / (config_.nfe - 1);
+  states.v.resize(config_.nfe, 0.0);
+  states.phi.resize(config_.nfe, 0.0);
   for (size_t i = 1; i < states.x.size(); i++) {
     double velocity = hypot(states.y[i] - states.y[i - 1], states.x[i] - states.x[i - 1]) / hi;
 
@@ -88,6 +90,25 @@ void TrajectoryOptimizer::CalculateInitialGuess(States &states) const {
   }
 }
 
+void TrajectoryOptimizer::CalculateheightAndalpha(States &states) const{ //通过查找地图求真实的z值  求完z值求alpha  ****对z 值做一次平滑   减小珊格地图分辨率的影响！！！！！
+    states.z.resize(config_.nfe, 0.0);
+    states.alpha.resize(config_.nfe, 0.0);
+    double buffer = 0.6 - 0.4;
+    if(!world_->findheight(states.x[0], states.y[0], states.z[0]))
+    {
+        states.z[0] = states.z[0] - buffer; //0.5 test
+    }
+    for (size_t i = 1;i< states.x.size(); i++)
+    {
+      if(!world_->findheight(states.x[i], states.y[i], states.z[i]))
+      {
+        states.z[i] = states.z[i-1];
+      }
+      states.alpha[i-1] = getposealpha(states.x[i], states.y[i], states.z[i],states.x[i-1], states.y[i-1], states.z[i-1]);
+    }
+    states.alpha[states.x.size()-1] = states.alpha[states.x.size()-2];
+
+}
 bool TrajectoryOptimizer::FormulateCorridorConstraints(States &states, Constraints &constraints) {
   constraints.front_bound.resize(config_.nfe);
   constraints.rear_bound.resize(config_.nfe);
@@ -105,20 +126,20 @@ bool TrajectoryOptimizer::FormulateCorridorConstraints(States &states, Constrain
                                                                                                  states.theta[i]);
 
     math::AABox2d box;
-    if (!GenerateBox(time, states.xf[i], states.yf[i], vehicle_.radius, box)) {
+    if (!GenerateBox(time, states.z[i], states.xf[i], states.yf[i], vehicle_.radius, box)) {
       return false;
     }
     constraints.front_bound[i] = {box.min_x(), box.max_x(), box.min_y(), box.max_y()};
     math::AABox2d box_ploy({box.min_x()-vehicle_.radius,box.min_y()-vehicle_.radius},{ box.max_x()+vehicle_.radius, box.max_y()+vehicle_.radius});
-    visualization::PlotPolygon(math::Polygon2d(math::Box2d(box_ploy)), 0.02, visualization::Color::Grey, i,
+    visualization::PlotPolygon(math::Polygon2d(math::Box2d(box_ploy)),  states.z[i], 0.02, visualization::Color::Grey, i,
                                "Front Corridor");
 
-    if (!GenerateBox(time, states.xr[i], states.yr[i], vehicle_.radius, box)) {
+    if (!GenerateBox(time, states.z[i], states.xr[i], states.yr[i], vehicle_.radius, box)) {
       return false;
     }
     constraints.rear_bound[i] = {box.min_x(), box.max_x(), box.min_y(), box.max_y()};
     math::AABox2d box_ploy1({box.min_x()-vehicle_.radius,box.min_y()-vehicle_.radius},{ box.max_x()+vehicle_.radius, box.max_y()+vehicle_.radius});
-    visualization::PlotPolygon(math::Polygon2d(math::Box2d(box_ploy1)), 0.02, visualization::Color::Blue, i, "Rear Corridor");
+    visualization::PlotPolygon(math::Polygon2d(math::Box2d(box_ploy1)),  states.z[i], 0.02, visualization::Color::Blue, i, "Rear Corridor");
   }
 
   visualization::Trigger();
@@ -126,10 +147,10 @@ bool TrajectoryOptimizer::FormulateCorridorConstraints(States &states, Constrain
   return true;
 }
 
-bool TrajectoryOptimizer::GenerateBox(double time, double &x, double &y, double radius, AABox2d &result) const {
+bool TrajectoryOptimizer::GenerateBox(double time, double z, double &x, double &y, double radius, AABox2d &result) const {
   double ri = radius;
   AABox2d bound({-ri, -ri}, {ri, ri});
-  if (CheckCollision(time, x, y, bound)) { //有碰撞返回true
+  if (CheckCollision(time, z, x, y, bound)) { //有碰撞返回true
     // initial condition not satisfied, involute to find feasible box
     int inc = 4;
     double real_x, real_y;
@@ -151,7 +172,7 @@ bool TrajectoryOptimizer::GenerateBox(double time, double &x, double &y, double 
       }
 
       inc++;
-    } while (CheckCollision(time, real_x, real_y, bound) && inc < config_.corridor_max_iter);
+    } while (CheckCollision(time, z, real_x, real_y, bound) && inc < config_.corridor_max_iter);
     if (inc > config_.corridor_max_iter) {
       return false;
     }
@@ -177,7 +198,7 @@ bool TrajectoryOptimizer::GenerateBox(double time, double &x, double &y, double 
     AABox2d test({-ri - incremental[0], -ri - incremental[2]},
                  {ri + incremental[1], ri + incremental[3]});
 
-    if (CheckCollision(time, x, y, test) || incremental[edge] >= config_.corridor_incremental_limit) {
+    if (CheckCollision(time, z, x, y, test) || incremental[edge] >= config_.corridor_incremental_limit) {
       incremental[edge] -= step;
       blocked[edge] = true;
     }

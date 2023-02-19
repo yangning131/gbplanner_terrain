@@ -41,17 +41,29 @@ private:
 
   void CalculateInitialGuess(States &states) const;
 
+  void CalculateheightAndalpha(States &states) const;
+
   bool FormulateCorridorConstraints(States &states, Constraints &constraints);
 
-  bool GenerateBox(double time, double &x, double &y, double radius, AABox2d &result) const;
+  bool GenerateBox(double time, double z, double &x, double &y, double radius, AABox2d &result) const;
 
-  inline bool CheckCollision(double time, double x, double y, const AABox2d &bound) const {
+  inline bool CheckCollision(double time, double z, double x, double y, const AABox2d &bound) const {
     Box2d box(bound);
     box.Shift({x, y});
 
     // return env_->CheckCollision(time, box);
-    return world_->CheckStaticCollision(box);
+    return world_->CheckStaticCollision(box, z);
 
+  }
+
+  double getposealpha(double x1, double y1, double z1, double x0, double y0 ,double z0) const
+  {
+    Eigen::Vector3d direction(x1 - x0, y1 - y0, z1 - z0);
+    //terrain slop judge
+    Eigen::Vector2d ground_direction(direction[0],direction[1]);
+    double ground_lane = ground_direction.norm();
+    double hight_change = abs(direction[2]);
+    return std::atan(hight_change/ground_lane);
   }
 
 };

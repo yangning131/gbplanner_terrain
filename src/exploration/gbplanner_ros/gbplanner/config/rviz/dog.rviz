@@ -123,6 +123,8 @@ Visualization Manager:
               Value: false
             imu_link:
               Value: false
+            lookahead:
+              Value: true
             map:
               Value: true
             mid_mount:
@@ -176,7 +178,8 @@ Visualization Manager:
                           {}
                       velodyne_base_link:
                         velodyne:
-                          {}
+                          lookahead:
+                            {}
               odom:
                 {}
           Update Interval: 0
@@ -270,7 +273,13 @@ Visualization Manager:
           Marker Topic: /vis/shortest_paths
           Name: ShortestPaths
           Namespaces:
-            {}
+            best_leaf_vertices: false
+            frontiers: false
+            gain: false
+            heading: false
+            leaf_vertices: false
+            shortest_edges: true
+            vertices: true
           Queue Size: 100
           Value: true
         - Class: rviz/MarkerArray
@@ -318,7 +327,8 @@ Visualization Manager:
           Marker Topic: /vis/sampler
           Name: Sampler
           Namespaces:
-            {}
+            invalid_samples: true
+            valid_samples: true
           Queue Size: 1000
           Value: true
         - Class: rviz/MarkerArray
@@ -914,8 +924,8 @@ Visualization Manager:
     - Alpha: 0.800000011920929
       Autocompute Intensity Bounds: true
       Autocompute Value Bounds:
-        Max Value: 1.6516711711883545
-        Min Value: -0.6483288407325745
+        Max Value: 1.6803967952728271
+        Min Value: -0.6196032166481018
         Value: true
       Axis: Z
       Channel Name: intensity
@@ -972,7 +982,7 @@ Visualization Manager:
       Marker Topic: /vis/terraincost
       Name: MarkerArray
       Namespaces:
-        {}
+        terraincost: true
       Queue Size: 100
       Value: true
   Enabled: true
@@ -1003,25 +1013,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/ThirdPersonFollower
-      Distance: 5.857923984527588
+      Distance: 11.806502342224121
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 2.398266315460205
-        Y: -1.6370079517364502
-        Z: 1.6366619092877954e-5
+        X: 7.324275970458984
+        Y: -1.084670066833496
+        Z: 1.588978193467483e-5
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 1.5697963237762451
+      Pitch: 0.6397966146469116
       Target Frame: <Fixed Frame>
       Value: ThirdPersonFollower (rviz)
-      Yaw: 5.640856742858887
+      Yaw: 5.110857009887695
     Saved: ~
 Window Geometry:
   Displays:

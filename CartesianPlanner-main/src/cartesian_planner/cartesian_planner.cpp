@@ -26,13 +26,15 @@ bool CartesianPlanner::Plan(const StartState &state, DiscretizedTrajectory &resu
   TrajectoryPoint robotPoint;
   robotPoint.x =  state.x;
   robotPoint.y =  state.y;
+  robotPoint.z =  state.z;
+
   for (int i = 0; i < reference_path.poses.size(); ++i)
   {
       TrajectoryPoint p;
 
       p.x = reference_path.poses[i].pose.position.x;
       p.y = reference_path.poses[i].pose.position.y;
-      // p.z = robotPoint.z;
+      p.z = reference_path.poses[i].pose.position.z;
 
       float dist = pointDistance(p, robotPoint);
       if (dist < min_dist)
@@ -57,7 +59,8 @@ bool CartesianPlanner::Plan(const StartState &state, DiscretizedTrajectory &resu
   int end_index = reference_path.poses.size()-1;
   for(int i = 1 ;i<= end_index ;++i)
   {
-    lenth +=  hypot(reference_path.poses[i].pose.position.x - reference_path.poses[i-1].pose.position.x, reference_path.poses[i].pose.position.y - reference_path.poses[i-1].pose.position.y);
+    lenth += hypot(hypot(reference_path.poses[i].pose.position.x - reference_path.poses[i-1].pose.position.x, reference_path.poses[i].pose.position.y - reference_path.poses[i-1].pose.position.y ) ,
+                   reference_path.poses[i].pose.position.z - reference_path.poses[i-1].pose.position.z) ;
     if(lenth>=length_max)
     {
         end_index = i;
@@ -66,7 +69,7 @@ bool CartesianPlanner::Plan(const StartState &state, DiscretizedTrajectory &resu
   }
 
         double pathResolution = lenth < length_max ?(lenth/num):(length_max/num);
-        double dis = 0, ang = 0;
+        double dis = 0, ang = 0, alpha = 0; 
         double margin = pathResolution * 0.01;
         double remaining = 0;
         int nPoints = 0;
@@ -77,9 +80,9 @@ bool CartesianPlanner::Plan(const StartState &state, DiscretizedTrajectory &resu
 
         while (next <=end_index)
         {
-            dis += hypot(reference_path.poses[next].pose.position.x - reference_path.poses[next-1].pose.position.x, reference_path.poses[next].pose.position.y - reference_path.poses[next-1].pose.position.y) + remaining;
+            dis += hypot(reference_path.poses[next].pose.position.z - reference_path.poses[next-1].pose.position.z,hypot(reference_path.poses[next].pose.position.x - reference_path.poses[next-1].pose.position.x, reference_path.poses[next].pose.position.y - reference_path.poses[next-1].pose.position.y) )  + remaining;
             ang = atan2(reference_path.poses[next].pose.position.y - reference_path.poses[start].pose.position.y, reference_path.poses[next].pose.position.x - reference_path.poses[start].pose.position.x);
-
+            alpha = getposealpha(reference_path.poses[next],reference_path.poses[next-1]);
             if (dis < pathResolution - margin)
             {
                 next++;
@@ -92,6 +95,8 @@ bool CartesianPlanner::Plan(const StartState &state, DiscretizedTrajectory &resu
                 {
                     point_start.pose.position.x = point_start.pose.position.x + pathResolution * cos(ang);
                     point_start.pose.position.y = point_start.pose.position.y + pathResolution * sin(ang);
+                    point_start.pose.position.z = point_start.pose.position.z + pathResolution * sin(alpha);
+
                     point_start.pose.orientation = tf::createQuaternionMsgFromYaw(ang);
                     fixedPath.poses.push_back(point_start);
                 }
@@ -138,10 +143,20 @@ bool CartesianPlanner::Plan(const StartState &state, DiscretizedTrajectory &resu
   // config_.nfe
 
   TrajectoryPoint point;
-  for(int i=0;i<fixedPath.poses.size();++i)
+  if(!fixedPath.poses.empty())
+  {
+    point.x = fixedPath.poses[0].pose.position.x;
+    point.y = fixedPath.poses[0].pose.position.y;
+    point.z = state.z;
+    point.theta = tf::getYaw(fixedPath.poses[0].pose.orientation);
+    points.emplace_back(point);
+  }
+
+  for(int i = 1;i<fixedPath.poses.size();++i)
   {
     point.x = fixedPath.poses[i].pose.position.x;
     point.y = fixedPath.poses[i].pose.position.y;
+    point.z = fixedPath.poses[i].pose.position.z;
     point.theta = tf::getYaw(fixedPath.poses[i].pose.orientation);
     points.emplace_back(point);
   }
@@ -153,13 +168,15 @@ bool CartesianPlanner::Plan(const StartState &state, DiscretizedTrajectory &resu
   opti_constraints.start_v = state.v; opti_constraints.start_phi = state.phi; opti_constraints.start_a = state.a;
   opti_constraints.start_omega = state.omega;
 
-  std::vector<double> coarse_x, coarse_y;
+  std::vector<double> coarse_x, coarse_y, coarse_z;
   for(auto &pt: coarse_trajectory.data()) {
-    coarse_x.push_back(pt.x); coarse_y.push_back(pt.y);
+    coarse_x.push_back(pt.x);
+    coarse_y.push_back(pt.y);
+    coarse_z.push_back(pt.z);
   }
 
-  visualization::Plot(coarse_x, coarse_y, 0.1, visualization::Color::Cyan, 1, "Coarse Trajectory");
-  visualization::PlotPoints(coarse_x, coarse_y, 0.3, visualization::Color::Cyan, 2, "Coarse Trajectory");
+  visualization::Plot(coarse_x, coarse_y,0.1, visualization::Color::Cyan, 1, "Coarse Trajectory");
+  visualization::PlotPoints(coarse_x, coarse_y, 0.2, visualization::Color::Cyan, 2, "Coarse Trajectory");
   visualization::Trigger();
 
   States optimized;
@@ -168,7 +185,7 @@ bool CartesianPlanner::Plan(const StartState &state, DiscretizedTrajectory &resu
     return false;
   }
 
-  std::vector<double> opti_x, opti_y, opti_v;
+  std::vector<double> opti_x, opti_y, opti_z, opti_v;
   Trajectory result_data;
   double incremental_s = 0.0;
   for(int i = 0; i < config_.nfe; i++) {
@@ -178,6 +195,7 @@ bool CartesianPlanner::Plan(const StartState &state, DiscretizedTrajectory &resu
 
     tp.x = optimized.x[i];
     tp.y = optimized.y[i];
+    tp.z = optimized.z[i];
     tp.theta = optimized.theta[i];
     tp.velocity = optimized.v[i];
     tp.kappa = tan(optimized.phi[i]) / config_.vehicle.wheel_base;

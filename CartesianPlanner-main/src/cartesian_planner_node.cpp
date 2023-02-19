@@ -79,6 +79,7 @@ public:
         
         state_.x = transform.getOrigin().x();
         state_.y = transform.getOrigin().y();
+        state_.z = transform.getOrigin().z();
 
         double roll, pitch, yaw;
         tf::Matrix3x3 m(transform.getRotation());
@@ -238,7 +239,7 @@ double cast_from_0_to_2PI_Angle(const double& ang)
         auto &pt = result.data().at(i);
         pose_stamped.pose.position.x = pt.x;
         pose_stamped.pose.position.y = pt.y;
-        pose_stamped.pose.position.z = 0.2;
+        pose_stamped.pose.position.z = pt.z;
         pose_stamped.pose.orientation = tf::createQuaternionMsgFromYaw(pt.theta);
 
         nav_path.poses.emplace_back(pose_stamped);

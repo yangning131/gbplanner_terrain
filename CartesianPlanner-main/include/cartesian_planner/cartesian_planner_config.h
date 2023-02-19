@@ -26,6 +26,7 @@ struct CartesianPlannerConfig {
    */
   double tf = 8;//16
 
+  double car_height = 0.4;
   /**
    * nominal velocity
    */

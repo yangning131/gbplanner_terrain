@@ -35,6 +35,9 @@ void Init(ros::NodeHandle &node, const std::string &frame, const std::string &to
 void Plot(const Vector &xs, const Vector &ys, double width = 0.1, Color color = Color(1, 1, 1),
           int id = -1, const std::string &ns = "");
 
+void Plot(const Vector &xs, const Vector &ys, double height = 0.1, double width = 0.1, Color color = Color(1, 1, 1),
+          int id = -1, const std::string &ns = "");
+
 void Plot(const Vector &xs, const Vector &ys, double width = 0.1, const std::vector<Color> &color = {},
           int id = -1, const std::string &ns = "");
 
@@ -42,6 +45,12 @@ void PlotPolygon(const Vector &xs, const Vector &ys, double width = 0.1, Color c
                  int id = -1, const std::string &ns = "");
 
 void PlotPolygon(const Polygon2d &polygon, double width = 0.1, Color color = Color::White,
+                 int id = -1, const std::string &ns = "");
+
+void PlotPolygon(const Vector &xs, const Vector &ys, double height = 0.1, double width = 0.1, Color color = Color::White,
+                 int id = -1, const std::string &ns = "");
+
+void PlotPolygon(const Polygon2d &polygon, double height = 0.1 , double width = 0.1, Color color = Color::White,
                  int id = -1, const std::string &ns = "");
 
 void PlotTrajectory(const Vector &xs, const Vector &ys, const Vector &vs, double max_velocity = 10.0,

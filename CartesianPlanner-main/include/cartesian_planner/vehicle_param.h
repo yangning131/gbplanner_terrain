@@ -25,6 +25,8 @@ public:
    */
   double front_hang_length = 0.2;//0.96
 
+  double car_height = 0.6;
+
   /**
    * L_W, wheelbase of the ego vehicle (m)
    */

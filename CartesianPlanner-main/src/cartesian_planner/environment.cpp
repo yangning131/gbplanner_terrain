@@ -421,9 +421,34 @@ bool World::project2surface(const float &x,const float &y,Vector3d* p_surface)
     return ifsuccess;
 }
 
-bool World::CheckStaticCollision(const math::Box2d &rect) {
+bool World::findheight(const double &x, const double &y, double &height)
+{
+    bool ifsuccess=false;
+    double zmax =  min(height+resolution_,upperbound_(2));
+
+    if(x>=lowerbound_(0) && x<=upperbound_(0) && y>=lowerbound_(1) && y<=upperbound_(1))
+    {   
+        // std::cout<<"in 1"<<std::endl;
+        for(double z = lowerbound_(2) ; z < upperbound_(2) ; z+=resolution_)
+        {
+        // std::cout<<"in 2"<<std::endl;
+
+            if( !isFree(x,y,z) && isFree(x,y,z+resolution_) )
+            {
+        // std::cout<<"in 3"<<std::endl;
+
+                height = z + vehicle_.car_height;//0.5 test
+                ifsuccess=true;
+                break;
+            }
+        }
+    }
+    return ifsuccess;
+}
+
+bool World::CheckStaticCollision(const math::Box2d &rect, double path_z) {
   // double xmax, ymax, xmin, ymin;
-  double path_height = -0.3;
+  double path_height = path_z;
 
   double xmax = rect.center_x() + rect.half_length();
   double ymax = rect.center_y() + rect.half_width();
@@ -432,10 +457,13 @@ bool World::CheckStaticCollision(const math::Box2d &rect) {
 
   int count_l = 0;
   int count_r = 0;
-  double limt_min = path_height - 2*resolution_;
-  double limt_max = path_height + resolution_;
-  limt_min = max(lowerbound_(2),limt_min);
-  limt_max = min(upperbound_(2),limt_max);
+  double limt_min = path_height - 5*resolution_;
+  double limt_max = path_height - 2*resolution_;
+  // limt_min = max(lowerbound_(2),limt_min);
+  // limt_max = min(upperbound_(2),limt_max);
+
+  limt_min = lowerbound_(2);
+  limt_max = upperbound_(2);
 
   for(double x = xmin ;x<=xmax ; x+=resolution_) 
   {     

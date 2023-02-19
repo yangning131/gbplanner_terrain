@@ -169,6 +169,7 @@ public:
      */
     bool project2surface(const float &x,const float &y,Eigen::Vector3d* p_surface); 
     bool project2surface(const Eigen::Vector3d &p_original,Eigen::Vector3d* p_surface){return project2surface(p_original(0),p_original(1),p_surface);}
+    bool findheight(const double &x, const double &y, double &height);
 
      /**
      * @brief Check if there is any obstacle between 2 nodes.
@@ -219,7 +220,7 @@ public:
         Eigen::Vector3i index = ( (coord-lowerbound_)/resolution_).cast<int>();            
         return index;
     }
-    bool CheckStaticCollision(const math::Box2d &rect);
+    bool CheckStaticCollision(const math::Box2d &rect, double path_z);
 //protected:
     bool ***grid_map_=NULL;
 
@@ -231,6 +232,7 @@ public:
     Eigen::Vector3d upperbound_;
 
     void clearMap();
+    VehicleParam vehicle_;
 };
 
 

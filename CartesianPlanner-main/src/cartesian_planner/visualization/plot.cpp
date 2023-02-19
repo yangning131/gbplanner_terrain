@@ -53,6 +53,33 @@ Plot(const Vector &xs, const Vector &ys, double width, Color color, int id, cons
   mutex_.unlock();
 }
 
+void
+Plot(const Vector &xs, const Vector &ys, double height, double width, Color color, int id, const std::string &ns) {
+  visualization_msgs::Marker msg;
+  msg.header.frame_id = frame_;
+  msg.header.stamp = ros::Time();
+  msg.ns = ns;
+  msg.id = id >= 0 ? id : arr_.markers.size();
+
+  msg.action = visualization_msgs::Marker::ADD;
+  msg.type = visualization_msgs::Marker::LINE_STRIP;
+  msg.pose.orientation.w = 1.0;
+  msg.scale.x = width;
+  msg.color = color.toColorRGBA();
+
+  for (size_t i = 0; i < xs.size(); i++) {
+    geometry_msgs::Point pt;
+    pt.x = xs[i];
+    pt.y = ys[i];
+    pt.z = height;
+    msg.points.push_back(pt);
+  }
+
+  mutex_.lock();
+  arr_.markers.push_back(msg);
+  mutex_.unlock();
+}
+
 void Plot(const Vector &xs, const Vector &ys, double width,
           const std::vector<Color> &color, int id, const std::string &ns) {
   assert(xs.size() == color.size());
@@ -82,7 +109,6 @@ void Plot(const Vector &xs, const Vector &ys, double width,
   mutex_.unlock();
 }
 
-
 void PlotPolygon(const Vector &xs, const Vector &ys, double width, Color color, int id,
                  const std::string &ns) {
   auto xxs = xs;
@@ -100,6 +126,25 @@ void PlotPolygon(const Polygon2d &polygon, double width, Color color, int id,
     ys.push_back(pt.y());
   }
   PlotPolygon(xs, ys, width, color, id, ns);
+}
+
+void PlotPolygon(const Vector &xs, const Vector &ys, double height, double width, Color color, int id,
+                 const std::string &ns) {
+  auto xxs = xs;
+  auto yys = ys;
+  xxs.push_back(xxs[0]);
+  yys.push_back(yys[0]);
+  Plot(xxs, yys, height, width, color, id, ns);
+}
+
+void PlotPolygon(const Polygon2d &polygon, double height, double width, Color color, int id,
+                 const std::string &ns) {
+  std::vector<double> xs, ys;
+  for (auto &pt: polygon.points()) {
+    xs.push_back(pt.x());
+    ys.push_back(pt.y());
+  }
+  PlotPolygon(xs, ys, height, width, color, id, ns);
 }
 
 void PlotTrajectory(const Vector &xs, const Vector &ys, const Vector &vs, double max_velocity, double width,
