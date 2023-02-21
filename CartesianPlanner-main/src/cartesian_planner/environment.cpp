@@ -295,12 +295,14 @@ void Environment::Visualize() {
   visualization::Trigger();
 }
 
-World::World(const float &resolution):resolution_(resolution)
+World::World(const float &resolution, const float &H_resolution):resolution_(resolution), H_resolution_(H_resolution)
 {
     std::cout<<"class Word constuct done"<<std::endl;
     lowerbound_=INF*Vector3d::Ones();
     upperbound_=-INF*Vector3d::Ones();
     idx_count_=Vector3i::Zero();
+    H_idx_count_=Vector3i::Zero();
+
 }
 
 World::~World(){clearMap();}
@@ -321,6 +323,20 @@ void World::clearMap()
         }
         delete[] grid_map_;
         grid_map_=NULL;
+
+
+        for(int i=0;i < H_idx_count_(0);i++)
+        {
+            for(int j=0;j < H_idx_count_(1);j++)
+            {
+                delete[] H_grid_map_[i][j];
+                H_grid_map_[i][j]=NULL;
+            }
+            delete[] H_grid_map_[i];
+            H_grid_map_[i]=NULL;
+        }
+        delete[] H_grid_map_;
+        H_grid_map_=NULL;
     }
 }
 
@@ -337,6 +353,18 @@ void World::initGridMap(const Vector3d &lowerbound,const Vector3d &upperbound)
         {
             grid_map_[i][j]=new bool[idx_count_(2)];
             memset(grid_map_[i][j],true,idx_count_(2)*sizeof(bool));
+        }
+    }
+
+    H_idx_count_=((upperbound_-lowerbound_)/H_resolution_).cast<int>()+Eigen::Vector3i::Ones();
+    H_grid_map_=new bool**[H_idx_count_(0)];
+    for(int i=0;i < H_idx_count_(0);i++)
+    {
+        H_grid_map_[i]=new bool*[H_idx_count_(1)];
+        for(int j=0;j < H_idx_count_(1);j++)
+        {
+            H_grid_map_[i][j]=new bool[H_idx_count_(2)];
+            memset(H_grid_map_[i][j],true,H_idx_count_(2)*sizeof(bool));
         }
     }
     has_map_=true;
@@ -374,6 +402,19 @@ void World::initGridMap(const pcl::PointCloud<pcl::PointXYZ> &cloud)  //need rea
             memset(grid_map_[i][j],true,idx_count_(2)*sizeof(bool));
         }
     }
+
+    H_idx_count_ = ((upperbound_-lowerbound_)/H_resolution_).cast<int>() + Eigen::Vector3i::Ones();
+
+    H_grid_map_=new bool**[H_idx_count_(0)];
+    for(int i = 0 ; i < H_idx_count_(0) ; i++)
+    {
+        H_grid_map_[i]=new bool*[H_idx_count_(1)];
+        for(int j = 0 ; j < H_idx_count_(1) ; j++)
+        {
+            H_grid_map_[i][j]=new bool[H_idx_count_(2)];
+            memset(H_grid_map_[i][j],true,H_idx_count_(2)*sizeof(bool));
+        }
+    }
     has_map_=true;
 }
  
@@ -382,6 +423,9 @@ void World::setObs(const Vector3d &point)
 {   
     Vector3i idx=coord2index(point);
     grid_map_[idx(0)][idx(1)][idx(2)]=false;
+
+    idx=H_coord2index(point);
+    H_grid_map_[idx(0)][idx(1)][idx(2)]=false;
 }
 
 bool World::isFree(const Vector3d &point)
@@ -391,9 +435,21 @@ bool World::isFree(const Vector3d &point)
     return is_free;
 }
 
+bool World::H_isFree(const Vector3d &point)
+{
+    Vector3i idx = H_coord2index(point);
+    bool is_free = isInsideHBorder(idx) && H_grid_map_[idx(0)][idx(1)][idx(2)];  //有障碍物grid_map_为false
+    return is_free;
+}
+
 Vector3d World::coordRounding(const Vector3d & coord)
 {
     return index2coord(coord2index(coord));
+}
+
+Vector3d World::H_coordRounding(const Vector3d & coord)
+{
+    return H_index2coord(H_coord2index(coord));
 }
 
 bool World::project2surface(const float &x,const float &y,Vector3d* p_surface)
@@ -425,20 +481,20 @@ double World::height_infitplan(const double &x, const double &y, const double &z
 {   
     std::vector<Eigen::Vector3d> plane_pts;
     Eigen::Vector3d p_surface(x,y,z);
-    Eigen::Vector3d ball_center = coordRounding(p_surface);//采样点的三维坐标 
-    float resolution = getResolution();
+    Eigen::Vector3d ball_center = H_coordRounding(p_surface);//采样点的三维坐标 
+    float resolution = getHResolution();
 
-    int fit_num=static_cast<int>( 0.2 /resolution);    //radius
+    int fit_num=static_cast<int>( 0.3 /resolution);    //radius
     
     for(int i = -fit_num;i <= fit_num;i++)
     {   
         for(int j = -fit_num;j <= fit_num;j++)
         {   
-            for(int k = -3;k <= 3;k++)
+            for(int k = -8;k <= 8;k++)
             {   
                 Eigen::Vector3d point=ball_center+resolution*Eigen::Vector3d(i,j,k);
                 
-                if(isInsideBorder(point) && !isFree(point))//当前表面点的周围是否在边界内   是否是free的  有点云为false
+                if(isInsideHBorder(point) && !H_isFree(point))//当前表面点的周围是否在边界内   是否是free的  有点云为false
                 {   
                     plane_pts.push_back(point);  
                 }
@@ -462,7 +518,7 @@ bool World::findheight(const double &x, const double &y, double &height)
 {
     bool ifsuccess=false;
     double zmax =  min(height+resolution_,upperbound_(2));
-
+    float buffer = H_resolution_/2;
     if(x>=lowerbound_(0) && x<=upperbound_(0) && y>=lowerbound_(1) && y<=upperbound_(1))
     {   
         // std::cout<<"in 1"<<std::endl;
@@ -473,7 +529,7 @@ bool World::findheight(const double &x, const double &y, double &height)
             if( !isFree(x,y,z) && isFree(x,y,z+resolution_) )
             {
                 // height = z + vehicle_.car_height;//0.5 test
-                height = height_infitplan(x,y,z) + vehicle_.car_height;//0.5 test  隐藏bug？？？？？
+                height = height_infitplan(x,y,z-buffer) + vehicle_.car_height;//0.5 test  隐藏bug？？？？？
                 ifsuccess=true;
                 break;
             }
@@ -496,11 +552,11 @@ bool World::CheckStaticCollision(const math::Box2d &rect, double path_z) {
   double limt_min = path_height - vehicle_.car_height - 1.2*resolution_;//(1.2*resolution_  nice parame )
   double limt_max = path_height - vehicle_.car_height + 2.0*resolution_;//(2.0*resolution_  nice parame )
 
-  // limt_min = max(lowerbound_(2),limt_min);
-  // limt_max = min(upperbound_(2),limt_max);
+  limt_min = max(lowerbound_(2),limt_min);
+  limt_max = min(upperbound_(2),limt_max);
 
-  limt_min = lowerbound_(2);
-  limt_max = upperbound_(2);
+  // limt_min = lowerbound_(2);
+  // limt_max = upperbound_(2);
 
   for(double x = xmin ;x<=xmax ; x+=resolution_) 
   {     
@@ -657,6 +713,16 @@ bool World::isInsideBorder(const Vector3i &index)
            index(2) < idx_count_(2);
 }
 
+bool World::isInsideHBorder(const Vector3i &index)
+{
+    return index(0) >= 0 &&
+           index(1) >= 0 &&
+           index(2) >= 0 && 
+           index(0) < H_idx_count_(0)&&
+           index(1) < H_idx_count_(1)&&
+           index(2) < H_idx_count_(2);
+}
+
 void World::visWorld( ros::Publisher* world_vis_pub)
 {
   if (world_vis_pub == NULL || !has_map_)
@@ -693,4 +759,39 @@ void World::visWorld( ros::Publisher* world_vis_pub)
   world_vis_pub->publish(map_vis);
 }
 
+void World::H_visWorld( ros::Publisher* world_vis_pub)
+{
+  if (world_vis_pub == NULL || !has_map_)
+    return;
+  pcl::PointCloud<pcl::PointXYZ> cloud_vis;
+  for (int i = 0; i < H_idx_count_(0); i++)
+  {
+    for (int j = 0; j < H_idx_count_(1); j++)
+    {
+      for (int k = 0; k < H_idx_count_(2); k++)
+      {
+        Vector3i index(i, j, k);
+        if (!H_grid_map_[index(0)][index(1)][index(2)])
+        {
+          Vector3d coor_round = H_index2coord(index);
+          pcl::PointXYZ pt_add;
+          pt_add.x = coor_round(0);
+          pt_add.y = coor_round(1);
+          pt_add.z = coor_round(2);
+          cloud_vis.points.push_back(pt_add);
+        }
+      }
+    }
+  }
+
+  cloud_vis.width = cloud_vis.points.size();
+  cloud_vis.height = 1;
+  cloud_vis.is_dense = true;
+
+  sensor_msgs::PointCloud2 map_vis;
+  pcl::toROSMsg(cloud_vis, map_vis);
+
+  map_vis.header.frame_id = "/map";
+  world_vis_pub->publish(map_vis);
+}
 }

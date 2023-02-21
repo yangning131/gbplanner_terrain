@@ -37,7 +37,7 @@ public:
 
   explicit CartesianPlannerNode(const ros::NodeHandle &nh) : nh_(nh) {
     env_ = std::make_shared<Environment>(config_);
-    world_ = std::make_shared<World>(0.2);
+    world_ = std::make_shared<World>(0.2, 0.1);
 
     planner_ = std::make_shared<CartesianPlanner>(config_, env_, world_);
     
@@ -53,6 +53,7 @@ public:
     pathUpdateTimer = nh_.createTimer(ros::Duration(0.3), &CartesianPlannerNode::updatePath, this);
     path_pub_ = nh_.advertise<nav_msgs::Path>("planning/planning/execute_path_op", 1);
     grid_map_vis_pub = nh_.advertise<sensor_msgs::PointCloud2>("grid_map_vis_carte", 1);
+    H_grid_map_vis_pub = nh_.advertise<sensor_msgs::PointCloud2>("H_grid_map_vis_carte", 1);
 
   }
 
@@ -156,6 +157,8 @@ public:
           world_->setObs(obstacle);//x ,y ,z 三个index
         }
         world_->visWorld( &grid_map_vis_pub);
+        world_->H_visWorld( &H_grid_map_vis_pub);
+
     }
   void ObstaclesCallback(const ObstaclesConstPtr &msg) {
     env_->obstacles().clear();
@@ -282,6 +285,8 @@ private:
   ros::Subscriber  obstacles_subscriber_, dynamic_obstacles_subscriber_, goal_subscriber_, subObstacleMap_, cloud_terrain_sub, or_path_subscriber_;
 
   ros::Publisher grid_map_vis_pub;
+  ros::Publisher H_grid_map_vis_pub;
+
   std::deque<pcl::PointCloud<pcl::PointXYZ>> cloudQueue;
   std::deque<double> timeQueue;
 

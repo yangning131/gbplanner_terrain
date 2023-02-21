@@ -128,7 +128,7 @@ public:
     //indicate whether the range of the grid map has been determined
     bool has_map_=false;
 
-    World(const float &resolution=0.1f);
+    World(const float &resolution=0.1f, const float &H_resolution=0.05f);
     ~World();
 
     /**
@@ -154,9 +154,13 @@ public:
      * @return Vector3d
      */
     Eigen::Vector3d coordRounding(const Eigen::Vector3d &coord);
+    Eigen::Vector3d H_coordRounding(const Eigen::Vector3d &coord);
 
     bool isFree(const Eigen::Vector3d &point);
     bool isFree(const float &coord_x, const float &coord_y, const float &coord_z){return isFree(Eigen::Vector3d(coord_x,coord_y,coord_z));}
+
+    bool H_isFree(const Eigen::Vector3d &point);
+    bool H_isFree(const float &coord_x, const float &coord_y, const float &coord_z){return H_isFree(Eigen::Vector3d(coord_x,coord_y,coord_z));}
 
     /**
      * @brief Given a 2D coord,start from the lowerbound of the height of the grid map,search upward,
@@ -188,7 +192,11 @@ public:
     bool isInsideBorder(const Eigen::Vector3i &index);
     bool isInsideBorder(const Eigen::Vector3d &point){return isInsideBorder(coord2index(point));}
 
+    bool isInsideHBorder(const Eigen::Vector3i &index);
+    bool isInsideHBorder(const Eigen::Vector3d &point){return isInsideHBorder(H_coord2index(point));}
+
     void visWorld( ros::Publisher* world_vis_pub);
+    void H_visWorld( ros::Publisher* world_vis_pub);
 
     /**
      * @brief get the low bound of the world
@@ -210,10 +218,17 @@ public:
      * @return float
      */
     float getResolution(){return resolution_;} 
+    float getHResolution(){return H_resolution_;} 
 
     Eigen::Vector3d index2coord(const Eigen::Vector3i &index)
     {
         Eigen::Vector3d coord = resolution_*index.cast<double>() + lowerbound_+ 0.5*resolution_*Eigen::Vector3d::Ones();
+        return coord;
+    }
+
+    Eigen::Vector3d H_index2coord(const Eigen::Vector3i &index)
+    {
+        Eigen::Vector3d coord = H_resolution_*index.cast<double>() + lowerbound_+ 0.5*H_resolution_*Eigen::Vector3d::Ones();
         return coord;
     }
 
@@ -222,13 +237,23 @@ public:
         Eigen::Vector3i index = ( (coord-lowerbound_)/resolution_).cast<int>();            
         return index;
     }
+
+    Eigen::Vector3i H_coord2index(const Eigen::Vector3d &coord)
+    {
+        Eigen::Vector3i index = ( (coord-lowerbound_)/H_resolution_).cast<int>();            
+        return index;
+    }
     bool CheckStaticCollision(const math::Box2d &rect, double path_z);
 //protected:
     bool ***grid_map_=NULL;
+    bool ***H_grid_map_=NULL;
 
     float resolution_;
+    float H_resolution_;
 
     Eigen::Vector3i idx_count_;
+    Eigen::Vector3i H_idx_count_;
+
 
     Eigen::Vector3d lowerbound_;
     Eigen::Vector3d upperbound_;
