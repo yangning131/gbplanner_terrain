@@ -121,10 +121,13 @@ public:
         occupancyMap2D = *mapMsg;
         env_->SetObstacles_map(occupancyMap2D);
     }
+  float pointDistance(pcl::PointXYZ p1, pcl::PointXYZ p2)
+  {
+        return sqrt((p1.x-p2.x)*(p1.x-p2.x) + (p1.y-p2.y)*(p1.y-p2.y));
+  }
 
   void cloudHandler2(const sensor_msgs::PointCloud2::ConstPtr& laserCloudMsg)
     {   
-
         double timeScanCur = laserCloudMsg->header.stamp.toSec();
 
         sensor_msgs::PointCloud2 pointcloud_map;
@@ -133,7 +136,33 @@ public:
 
         pcl::PointCloud<pcl::PointXYZ> cloud;
         pcl::fromROSMsg(pointcloud_map, cloud);
-        cloudQueue.push_back(cloud);
+
+        pcl::PointCloud<pcl::PointXYZ> Localcloud;
+        pcl::PointXYZ robot_point;
+        robot_point.x = state_.x;
+        robot_point.y = state_.y;
+
+        // clock_t start,end;
+        // start=clock();
+        for (int i = 0; i < cloud.size(); ++i)
+        {
+            pcl::PointXYZ p;
+            p.x = cloud.points[i].x;
+            p.y = cloud.points[i].y;
+            p.z = cloud.points[i].z;
+            // if (p.z > _sensorHeightLimitUpper + robotPoint.z || p.z < _sensorHeightLimitDown + robotPoint.z)
+            //     continue;
+
+            float range = pointDistance(p, robot_point);
+            if (range < 0 || range > 10.0)
+                continue;
+            Localcloud.push_back(p);
+        }
+            // end=clock();
+            // double endtime=(double)(end-start)/CLOCKS_PER_SEC;
+            // std::cout<<"Total time0:"<<endtime*1000<<"ms"<<std::endl;
+
+        cloudQueue.push_back(Localcloud);
         timeQueue.push_back(timeScanCur);
 
         while (!timeQueue.empty())
@@ -149,13 +178,19 @@ public:
         pcl::PointCloud<pcl::PointXYZ> surroundMapCloud;
         for(int i = 0 ;i<cloudQueue.size();i++)
             surroundMapCloud += cloudQueue[i];
+            // start=clock();
 
         world_->initGridMap(surroundMapCloud);
+
+
         for (const auto& pt : surroundMapCloud)
         {
           Eigen::Vector3d obstacle(pt.x, pt.y, pt.z);
           world_->setObs(obstacle);//x ,y ,z 三个index
         }
+            //                 end=clock();
+            //  endtime=(double)(end-start)/CLOCKS_PER_SEC;
+            // std::cout<<"Total time1:"<<endtime*1000<<"ms"<<std::endl;
         world_->visWorld( &grid_map_vis_pub);
         world_->H_visWorld( &H_grid_map_vis_pub);
 

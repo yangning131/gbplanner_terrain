@@ -41,7 +41,16 @@ bool TrajectoryOptimizer::OptimizeIteratively(const DiscretizedTrajectory &coars
   Constraints iterative_constraints = constraints;
 
   while (iter < config_.opti_iter_max) {
+
+        clock_t start,end;
+        start=clock();
+
     CalculateheightAndalpha(guess);    //遍历guss  z and alpha     通过遍历对应的z值  +  height_robot   对z 值做一次平滑   减小珊格地图分辨率的影响！！！！！  later
+
+                        end=clock();
+            double endtime=(double)(end-start)/CLOCKS_PER_SEC;
+            std::cout<<"Total time0000:"<<endtime*1000<<"ms"<<std::endl;
+            
     FormulateCorridorConstraints(guess, iterative_constraints);//z  通过z值构建corridor
 
     double cur_infeasibility = nlp_.SolveIteratively(w_penalty, iterative_constraints, guess, coarse, guess);
