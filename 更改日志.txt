@@ -44,4 +44,5 @@ pure_p 重新计算路径的orientation
 
 5.栅格太多  影响速度   01改成滚动栅格！（commit - m"roll grid  maps"）                          02 height_infitplan改进精确(不必优化 总耗时1.000ms)
 
+6.还需增加z点平滑!!!!!!!  good performance  (commit -m "good performance  with mount op")
 question:类变量是对象 编译不过   类变量是类的指针

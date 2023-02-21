@@ -42,14 +42,14 @@ bool TrajectoryOptimizer::OptimizeIteratively(const DiscretizedTrajectory &coars
 
   while (iter < config_.opti_iter_max) {
 
-        clock_t start,end;
-        start=clock();
+    clock_t start,end;
+    start=clock();
 
     CalculateheightAndalpha(guess);    //遍历guss  z and alpha     通过遍历对应的z值  +  height_robot   对z 值做一次平滑   减小珊格地图分辨率的影响！！！！！  later
 
-                        end=clock();
-            double endtime=(double)(end-start)/CLOCKS_PER_SEC;
-            std::cout<<"Total time0000:"<<endtime*1000<<"ms"<<std::endl;
+    end=clock();
+    double endtime=(double)(end-start)/CLOCKS_PER_SEC;
+    std::cout<<"Total time0000:"<<endtime*1000<<"ms"<<std::endl;
             
     FormulateCorridorConstraints(guess, iterative_constraints);//z  通过z值构建corridor
 
@@ -117,6 +117,37 @@ void TrajectoryOptimizer::CalculateheightAndalpha(States &states) const{ //通�
     }
     states.alpha[states.x.size()-1] = states.alpha[states.x.size()-2];
 
+    //smooth fit_plan
+    double weight_data = 0.45;
+    double weight_smooth = 0.4;
+    double tolerance = 0.03;
+
+    States plan_out = states;
+
+    double change = tolerance;
+    double ztemp;
+    int nIterations = 0;
+    int size = states.x.size();
+    while (change >= tolerance) {
+        change = 0.0;
+        for (int i = 1; i < size - 1; i++) {
+            ztemp = plan_out.z[i];
+
+            plan_out.z[i] += weight_data * (states.z[i] - plan_out.z[i]);
+
+            plan_out.z[i] += weight_smooth * (plan_out.z[i-1] + plan_out.z[i+1] - (2.0 * plan_out.z[i]));
+
+            change += fabs(ztemp - plan_out.z[i]);
+    }
+        nIterations++;
+    }
+
+    for (size_t i = 1;i< size; i++)
+    {
+      plan_out.alpha[i-1] = getposealpha(plan_out.x[i], plan_out.y[i], plan_out.z[i],plan_out.x[i-1], plan_out.y[i-1], plan_out.z[i-1]);
+    }
+    plan_out.alpha[plan_out.x.size()-1] = plan_out.alpha[plan_out.x.size()-2];
+    states = plan_out;
 }
 
 bool TrajectoryOptimizer::FormulateCorridorConstraints(States &states, Constraints &constraints) {
