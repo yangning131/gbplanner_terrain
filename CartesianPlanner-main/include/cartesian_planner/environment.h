@@ -169,6 +169,8 @@ public:
      */
     bool project2surface(const float &x,const float &y,Eigen::Vector3d* p_surface); 
     bool project2surface(const Eigen::Vector3d &p_original,Eigen::Vector3d* p_surface){return project2surface(p_original(0),p_original(1),p_surface);}
+
+    double height_infitplan(const double &x, const double &y, const double &z);
     bool findheight(const double &x, const double &y, double &height);
 
      /**

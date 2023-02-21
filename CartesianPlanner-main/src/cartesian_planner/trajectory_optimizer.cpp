@@ -109,6 +109,7 @@ void TrajectoryOptimizer::CalculateheightAndalpha(States &states) const{ //é€šè¿
     states.alpha[states.x.size()-1] = states.alpha[states.x.size()-2];
 
 }
+
 bool TrajectoryOptimizer::FormulateCorridorConstraints(States &states, Constraints &constraints) {
   constraints.front_bound.resize(config_.nfe);
   constraints.rear_bound.resize(config_.nfe);

@@ -421,6 +421,43 @@ bool World::project2surface(const float &x,const float &y,Vector3d* p_surface)
     return ifsuccess;
 }
 
+double World::height_infitplan(const double &x, const double &y, const double &z)
+{   
+    std::vector<Eigen::Vector3d> plane_pts;
+    Eigen::Vector3d p_surface(x,y,z);
+    Eigen::Vector3d ball_center = coordRounding(p_surface);//采样点的三维坐标 
+    float resolution = getResolution();
+
+    int fit_num=static_cast<int>( 0.2 /resolution);    //radius
+    
+    for(int i = -fit_num;i <= fit_num;i++)
+    {   
+        for(int j = -fit_num;j <= fit_num;j++)
+        {   
+            for(int k = -3;k <= 3;k++)
+            {   
+                Eigen::Vector3d point=ball_center+resolution*Eigen::Vector3d(i,j,k);
+                
+                if(isInsideBorder(point) && !isFree(point))//当前表面点的周围是否在边界内   是否是free的  有点云为false
+                {   
+                    plane_pts.push_back(point);  
+                }
+            }
+        }
+    }
+
+    size_t pt_num=plane_pts.size();  //3*resolution 2*2m 方块中的点云 个数        vac(i+fit_num,j+fit_num) 俯看平面点云个数
+    Eigen::Vector3d center(0,0,0);
+    for(const auto&pt:plane_pts) center+=pt;
+    center /= pt_num;               //求这些点云的中心坐标
+    // if(abs(center(2) - z )>=resolution)
+    //  {
+    //    std::cout<<"over ride" << center(2) - z <<std::endl;
+    //    return z;
+    //  }
+    return center(2);
+}
+
 bool World::findheight(const double &x, const double &y, double &height)
 {
     bool ifsuccess=false;
@@ -435,9 +472,8 @@ bool World::findheight(const double &x, const double &y, double &height)
 
             if( !isFree(x,y,z) && isFree(x,y,z+resolution_) )
             {
-        // std::cout<<"in 3"<<std::endl;
-
-                height = z + vehicle_.car_height;//0.5 test
+                // height = z + vehicle_.car_height;//0.5 test
+                height = height_infitplan(x,y,z) + vehicle_.car_height;//0.5 test  隐藏bug？？？？？
                 ifsuccess=true;
                 break;
             }
@@ -457,8 +493,9 @@ bool World::CheckStaticCollision(const math::Box2d &rect, double path_z) {
 
   int count_l = 0;
   int count_r = 0;
-  double limt_min = path_height - 5*resolution_;
-  double limt_max = path_height - 2*resolution_;
+  double limt_min = path_height - vehicle_.car_height - 1.2*resolution_;//(1.2*resolution_  nice parame )
+  double limt_max = path_height - vehicle_.car_height + 2.0*resolution_;//(2.0*resolution_  nice parame )
+
   // limt_min = max(lowerbound_(2),limt_min);
   // limt_max = min(upperbound_(2),limt_max);
 
