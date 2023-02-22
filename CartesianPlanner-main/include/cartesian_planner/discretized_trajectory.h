@@ -26,6 +26,7 @@ struct TrajectoryPoint {
   double y = 0.0;
   double z = 0.0;
   double theta = 0.0;
+  double omega = 0.0;
   double kappa = 0.0;
   double velocity = 0.0;
 

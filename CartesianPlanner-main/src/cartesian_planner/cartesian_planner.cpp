@@ -188,23 +188,48 @@ bool CartesianPlanner::Plan(const StartState &state, DiscretizedTrajectory &resu
   std::vector<double> opti_x, opti_y, opti_z, opti_v;
   Trajectory result_data;
   double incremental_s = 0.0;
-  for(int i = 0; i < config_.nfe; i++) {
-    TrajectoryPoint tp;
-    incremental_s += i > 0 ? hypot(optimized.x[i] - optimized.x[i-1], optimized.y[i] - optimized.y[i-1]) : 0.0;
-    tp.s = incremental_s;
+  if(config_.vehicle.model==1)
+  {
+    for(int i = 0; i < config_.nfe; i++) {
+      TrajectoryPoint tp;
+      incremental_s += i > 0 ? hypot(optimized.x[i] - optimized.x[i-1], optimized.y[i] - optimized.y[i-1]) : 0.0;
+      tp.s = incremental_s;
 
-    tp.x = optimized.x[i];
-    tp.y = optimized.y[i];
-    tp.z = optimized.z[i];
-    tp.theta = optimized.theta[i];
-    tp.velocity = optimized.v[i];
-    tp.kappa = tan(optimized.phi[i]) / config_.vehicle.wheel_base;
+      tp.x = optimized.x[i];
+      tp.y = optimized.y[i];
+      tp.z = optimized.z[i];
+      tp.theta = optimized.theta[i];
+      tp.velocity = optimized.v[i];
+      tp.kappa = tan(optimized.phi[i]) / config_.vehicle.wheel_base;
 
-    opti_x.push_back(tp.x);
-    opti_y.push_back(tp.y);
-    opti_v.push_back(tp.velocity);
+      opti_x.push_back(tp.x);
+      opti_y.push_back(tp.y);
+      opti_v.push_back(tp.velocity);
 
-    result_data.push_back(tp);
+      result_data.push_back(tp);
+    }
+  }
+  else if(config_.vehicle.model==2)
+  {
+      for(int i = 0; i < config_.nfe; i++) {
+      TrajectoryPoint tp;
+      incremental_s += i > 0 ? hypot(optimized.x[i] - optimized.x[i-1], optimized.y[i] - optimized.y[i-1]) : 0.0;
+      tp.s = incremental_s;
+
+      tp.x = optimized.x[i];
+      tp.y = optimized.y[i];
+      tp.z = optimized.z[i];
+      tp.theta = optimized.theta[i];
+      tp.velocity = optimized.v[i];
+      tp.omega = optimized.omega[i];
+      tp.kappa = optimized.v[i] /optimized.omega[i];
+
+      opti_x.push_back(tp.x);
+      opti_y.push_back(tp.y);
+      opti_v.push_back(tp.velocity);
+
+      result_data.push_back(tp);
+  }
   }
 
   visualization::PlotTrajectory(opti_x, opti_y, opti_v, config_.vehicle.max_velocity, 0.1, visualization::Color::Black, 1, "Optimized Trajectory");

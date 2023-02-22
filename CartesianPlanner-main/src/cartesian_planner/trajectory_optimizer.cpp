@@ -86,12 +86,25 @@ void TrajectoryOptimizer::CalculateInitialGuess(States &states) const {
 
   states.a.resize(config_.nfe, 0.0);
   states.omega.resize(config_.nfe, 0.0);
-  for (size_t i = 1; i < states.x.size(); i++) {
-    states.a[i] = std::min(vehicle_.max_acceleration,
-                           std::max(vehicle_.min_acceleration, (states.v[i] - states.v[i - 1]) / hi));
-    states.omega[i] = std::min(vehicle_.omega_max,
+  if(vehicle_.model==1)
+  {
+      for (size_t i = 1; i < states.x.size(); i++) {
+        states.a[i] = std::min(vehicle_.max_acceleration,
+                                std::max(vehicle_.min_acceleration, (states.v[i] - states.v[i - 1]) / hi));
+        states.omega[i] = std::min(vehicle_.omega_max,
                                std::max(-vehicle_.omega_max, (states.phi[i] - states.phi[i - 1]) / hi));
+      }
   }
+  else if(vehicle_.model==2)
+  {
+      for (size_t i = 1; i < states.x.size(); i++) {
+        states.a[i] = std::min(vehicle_.max_acceleration,
+                                std::max(vehicle_.min_acceleration, (states.v[i] - states.v[i - 1]) / hi));
+        states.omega[i] = std::min(vehicle_.omega_max,
+                               std::max(-vehicle_.omega_max, (states.theta[i] - states.theta[i - 1]) / hi));
+      }
+  }
+
 
   states.jerk.resize(config_.nfe, 0.0);
   for (size_t i = 1; i < states.x.size(); i++) {
