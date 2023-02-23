@@ -57,7 +57,7 @@ bool TrajectoryOptimizer::OptimizeIteratively(const DiscretizedTrajectory &coars
     visualization::Plot(guess.x, guess.y, 0.1, visualization::Color::Green, iter, "Intermediate Trajectory");
     visualization::Trigger();
 
-    ROS_INFO("iter = %d, cur_infeasibility = %f, w_penalty = %f", iter, cur_infeasibility, w_penalty);
+    // ROS_INFO("iter = %d, cur_infeasibility = %f, w_penalty = %f", iter, cur_infeasibility, w_penalty);
 
     if (cur_infeasibility < config_.opti_varepsilon_tol) {
       result = guess;
@@ -116,19 +116,22 @@ void TrajectoryOptimizer::CalculateheightAndalpha(States &states) const{ //é€šè¿
     states.z.resize(config_.nfe, 0.0);
     states.alpha.resize(config_.nfe, 0.0);
     double buffer = 0.6 - 0.4;
-    if(!world_->findheight(states.x[0], states.y[0], states.z[0]))
-    {
-        states.z[0] = states.z[0] - buffer; //0.5 test
-    }
+    // if(!world_->findheight(states.x[0], states.y[0], states.z[0]))
+    // {
+    //     states.z[0] = states.z[0] - buffer; //0.5 test
+    // }
+
+    world_->findheight(states.x[0], states.y[0], states.z[0]);
+
     for (size_t i = 1;i< states.x.size(); i++)
     {
       if(!world_->findheight(states.x[i], states.y[i], states.z[i]))
       {
         states.z[i] = states.z[i-1];
       }
-      states.alpha[i-1] = getposealpha(states.x[i], states.y[i], states.z[i],states.x[i-1], states.y[i-1], states.z[i-1]);
+      // states.alpha[i-1] = getposealpha(states.x[i], states.y[i], states.z[i],states.x[i-1], states.y[i-1], states.z[i-1]);
     }
-    states.alpha[states.x.size()-1] = states.alpha[states.x.size()-2];
+    // states.alpha[states.x.size()-1] = states.alpha[states.x.size()-2];
 
     //smooth fit_plan
     double weight_data = 0.45;
@@ -155,9 +158,24 @@ void TrajectoryOptimizer::CalculateheightAndalpha(States &states) const{ //é€šè¿
         nIterations++;
     }
 
+    size_t alphaindex = 1;
+    double dis_lane = 0;
     for (size_t i = 1;i< size; i++)
     {
-      plan_out.alpha[i-1] = getposealpha(plan_out.x[i], plan_out.y[i], plan_out.z[i],plan_out.x[i-1], plan_out.y[i-1], plan_out.z[i-1]);
+      alphaindex = i;
+      dis_lane = hypot(plan_out.x[i] - plan_out.x[i-1], plan_out.y[i] - plan_out.y[i-1]);
+      while(dis_lane<0.1)
+      {
+        alphaindex++;
+        if(alphaindex>=size)
+          {
+            alphaindex--;
+            break;
+          }
+        dis_lane = hypot(plan_out.x[alphaindex] - plan_out.x[i-1], plan_out.y[alphaindex] - plan_out.y[i-1]);
+
+      }
+      plan_out.alpha[i-1] = getposealpha(plan_out.x[alphaindex], plan_out.y[alphaindex], plan_out.z[alphaindex],plan_out.x[i-1], plan_out.y[i-1], plan_out.z[i-1]);
     }
     plan_out.alpha[plan_out.x.size()-1] = plan_out.alpha[plan_out.x.size()-2];
     states = plan_out;

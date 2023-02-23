@@ -41,9 +41,15 @@ public:
     Eigen::Vector3d direction(nextpose.pose.position.x - pose.pose.position.x, nextpose.pose.position.y - pose.pose.position.y,
                             nextpose.pose.position.z - pose.pose.position.z);
     //terrain slop judge
+
     Eigen::Vector2d ground_direction(direction[0],direction[1]);
+
     double ground_lane = ground_direction.norm();
+
     double hight_change = abs(direction[2]);
+    if(ground_lane<=0.01||hight_change<=0.01)
+          return 0;
+          
     return std::atan(hight_change/ground_lane);
   }
 
@@ -52,6 +58,7 @@ private:
   CartesianPlannerConfig config_;
   TrajectoryOptimizer opti_;
   Env env_;
+  Trajectory last_result_data_;
 
 };
 

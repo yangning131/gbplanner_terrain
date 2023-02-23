@@ -20,7 +20,7 @@ TrajectoryNLP::TrajectoryNLP(const CartesianPlannerConfig &config) : config_(con
 #else
     {"linear_solver", "mumps"},
 #endif
-    {"print_level",   5},
+    {"print_level",   0},
     })}};
 
   BuildIterativeNLP();

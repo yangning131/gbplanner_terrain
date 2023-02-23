@@ -115,7 +115,7 @@ PlanningParams:
   occupied_voxel_gain: 0.0
   free_voxel_gain:  2.0         #prefer directions towards more free voxels in case of the dead-end  2.0
   unknown_voxel_gain: 50.0
-  traverse_length_max: 7.0
+  traverse_length_max: 6.0  ## 6.0
   traverse_time_max: 40.0
   augment_free_voxels_time: 1
   free_frustum_before_planning: false

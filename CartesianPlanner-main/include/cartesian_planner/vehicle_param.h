@@ -23,7 +23,7 @@ public:
   /**
    * L_F, front hang length of the ego vehicle (m)
    */
-  int model = 1 ; //"1 : arcman  ; 2:diference"
+  int model = 2 ; //"1 : arcman  ; 2:diference"
   double front_hang_length = 0.2;//0.96
 
   double car_height = 0.6;

@@ -31,6 +31,8 @@ public:
   tf::TransformListener listener;
   tf::StampedTransform transform;
   bool receive = false;
+  bool reach = false;
+
   ros::Timer pathUpdateTimer;
   ros::Publisher path_pub_;
 
@@ -41,11 +43,11 @@ public:
 
     planner_ = std::make_shared<CartesianPlanner>(config_, env_, world_);
     
-    obstacles_subscriber_ = nh_.subscribe("/obstacles", 1, &CartesianPlannerNode::ObstaclesCallback, this);
-    dynamic_obstacles_subscriber_ = nh_.subscribe("/dynamic_obstacles", 1,
+    obstacles_subscriber_ = nh_.subscribe("/obstacles11", 1, &CartesianPlannerNode::ObstaclesCallback, this);
+    dynamic_obstacles_subscriber_ = nh_.subscribe("/dynamic_obstacles11", 1,
                                                   &CartesianPlannerNode::DynamicObstaclesCallback, this);//每个时间点对应障碍物的坐标
 
-    or_path_subscriber_ = nh_.subscribe("planning/server/path_blueprint_smooth", 1, &CartesianPlannerNode::Pathcallback, this); //planning/planning/execute_path  planning/server/path_blueprint_smooth
+    or_path_subscriber_ = nh_.subscribe("expath222", 1, &CartesianPlannerNode::Pathcallback, this); //planning/planning/execute_path  planning/server/path_blueprint_smooth
     subObstacleMap_ = nh_.subscribe<nav_msgs::OccupancyGrid>("planning/obstacle/map_inflated", 5, &CartesianPlannerNode::mapHandler, this);
     
     cloud_terrain_sub = nh_.subscribe<sensor_msgs::PointCloud2>("/laser_cloud_map", 1,&CartesianPlannerNode::cloudHandler2,this);
@@ -127,7 +129,8 @@ public:
   }
 
   void cloudHandler2(const sensor_msgs::PointCloud2::ConstPtr& laserCloudMsg)
-    {   
+    {    
+        std::lock_guard<std::mutex> lock(mtx);
         double timeScanCur = laserCloudMsg->header.stamp.toSec();
 
         sensor_msgs::PointCloud2 pointcloud_map;
@@ -264,9 +267,11 @@ double cast_from_0_to_2PI_Angle(const double& ang)
     std::lock_guard<std::mutex> lock(mtx);
 
     if (getRobotPosition() == false) return;
+    
 
-      DiscretizedTrajectory result;
-    if(receive)
+
+    DiscretizedTrajectory result;
+    if(receive||reach)
     {
     if (planner_->Plan(state_, result)) {
         nav_msgs::Path nav_path;
@@ -282,10 +287,12 @@ double cast_from_0_to_2PI_Angle(const double& ang)
 
         nav_path.poses.emplace_back(pose_stamped);
       }
+      end_pose = pose_stamped;
       nav_path.header.frame_id = "map";
       nav_path.header.stamp = ros::Time::now();
+      last_path = nav_path;
       path_pub_.publish(nav_path);
-      // double dt = config_.tf / (double) (config_.nfe - 1);
+      // double dt = config_.tf / (double) (config_.nfe - 1);  reach
       // for (int i = 0; i < config_.nfe; i++) {
       //   double time = dt * i;
       //   auto dynamic_obstacles = env_->QueryDynamicObstacles(time);
@@ -303,7 +310,14 @@ double cast_from_0_to_2PI_Angle(const double& ang)
 
       // visualization::Trigger();
     }
+      receive = false;
+      reach = false;
     }
+    if(0.4>hypot(hypot(end_pose.pose.position.x - state_.x, end_pose.pose.position.y - state_.y ) ,
+                   end_pose.pose.position.z - state_.z) )    reach = true;
+
+
+
 
 
   }
@@ -321,10 +335,10 @@ private:
 
   ros::Publisher grid_map_vis_pub;
   ros::Publisher H_grid_map_vis_pub;
-
+  nav_msgs::Path last_path;
   std::deque<pcl::PointCloud<pcl::PointXYZ>> cloudQueue;
   std::deque<double> timeQueue;
-
+  geometry_msgs::PoseStamped  end_pose;
 
   void PlotVehicle(int id, const math::Pose &pt, double phi) {
     auto tires = GenerateTireBoxes({pt.x(), pt.y(), pt.theta()}, phi);

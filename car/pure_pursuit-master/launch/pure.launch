@@ -8,7 +8,7 @@
     <param name = "~/linear_velocity" value = "0.3"/>
 
     <!-- <remap from="/pathsmooth" to="/planning/planning/execute_path" /> -->
-    <remap from="/pathsmooth" to="/expath222" />
+    <remap from="/pathsmooth" to="/planning/planning/execute_path_op" />
      <remap from="/odom" to="/aft_mapped_to_init" />
     <param name = "max_rotational_velocity" value = "0.5"/>
     <param name = "position_tolerance" value = "0.1"/>

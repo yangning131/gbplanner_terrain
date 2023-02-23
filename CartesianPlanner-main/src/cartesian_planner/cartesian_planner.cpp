@@ -16,7 +16,7 @@ namespace cartesian_planner {
 
 bool CartesianPlanner::Plan(const StartState &state, DiscretizedTrajectory &result) {
   std::vector<TrajectoryPoint> points;
-
+  
   nav_msgs::Path reference_path;
   reference_path = env_->getreference_path();
 
@@ -54,7 +54,7 @@ bool CartesianPlanner::Plan(const StartState &state, DiscretizedTrajectory &resu
 
   //max_15m
   int num = config_.nfe;
-  double length_max = 15.0 ;
+  double length_max = 8.0;
   double lenth = 0.0;
   int end_index = reference_path.poses.size()-1;
   for(int i = 1 ;i<= end_index ;++i)
@@ -69,20 +69,33 @@ bool CartesianPlanner::Plan(const StartState &state, DiscretizedTrajectory &resu
   }
 
         double pathResolution = lenth < length_max ?(lenth/num):(length_max/num);
-        double dis = 0, ang = 0, alpha = 0; 
+        double dis = 0, ang = 0, alpha = 0, dis_lane = 0; 
         double margin = pathResolution * 0.01;
         double remaining = 0;
         int nPoints = 0;
-        nav_msgs::Path fixedPath = reference_path;
+        nav_msgs::Path fixedPath;
+        fixedPath = reference_path;
         fixedPath.poses.clear();
         fixedPath.poses.push_back(reference_path.poses[0]);
-        size_t start = 0, next = 1;
+        size_t start = 0, next = 1, alphaindex = 1;
 
         while (next <=end_index)
-        {
+        {   
+            alphaindex = next;
             dis += hypot(reference_path.poses[next].pose.position.z - reference_path.poses[next-1].pose.position.z,hypot(reference_path.poses[next].pose.position.x - reference_path.poses[next-1].pose.position.x, reference_path.poses[next].pose.position.y - reference_path.poses[next-1].pose.position.y) )  + remaining;
             ang = atan2(reference_path.poses[next].pose.position.y - reference_path.poses[start].pose.position.y, reference_path.poses[next].pose.position.x - reference_path.poses[start].pose.position.x);
-            alpha = getposealpha(reference_path.poses[next],reference_path.poses[next-1]);
+            dis_lane = hypot(reference_path.poses[next].pose.position.x - reference_path.poses[next-1].pose.position.x, reference_path.poses[next].pose.position.y - reference_path.poses[next-1].pose.position.y);
+            while(dis_lane<0.1)
+            {
+                alphaindex++;
+                if(alphaindex>=end_index)
+                {
+                  alphaindex--;
+                  break;
+                }
+                dis_lane = hypot(reference_path.poses[alphaindex].pose.position.x - reference_path.poses[next-1].pose.position.x, reference_path.poses[alphaindex].pose.position.y - reference_path.poses[next-1].pose.position.y);
+            }
+            alpha = getposealpha(reference_path.poses[alphaindex],reference_path.poses[next-1]);
             if (dis < pathResolution - margin)
             {
                 next++;
@@ -113,6 +126,7 @@ bool CartesianPlanner::Plan(const StartState &state, DiscretizedTrajectory &resu
                 start = next - 1;
             }
         }
+
 
         if(fixedPath.poses.size()>num)
         {
@@ -147,7 +161,7 @@ bool CartesianPlanner::Plan(const StartState &state, DiscretizedTrajectory &resu
   {
     point.x = fixedPath.poses[0].pose.position.x;
     point.y = fixedPath.poses[0].pose.position.y;
-    point.z = state.z;
+    point.z = state.z + config_.vehicle.car_height;
     point.theta = tf::getYaw(fixedPath.poses[0].pose.orientation);
     points.emplace_back(point);
   }
@@ -175,8 +189,11 @@ bool CartesianPlanner::Plan(const StartState &state, DiscretizedTrajectory &resu
     coarse_z.push_back(pt.z);
   }
 
+
   visualization::Plot(coarse_x, coarse_y,0.1, visualization::Color::Cyan, 1, "Coarse Trajectory");
+
   visualization::PlotPoints(coarse_x, coarse_y, 0.2, visualization::Color::Cyan, 2, "Coarse Trajectory");
+
   visualization::Trigger();
 
   States optimized;
@@ -231,7 +248,7 @@ bool CartesianPlanner::Plan(const StartState &state, DiscretizedTrajectory &resu
       result_data.push_back(tp);
   }
   }
-
+  last_result_data_ = result_data;
   visualization::PlotTrajectory(opti_x, opti_y, opti_v, config_.vehicle.max_velocity, 0.1, visualization::Color::Black, 1, "Optimized Trajectory");
   visualization::Trigger();
 
