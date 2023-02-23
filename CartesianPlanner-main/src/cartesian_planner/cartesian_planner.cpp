@@ -54,7 +54,7 @@ bool CartesianPlanner::Plan(const StartState &state, DiscretizedTrajectory &resu
 
   //max_15m
   int num = config_.nfe;
-  double length_max = 8.0;
+  double length_max = 12.0;
   double lenth = 0.0;
   int end_index = reference_path.poses.size()-1;
   for(int i = 1 ;i<= end_index ;++i)

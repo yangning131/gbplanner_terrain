@@ -89,7 +89,7 @@ struct CartesianPlannerConfig {
   /**
    * Maximum iteration number in Alg.1
    */
-  int opti_iter_max = 5;
+  int opti_iter_max = 8;//5
 
   /**
    * Initial value of weighting parameter w_penalty
@@ -104,7 +104,7 @@ struct CartesianPlannerConfig {
   /**
    * Violation tolerance w.r.t. the softened nonlinear constraints
    */
-  double opti_varepsilon_tol = 1e-4;
+  double opti_varepsilon_tol = 1;//1e-4
 
   VehicleParam vehicle;
 };
