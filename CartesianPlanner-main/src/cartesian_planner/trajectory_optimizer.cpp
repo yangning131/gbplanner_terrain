@@ -203,7 +203,7 @@ bool TrajectoryOptimizer::FormulateCorridorConstraints(States &states, Constrain
     }
     constraints.front_bound[i] = {box.min_x(), box.max_x(), box.min_y(), box.max_y()};
     math::AABox2d box_ploy({box.min_x()-vehicle_.radius,box.min_y()-vehicle_.radius},{ box.max_x()+vehicle_.radius, box.max_y()+vehicle_.radius});
-    visualization::PlotPolygon(math::Polygon2d(math::Box2d(box_ploy)),  states.z[i], 0.02, visualization::Color::Grey, i,
+    visualization::PlotPolygon(math::Polygon2d(math::Box2d(box_ploy)),  states.z[i], 0.02, visualization::Color::White, i,
                                "Front Corridor");
 
     if (!GenerateBox(time, states.z[i], states.xr[i], states.yr[i], vehicle_.radius, box)) {
@@ -211,7 +211,7 @@ bool TrajectoryOptimizer::FormulateCorridorConstraints(States &states, Constrain
     }
     constraints.rear_bound[i] = {box.min_x(), box.max_x(), box.min_y(), box.max_y()};
     math::AABox2d box_ploy1({box.min_x()-vehicle_.radius,box.min_y()-vehicle_.radius},{ box.max_x()+vehicle_.radius, box.max_y()+vehicle_.radius});
-    visualization::PlotPolygon(math::Polygon2d(math::Box2d(box_ploy1)),  states.z[i], 0.02, visualization::Color::Blue, i, "Rear Corridor");
+    visualization::PlotPolygon(math::Polygon2d(math::Box2d(box_ploy1)),  states.z[i], 0.02, visualization::Color::White, i, "Rear Corridor");
   }
 
   visualization::Trigger();
