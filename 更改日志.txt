@@ -55,7 +55,8 @@ question:类变量是对象 编译不过   类变量是类的指针
 9.添加mpc 更改traj变量；
  整合添加jaclal仿真；  
  添加整合pathserver  ; 
- pathserver add mpc traja；
+ pathserver add mpc traja；   commit -m "add mpc and move to pathserver&&jacla &&pathserver mpc"
 
- 10.  launch 文件优化
+
+ 10.  launch优化  01仿真 02gb 03mpc/pure_p  commit -m "launch"
 https://blog.csdn.net/weixin_43879302/article/details/105880972

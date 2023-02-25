@@ -97,7 +97,21 @@
   </node>
 
   <!-- Planner and Control Interface -->
- 
+  <node pkg="pci_mav" type="pci_mav_ros_node" name="pci_mav_ros_node">
+    <remap from="command/trajectory" to="$(arg robot_name)/command/trajectory" />
+    <remap from="planner_server" to="gbplanner" />
+    <remap from="planner_homing_server" to="gbplanner/homing" />
+    <remap from="odometry" to="$(arg odometry_topic)"/>
+    <rosparam command="load" file="$(arg pci_file)" />
+  </node>
+
+  <include file="$(find cartesian_planner)/launch/pedestrian_test.launch">
+	  <arg name="rviz" value="false"/>
+  </include>
+  <node pkg="lexicographic_planning" type="lexicographic_planning_pathServer"     name="lexicographic_planning_pathServer"  output="screen" respawn="false"/>
+
+
+
   <node pkg="rviz" type="rviz" name="gbplanner_ui" output="screen" args="-d $(find gbplanner)/config/rviz/dog.rviz"/>
 
 </launch>
