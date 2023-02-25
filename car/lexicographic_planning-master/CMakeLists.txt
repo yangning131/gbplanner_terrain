@@ -23,7 +23,12 @@ find_package(catkin REQUIRED COMPONENTS
 find_package(OpenMP)
 find_package(PCL REQUIRED QUIET)
 
+add_message_files(
+  FILES
+  Polynome.msg
+)
 
+generate_messages(DEPENDENCIES std_msgs geometry_msgs)
 
 catkin_package(
   INCLUDE_DIRS include

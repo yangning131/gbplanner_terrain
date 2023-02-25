@@ -51,3 +51,11 @@ pure_p 重新计算路径的orientation
 8.可加可不加：当前后两次迭代的路径变化不大 即z 及斜率稳定 再退出迭代
 
 question:类变量是对象 编译不过   类变量是类的指针
+
+9.添加mpc 更改traj变量；
+ 整合添加jaclal仿真；  
+ 添加整合pathserver  ; 
+ pathserver add mpc traja；
+
+ 10.  launch 文件优化
+https://blog.csdn.net/weixin_43879302/article/details/105880972

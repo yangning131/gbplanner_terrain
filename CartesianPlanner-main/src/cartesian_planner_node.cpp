@@ -15,6 +15,7 @@
 #include "cartesian_planner/Obstacles.h"
 #include "cartesian_planner/DynamicObstacles.h"
 #include "cartesian_planner/cartesian_planner.h"
+#include "cartesian_planner/Polynome.h"
 
 #include "cartesian_planner/visualization/plot.h"
 
@@ -35,6 +36,8 @@ public:
 
   ros::Timer pathUpdateTimer;
   ros::Publisher path_pub_;
+  ros::Publisher traj_pub;
+
 
 
   explicit CartesianPlannerNode(const ros::NodeHandle &nh) : nh_(nh) {
@@ -56,6 +59,8 @@ public:
     path_pub_ = nh_.advertise<nav_msgs::Path>("planning/planning/execute_path_op", 1);
     grid_map_vis_pub = nh_.advertise<sensor_msgs::PointCloud2>("grid_map_vis_carte", 1);
     H_grid_map_vis_pub = nh_.advertise<sensor_msgs::PointCloud2>("H_grid_map_vis_carte", 1);
+
+    traj_pub      = nh_.advertise<cartesian_planner::Polynome>("trajectory",3);
 
   }
 
@@ -292,6 +297,29 @@ double cast_from_0_to_2PI_Angle(const double& ang)
       nav_path.header.stamp = ros::Time::now();
       last_path = nav_path;
       path_pub_.publish(nav_path);
+
+
+      cartesian_planner::Polynome poly;
+      for (int i = 0; i < config_.nfe; i++) {
+        geometry_msgs::Point temp;
+
+        auto &pt = result.data().at(i);
+        temp.x = pt.x;
+        temp.y = pt.y;
+        temp.z = pt.z;
+        poly.pos_pts.push_back(temp);
+        poly.t_pts.push_back(0.05);
+      }
+      poly.init_v.x = 0;
+      poly.init_v.y = 0;
+      poly.init_v.z = 0;
+      poly.init_a.x = 0;
+      poly.init_a.y = 0;
+      poly.init_a.z = 0;
+      poly.start_time = ros::Time::now();
+      traj_pub.publish(poly);
+
+      
       // double dt = config_.tf / (double) (config_.nfe - 1);  reach
       // for (int i = 0; i < config_.nfe; i++) {
       //   double time = dt * i;

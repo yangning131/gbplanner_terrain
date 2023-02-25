@@ -99,55 +99,27 @@ Visualization Manager:
           Frame Timeout: 15
           Frames:
             All Enabled: false
-            FL_calf:
-              Value: true
-            FL_foot:
-              Value: true
-            FL_hip:
-              Value: true
-            FL_thigh:
-              Value: true
-            FR_calf:
-              Value: true
-            FR_foot:
-              Value: true
-            FR_hip:
-              Value: true
-            FR_thigh:
-              Value: true
-            RL_calf:
-              Value: true
-            RL_foot:
-              Value: true
-            RL_hip:
-              Value: true
-            RL_thigh:
-              Value: true
-            RR_calf:
-              Value: true
-            RR_foot:
-              Value: true
-            RR_hip:
-              Value: true
-            RR_thigh:
-              Value: true
             aft_mapped:
               Value: true
             base:
               Value: true
             base_link:
               Value: false
-            camera_depth_frame:
-              Value: true
-            camera_depth_optical_frame:
-              Value: true
             camera_init:
               Value: true
-            camera_link:
+            chassis_link:
               Value: true
-            camera_rgb_frame:
+            fenders_link:
               Value: true
-            camera_rgb_optical_frame:
+            front_laser:
+              Value: true
+            front_laser_mount:
+              Value: true
+            front_left_wheel_link:
+              Value: true
+            front_mount:
+              Value: true
+            front_right_wheel_link:
               Value: true
             imu_link:
               Value: false
@@ -155,9 +127,17 @@ Visualization Manager:
               Value: true
             map:
               Value: true
+            mid_mount:
+              Value: true
+            navsat_link:
+              Value: true
             odom:
               Value: false
-            trunk:
+            rear_left_wheel_link:
+              Value: true
+            rear_mount:
+              Value: true
+            rear_right_wheel_link:
               Value: true
             velodyne:
               Value: true
@@ -174,37 +154,28 @@ Visualization Manager:
                 aft_mapped:
                   base:
                     base_link:
-                      {}
-                    trunk:
-                      FL_hip:
-                        FL_thigh:
-                          FL_calf:
-                            FL_foot:
-                              {}
-                      FR_hip:
-                        FR_thigh:
-                          FR_calf:
-                            FR_foot:
-                              {}
-                      RL_hip:
-                        RL_thigh:
-                          RL_calf:
-                            RL_foot:
-                              {}
-                      RR_hip:
-                        RR_thigh:
-                          RR_calf:
-                            RR_foot:
-                              {}
-                      camera_link:
-                        camera_depth_frame:
-                          camera_depth_optical_frame:
+                      chassis_link:
+                        fenders_link:
+                          {}
+                        front_left_wheel_link:
+                          {}
+                        front_right_wheel_link:
+                          {}
+                        imu_link:
+                          {}
+                        mid_mount:
+                          front_mount:
+                            front_laser_mount:
+                              front_laser:
+                                {}
+                          rear_mount:
                             {}
-                        camera_rgb_frame:
-                          camera_rgb_optical_frame:
-                            {}
-                      imu_link:
-                        {}
+                        navsat_link:
+                          {}
+                        rear_left_wheel_link:
+                          {}
+                        rear_right_wheel_link:
+                          {}
                       velodyne_base_link:
                         velodyne:
                           lookahead:
@@ -833,8 +804,8 @@ Visualization Manager:
     - Alpha: 0.800000011920929
       Autocompute Intensity Bounds: true
       Autocompute Value Bounds:
-        Max Value: 2.114797592163086
-        Min Value: -3.8894028663635254
+        Max Value: 1.6543790102005005
+        Min Value: -1.5420417785644531
         Value: true
       Axis: Z
       Channel Name: intensity
@@ -867,118 +838,68 @@ Visualization Manager:
         Expand Joint Details: false
         Expand Link Details: false
         Expand Tree: false
-        FL_calf:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        FL_foot:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        FL_hip:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        FL_thigh:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        FR_calf:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        FR_foot:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        FR_hip:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        FR_thigh:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
         Link Tree Style: Links in Alphabetic Order
-        RL_calf:
+        base_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        chassis_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        RL_foot:
+        fenders_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        RL_hip:
+        front_laser:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        RL_thigh:
+        front_laser_mount:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        RR_calf:
+        front_left_wheel_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        RR_foot:
+        front_mount:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        front_right_wheel_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        RR_hip:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        RR_thigh:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        base:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        camera_depth_frame:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        camera_depth_optical_frame:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        camera_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        camera_rgb_frame:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        camera_rgb_optical_frame:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
         imu_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-        trunk:
+        mid_mount:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        navsat_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rear_left_wheel_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rear_mount:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        rear_right_wheel_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
@@ -1036,9 +957,9 @@ Visualization Manager:
       Axis: Z
       Channel Name: intensity
       Class: rviz/PointCloud2
-      Color: 255; 255; 255
+      Color: 136; 138; 133
       Color Transformer: FlatColor
-      Decay Time: 10
+      Decay Time: 5
       Enabled: true
       Invert Rainbow: false
       Max Color: 255; 255; 255
@@ -1047,7 +968,7 @@ Visualization Manager:
       Position Transformer: XYZ
       Queue Size: 10
       Selectable: true
-      Size (Pixels): 1
+      Size (Pixels): 2
       Size (m): 0.029999999329447746
       Style: Points
       Topic: /velodyne_points
@@ -1126,25 +1047,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/ThirdPersonFollower
-      Distance: 20.26773452758789
+      Distance: 18.95556640625
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 19.206296920776367
-        Y: -8.326821327209473
+        X: 12.4300537109375
+        Y: -0.5365838408470154
         Z: 0
       Focal Shape Fixed Size: false
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 1.5697963237762451
+      Pitch: 1.4047963619232178
       Target Frame: <Fixed Frame>
       Value: ThirdPersonFollower (rviz)
-      Yaw: 0.009046077728271484
+      Yaw: 5.28406286239624
     Saved: ~
 Window Geometry:
   Displays:
@@ -1166,5 +1087,5 @@ Window Geometry:
   Views:
     collapsed: false
   Width: 1440
-  X: 344
-  Y: 62
+  X: 564
+  Y: 100

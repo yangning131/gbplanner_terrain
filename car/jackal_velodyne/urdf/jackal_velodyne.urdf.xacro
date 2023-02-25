@@ -14,6 +14,21 @@
   <xacro:property name="chassis_width" value="0.310" />
   <xacro:property name="chassis_height" value="0.184" />
 
+  <!-- <xacro:property name="wheelbase" value="1.262" />
+  <xacro:property name="track" value="1.37559" />
+  <xacro:property name="wheel_vertical_offset" value="-0.2345" />
+  <xacro:property name="footprint_vertical_offset" value="-0.0655" />
+
+  <xacro:property name="wheel_radius" value="0.098" />
+  <xacro:property name="wheel_width" value="0.040" />
+
+  <xacro:property name="chassis_length" value="0.420" />
+  <xacro:property name="chassis_width" value="0.310" />
+  <xacro:property name="chassis_height" value="0.184" /> -->
+
+
+
+
   <xacro:property name="dummy_inertia" value="1e-09"/>
 
   <xacro:property name="mount_spacing" value="0.120" />
@@ -111,7 +126,7 @@
     <inertial>
       <!-- Center of mass -->
       <origin xyz="0.012  0.002 0.067" rpy="0 0 0"/>
-      <mass value="16.523"/>
+      <mass value="18.523"/>
       <!-- Moments of inertia: ( chassis without wheels ) -->
       <inertia
         ixx="0.3136" ixy="-0.0008" ixz="0.0164"
@@ -208,15 +223,15 @@
 
 
   <!-- VLP-16 -->
-  <xacro:include filename="$(find velodyne_description)/urdf/VLP-16.urdf.xacro"/>
+  <!-- <xacro:include filename="$(find velodyne_description)/urdf/VLP-16.urdf.xacro"/>
   <VLP-16 parent="base_link" name="velodyne" topic="/velodyne_points" hz="10" samples="360" gpu="true" lasers="16" max_range="100">
-    <origin xyz="0 0 0.4" rpy="0 0 0" />
-  </VLP-16>
+    <origin xyz="0 0 0.3" rpy="0 0 0" />
+  </VLP-16> -->
 
   <!-- VHDL-32E -->
-<!--   <xacro:include filename="$(find velodyne_description)/urdf/HDL-32E.urdf.xacro"/>
-  <HDL-32E parent="base_link" name="velodyne_2" topic="/velodyne_points_2" hz="10" samples="1024" gpu="false">
-    <origin xyz="0 0 0.6" rpy="0 0 0" />
-  </HDL-32E> -->
+  <xacro:include filename="$(find velodyne_description)/urdf/HDL-32E.urdf.xacro"/>
+  <HDL-32E parent="base_link" name="velodyne" topic="/velodyne_points" hz="20" samples="1024" gpu="true">
+    <origin xyz="0 0 0.34" rpy="0 0 0" />
+  </HDL-32E>
   
 </robot>

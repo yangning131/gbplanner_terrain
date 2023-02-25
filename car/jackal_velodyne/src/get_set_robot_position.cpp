@@ -139,7 +139,7 @@ int main(int argc, char** argv){
     
     ros::init(argc, argv, "jackal_velodyne");
     
-    SimulationJackal simJackal;
+    SimulationJackal   simJackal;
 
     ROS_INFO("\033[1;32m---->\033[0m Get or Set Robot Position.");
 

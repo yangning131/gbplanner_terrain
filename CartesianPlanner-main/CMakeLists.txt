@@ -23,6 +23,7 @@ add_message_files(
   DynamicObstacles.msg
   Obstacles.msg
   DynamicTrajectoryPoint.msg
+  Polynome.msg
 )
 
 generate_messages(DEPENDENCIES std_msgs geometry_msgs)

@@ -204,7 +204,7 @@ void PurePursuit::computeVelocities(nav_msgs::Odometry odom)
             }
           }
 
-           if (min_id >= 0 && min_dist < 0.8)
+           if (min_id >= 0 && min_dist < 1.0)
             path_.poses.erase(path_.poses.begin(), path_.poses.begin() + min_id);
 
 
