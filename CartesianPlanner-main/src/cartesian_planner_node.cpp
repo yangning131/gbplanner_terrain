@@ -46,8 +46,8 @@ public:
 
     planner_ = std::make_shared<CartesianPlanner>(config_, env_, world_);
     
-    obstacles_subscriber_ = nh_.subscribe("/obstacles11", 1, &CartesianPlannerNode::ObstaclesCallback, this);
-    dynamic_obstacles_subscriber_ = nh_.subscribe("/dynamic_obstacles11", 1,
+    obstacles_subscriber_ = nh_.subscribe("/obstacles", 1, &CartesianPlannerNode::ObstaclesCallback, this);
+    dynamic_obstacles_subscriber_ = nh_.subscribe("/dynamic_obstacles", 1,
                                                   &CartesianPlannerNode::DynamicObstaclesCallback, this);//每个时间点对应障碍物的坐标
 
     or_path_subscriber_ = nh_.subscribe("expath222", 1, &CartesianPlannerNode::Pathcallback, this); //planning/planning/execute_path  planning/server/path_blueprint_smooth
@@ -162,7 +162,7 @@ public:
             //     continue;
 
             float range = pointDistance(p, robot_point);
-            if (range < 0 || range > 10.0)
+            if (range < 0 || range > 30.0)
                 continue;
             Localcloud.push_back(p);
         }
@@ -319,24 +319,28 @@ double cast_from_0_to_2PI_Angle(const double& ang)
       poly.start_time = ros::Time::now();
       traj_pub.publish(poly);
 
-      
-      // double dt = config_.tf / (double) (config_.nfe - 1);  reach
-      // for (int i = 0; i < config_.nfe; i++) {
-      //   double time = dt * i;
-      //   auto dynamic_obstacles = env_->QueryDynamicObstacles(time);
-      //   for (auto &obstacle: dynamic_obstacles) {
-      //     int hue = int((double) obstacle.first / env_->dynamic_obstacles().size() * 320);
+      //////dyna obs
 
-      //     visualization::PlotPolygon(obstacle.second, 0.2, visualization::Color::fromHSV(hue, 1.0, 1.0), obstacle.first,
-      //                                "Online Obstacle");
-      //   }
+      double dt = config_.tf / (double) (config_.nfe - 1);  
+      for (int i = 0; i < config_.nfe; i++) {
+        double time = dt * i;
+        auto dynamic_obstacles = env_->QueryDynamicObstacles(time);
+        for (auto &obstacle: dynamic_obstacles) {
+          int hue = int((double) obstacle.first / env_->dynamic_obstacles().size() * 320);
 
-      //   auto &pt = result.data().at(i);
-      //   PlotVehicle(1, {pt.x, pt.y, pt.theta}, atan(pt.kappa * config_.vehicle.wheel_base));
-      //   ros::Duration(dt).sleep();
-      // }
+          visualization::PlotPolygon(obstacle.second, 0.2, visualization::Color::fromHSV(hue, 1.0, 1.0), obstacle.first,
+                                     "Online Obstacle");
+        }
 
-      // visualization::Trigger();
+        auto &pt = result.data().at(i);
+        PlotVehicle(1, {pt.x, pt.y, pt.theta}, atan(pt.kappa * config_.vehicle.wheel_base));
+        ros::Duration(dt).sleep();
+      }
+
+      visualization::Trigger();
+
+
+      //////dyna obs
     }
       receive = false;
       reach = false;

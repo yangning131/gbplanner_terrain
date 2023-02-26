@@ -121,14 +121,15 @@ void TrajectoryOptimizer::CalculateheightAndalpha(States &states) const{ //é€šè¿
     //     states.z[0] = states.z[0] - buffer; //0.5 test
     // }
 
-    world_->findheight(states.x[0], states.y[0], states.z[0]);
+    // world_->findheight(states.x[0], states.y[0], states.z[0]);
 
     for (size_t i = 1;i< states.x.size(); i++)
     {
-      if(!world_->findheight(states.x[i], states.y[i], states.z[i]))
-      {
-        states.z[i] = states.z[i-1];
-      }
+      // if(!world_->findheight(states.x[i], states.y[i], states.z[i]))
+      // {
+      //   states.z[i] = states.z[i-1];
+      // }
+      states.z[i] = states.z[i-1];
       // states.alpha[i-1] = getposealpha(states.x[i], states.y[i], states.z[i],states.x[i-1], states.y[i-1], states.z[i-1]);
     }
     // states.alpha[states.x.size()-1] = states.alpha[states.x.size()-2];

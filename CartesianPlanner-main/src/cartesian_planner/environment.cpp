@@ -205,7 +205,9 @@ bool Environment::CheckCollision(double time, const math::Box2d &rect) {
     return true;
   }
 
-  return CheckStaticCollision(rect);
+  // return CheckStaticCollision(rect);
+    return false;
+
 }
 
 bool Environment::CheckOptimizationCollision(double time, const math::Pose &pose, double collision_buffer) {
@@ -572,37 +574,37 @@ bool World::CheckStaticCollision(const math::Box2d &rect, double path_z) {
         {
             return true;
         }
-        for(float z = limt_min ; z < limt_max ; z+=resolution_)
-        {
-              if(!isFree(x,ymin,z))
-              {
-                find_ground1 = true;
-                count_l = 0;
-              }
-              if(!isFree(x,ymax,z))
-              {
-                find_ground2 = true;
-                count_r = 0;
-              }
-              if(find_ground1&&find_ground2)  break;
-        }
-        //
-        // if(!find_ground1||!find_ground2)  return true;
-        //
-        if(count_l==2||count_r==2)
-        {
-          return true;
-        }
-        if(x==xmax&&(count_l!=0||count_r!=0))
-        {
-          return true;
-        }
+        // for(float z = limt_min ; z < limt_max ; z+=resolution_)
+        // {
+        //       if(!isFree(x,ymin,z))
+        //       {
+        //         find_ground1 = true;
+        //         count_l = 0;
+        //       }
+        //       if(!isFree(x,ymax,z))
+        //       {
+        //         find_ground2 = true;
+        //         count_r = 0;
+        //       }
+        //       if(find_ground1&&find_ground2)  break;
+        // }
+        // //
+        // // if(!find_ground1||!find_ground2)  return true;
+        // //
+        // if(count_l==2||count_r==2)
+        // {
+        //   return true;
+        // }
+        // if(x==xmax&&(count_l!=0||count_r!=0))
+        // {
+        //   return true;
+        // }
 
-        //******边缘***///
-        if(x==xmin&&(count_l!=0||count_r!=0))
-        {
-          return true;
-        }
+        // //******边缘***///
+        // if(x==xmin&&(count_l!=0||count_r!=0))
+        // {
+        //   return true;
+        // }
   }
 
   int count_l_y = 0;
@@ -620,38 +622,38 @@ bool World::CheckStaticCollision(const math::Box2d &rect, double path_z) {
         {
             return true;
         }
-        for(float z = limt_min ; z < limt_max ; z+=resolution_)
-        {
-              if(!isFree(xmin,y,z))
-              {
-                find_ground1 = true;
-                count_l_y = 0;
-              }
-              if(!isFree(xmax,y,z))
-              {
-                find_ground2 = true;
-                count_r_y = 0;
+        // for(float z = limt_min ; z < limt_max ; z+=resolution_)
+        // {
+        //       if(!isFree(xmin,y,z))
+        //       {
+        //         find_ground1 = true;
+        //         count_l_y = 0;
+        //       }
+        //       if(!isFree(xmax,y,z))
+        //       {
+        //         find_ground2 = true;
+        //         count_r_y = 0;
 
-              }
-              if(find_ground1&&find_ground2)  break;
-        }
-        //
-        // if(!find_ground1||!find_ground2)  return true;
-        //
-        if(count_l_y==2||count_r_y==2)
-        {
-          return true;
-        }
-        if(y==ymax&&(count_l_y!=0||count_r_y!=0))
-        {
-          return true;
-        }
+        //       }
+        //       if(find_ground1&&find_ground2)  break;
+        // }
+        // //
+        // // if(!find_ground1||!find_ground2)  return true;
+        // //
+        // if(count_l_y==2||count_r_y==2)
+        // {
+        //   return true;
+        // }
+        // if(y==ymax&&(count_l_y!=0||count_r_y!=0))
+        // {
+        //   return true;
+        // }
   
-        //******边缘***///
-        if(y==ymin&&(count_l_y!=0||count_r_y!=0))
-        {
-          return true;
-        }
+        // //******边缘***///
+        // if(y==ymin&&(count_l_y!=0||count_r_y!=0))
+        // {
+        //   return true;
+        // }
 
   }
   // for(double x = xmin ;x<=xmax ; x+=getObstacle_map().info.resolution) 

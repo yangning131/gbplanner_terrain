@@ -23,20 +23,20 @@ public:
   /**
    * L_F, front hang length of the ego vehicle (m)
    */
-  int model = 2 ; //"1 : arcman  ; 2:diference"
-  double front_hang_length = 0.2;//0.96
+  int model = 1 ; //"1 : arcman  ; 2:diference"
+  double front_hang_length = 0.4;//0.96
 
   double car_height = 0.6;
 
   /**
    * L_W, wheelbase of the ego vehicle (m)
    */
-  double wheel_base = 0.3; //2.8
+  double wheel_base = 1.2; //2.8
 
   /**
    * L_R, rear hang length of the ego vehicle (m)
    */
-  double rear_hang_length = 0.1;//0.929
+  double rear_hang_length = 0.4;//0.929
 
   /**
    * L_B, width of the ego vehicle (m)
@@ -46,7 +46,7 @@ public:
   /**
    * Upper bound of v(t) (m/s)
    */
-  double max_velocity = 1.5;//arc 12.0   diff 1.5
+  double max_velocity = 12.0;//arc 12.0   diff 1.5
 
   /**
    * Lower and upper bounds of a(t) (m/s^2)
@@ -61,12 +61,12 @@ public:
   /**
    * Upper bound of |\phi(t)| (rad)
    */
-  double phi_max = 0.43;//.85
+  double phi_max = 0.43;//.85   
 
   /**
    * Upper bound of |\omega(t)| (rad/s)
    */
-  double omega_max = 0.8; //arc 1.5     diff 0.8
+  double omega_max = 1.5; //arc 1.5     diff 0.8
 
   double radius;
   double f2x, r2x;

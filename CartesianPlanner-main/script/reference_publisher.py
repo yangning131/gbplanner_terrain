@@ -136,8 +136,8 @@ def generate_random_dynamic_vehicles(center_line, count, horizon=16.0, dt=0.1):
     ref = get_random_reference_points(center_line, count, back_idx=1000)
     ref_center_line = np.array([[pt.s, pt.x, pt.y, pt.theta] for pt in center_line.points])
 
-    velocities = 4 + 2 * np.random.rand(count)
-    footprint = transform_footprint(0, 0, 0, [4.0, 2.0])
+    velocities = 2 + 2 * np.random.rand(count)
+    footprint = transform_footprint(0, 0, 0, [8.0, 2.0])
     vehicle = Polygon(points=[Point32(x=row[0], y=row[1]) for row in footprint])
 
     msg = DynamicObstacles()

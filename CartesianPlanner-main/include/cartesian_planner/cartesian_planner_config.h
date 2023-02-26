@@ -19,17 +19,17 @@ struct CartesianPlannerConfig {
   /**
    * Number of finite elements used to discretize an OCP
    */
-  int nfe = 160;//320
+  int nfe = 160;//320   160 
 
   /**
    * Time horizon length (s)
    */
-  double tf = 8;//16
+  double tf = 8;//16  8
 
   /**
    * nominal velocity
    */
-  double dp_nominal_velocity = 1.5;//10.0
+  double dp_nominal_velocity = 10.0;//10.0   1.5
 
   /**
    * cost of obstacles, should be set larger to avoid collision with obstacles
@@ -64,12 +64,12 @@ struct CartesianPlannerConfig {
   /**
    * maximum iteration count for corridor expansion
    */
-  int corridor_max_iter = 800;//1000
+  int corridor_max_iter = 1000;//1000  800
 
   /**
    * increment limit for corridor expansion
    */
-  double corridor_incremental_limit = 8.0;//20  10.0
+  double corridor_incremental_limit = 20;//20  10.0    8.0
 
   /**
    * Weighting parameter in Eq.(2)
@@ -89,7 +89,7 @@ struct CartesianPlannerConfig {
   /**
    * Maximum iteration number in Alg.1
    */
-  int opti_iter_max = 6;//5   8
+  int opti_iter_max = 5;//5   8  6
 
   /**
    * Initial value of weighting parameter w_penalty
@@ -104,7 +104,7 @@ struct CartesianPlannerConfig {
   /**
    * Violation tolerance w.r.t. the softened nonlinear constraints
    */
-  double opti_varepsilon_tol = 1e-2;//1e-4
+  double opti_varepsilon_tol = 1e-3;//1e-4
 
   VehicleParam vehicle;
 };

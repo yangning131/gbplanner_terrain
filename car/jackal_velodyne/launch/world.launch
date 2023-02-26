@@ -8,7 +8,7 @@
     <!-- <arg name="world_name" default="$(find lexicographic_planning)/world/terrain_world.world" /> -->
     <!-- <arg name="world_name" default="$(find jackal_velodyne)/worlds/terrain_mount5.world" /> -->
 
-    <arg name="world_name" default="$(find jackal_velodyne)/worlds/terrain_mount666.world" />
+    <arg name="world_name" default="$(find jackal_velodyne)/worlds/terrain_mount_dyn.world" />
 
 
   

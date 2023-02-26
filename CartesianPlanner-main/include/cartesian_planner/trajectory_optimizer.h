@@ -52,7 +52,8 @@ private:
     box.Shift({x, y});
 
     // return env_->CheckCollision(time, box);
-    return world_->CheckStaticCollision(box, z);
+    return (world_->CheckStaticCollision(box, z)||env_->CheckCollision(time, box));//40 ~60
+    // return env_->CheckCollision(time, box);
 
   }
 
