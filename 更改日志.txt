@@ -59,4 +59,6 @@ question:类变量是对象 编译不过   类变量是类的指针
 
 
  10.  launch优化  01仿真 02gb 03mpc/pure_p  commit -m "launch"
+
+ 11.ca mount add globleterrainexpand
 https://blog.csdn.net/weixin_43879302/article/details/105880972

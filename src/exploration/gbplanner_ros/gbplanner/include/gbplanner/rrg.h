@@ -128,6 +128,9 @@ class Rrg {
   void expandTreeStar(std::shared_ptr<GraphManager> graph_manager,
                       StateVec& new_state, ExpandGraphReport& rep, Eigen::Vector4d& tcost_show);
 
+  void expandTreeStar(std::shared_ptr<GraphManager> graph_manager,
+                      StateVec& new_state, ExpandGraphReport& rep);
+
   // Add edges only from this vertex with collision checking.
   void expandGraphEdges(std::shared_ptr<GraphManager> graph_manager,
                         Vertex* new_vertex, ExpandGraphReport& rep);
