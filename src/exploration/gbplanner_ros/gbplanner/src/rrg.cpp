@@ -55,7 +55,7 @@ Rrg::Rrg(const ros::NodeHandle& nh, const ros::NodeHandle& nh_private)
 
   //terrain
   FitPlaneArg fit_plane_arg;
-  fit_plane_arg.w_total_ = 0.1; //0.4凹陷地形
+  fit_plane_arg.w_total_ = 0.4; //0.4凹陷地形
   fit_plane_arg.w_flatness_ = 4000.0;
   fit_plane_arg.w_slope_ = 0.4;
   fit_plane_arg.w_sparsity_ = 0.4;
@@ -71,7 +71,7 @@ Rrg::Rrg(const ros::NodeHandle& nh, const ros::NodeHandle& nh_private)
   world = new World(0.1);
   pf_rrt_star = new PFRRTStar(0.6, world);//0.6   0.9  
   pf_rrt_star->setFitPlaneArg(fit_plane_arg);
-  pf_rrt_star->setFitPlaneRadius(0.4);//1.0
+  pf_rrt_star->setFitPlaneRadius(0.6);//1.0
   //terrain
   //
   global_graph_update_timer_ =
@@ -433,7 +433,7 @@ bool Rrg::sampleVertex(StateVec& state) {
 
              state[2] = sample_point[2];
 
-              if(terrain_cost<0.98)  // 0.98/凹陷地形效果较好为0.6
+              if(terrain_cost<0.6)  // 0.98/凹陷地形效果较好为0.6
               { 
                 // std::cout<<"terrain_cost:"<<terrain_cost<<std::endl;
 
@@ -520,7 +520,7 @@ bool Rrg::sampleVertex(RandomSampler& random_sampler, StateVec& root_state,
 
              sampled_state[2] = sample_point[2];
 
-              if(terrain_cost<0.98) ////0.6
+              if(terrain_cost<0.6) ////0.6
               {
                 // std::cout<<"terrain_cost:"<<terrain_cost<<std::endl;
 
@@ -1293,7 +1293,212 @@ bool Rrg::sampleVertex(RandomSampler& random_sampler, StateVec& root_state,
 
 
 
+void Rrg::expandTreeStar(std::shared_ptr<GraphManager> graph_manager,
+                         StateVec& new_state, ExpandGraphReport& rep) {
+  // Find nearest neighbour
+  Vertex* nearest_vertex = NULL;
+  if (!graph_manager->getNearestVertex(&new_state, &nearest_vertex)) {
+    rep.status = ExpandGraphStatus::kErrorKdTree;
+    return;
+  }
+  if (nearest_vertex == NULL) {
+    rep.status = ExpandGraphStatus::kErrorKdTree;
+    return;
+  }
+  // Check for collision of new connection plus some overshoot distance.
+  Eigen::Vector3d origin(nearest_vertex->state[0], nearest_vertex->state[1],
+                         nearest_vertex->state[2]);
+  Eigen::Vector3d direction_old(new_state[0] - origin[0], new_state[1] - origin[1],
+                            new_state[2] - origin[2]);
+  double direction_norm_old = direction_old.norm();
+  if (direction_norm_old > planning_params_.edge_length_max) {
+    direction_old = planning_params_.edge_length_max * direction_old.normalized();
+  } else if (direction_norm_old <= planning_params_.edge_length_min) {
+    // Should not add short edge.
+    rep.status = ExpandGraphStatus::kErrorShortEdge;
+    return;
+  }
+  // Recalculate the distance.
+  direction_norm_old = direction_old.norm();
+  new_state[0] = origin[0] + direction_old[0];
+  new_state[1] = origin[1] + direction_old[1];
+  new_state[2] = origin[2] + direction_old[2];
 
+
+  //new_state terrain analyse
+  float terrain_cost = 2.0;
+  bool calculate_tecost = false;
+  Eigen::Vector3d sample_point(new_state[0], new_state[1], new_state[2]);
+  if (world->has_map_)
+  {
+      calculate_tecost = pf_rrt_star->planner(terrain_cost, sample_point);//return bool
+      if(calculate_tecost && terrain_cost<0.6) //0.98
+      {
+          new_state[2] = sample_point[2];
+      }
+      else{
+               rep.status = ExpandGraphStatus::kErrorGeofenceViolated;
+                return;
+      }  
+  }
+  else
+  {
+    rep.status = ExpandGraphStatus::kErrorGeofenceViolated;
+    return;
+  }
+
+  Eigen::Vector3d direction(new_state[0] - origin[0], new_state[1] - origin[1],
+                            new_state[2] - origin[2]);
+  double direction_norm = direction.norm();
+
+  //terrain slop judge
+  Eigen::Vector2d ground_direction(direction[0],direction[1]);
+  double ground_lane = ground_direction.norm();
+  double hight_change = abs(direction[2]);
+  double angle = std::atan(hight_change/ground_lane)*180/M_PI;
+  // std::cout<<"angle = :"<<angle<<std::endl;
+  //   if(angle>10.0)
+  // { 
+  //   std::cout<<"angle =================================================== :"<<angle<<std::endl;
+  // }
+  if(angle>26.0)//25
+  { 
+    // std::cout<<"angle = :"<<angle<<std::endl;
+    rep.status = ExpandGraphStatus::kErrorGeofenceViolated;
+    return;
+  }
+
+
+  // Since we are buiding graph,
+  // Consider to check the overshoot for both 2 directions except root node.
+  Eigen::Vector3d overshoot_vec =
+      planning_params_.edge_overshoot * direction.normalized();
+  Eigen::Vector3d start_pos = origin + robot_params_.center_offset;
+  if (nearest_vertex->id != 0) start_pos = start_pos - overshoot_vec;
+  Eigen::Vector3d end_pos =
+      origin + robot_params_.center_offset + direction + overshoot_vec;
+
+  if (planning_params_.geofence_checking_enable &&
+      (GeofenceManager::CoordinateStatus::kViolated ==
+       geofence_manager_->getPathStatus(
+           Eigen::Vector2d(start_pos[0], start_pos[1]),
+           Eigen::Vector2d(end_pos[0], end_pos[1]),
+           Eigen::Vector2d(robot_box_size_[0], robot_box_size_[1])))) {
+    rep.status = ExpandGraphStatus::kErrorGeofenceViolated;
+    return;
+  }
+
+  bool connected_to_root = false;
+  if (MapManager::VoxelStatus::kFree ==
+      map_manager_->getPathStatus(start_pos, end_pos, robot_box_size_, true)) {
+    // Obstacle free.
+    // Re-wire the shortest one first.
+    std::vector<Vertex*> nearest_vertices;
+    if (!graph_manager->getNearestVertices(
+            &new_state, planning_params_.nearest_range, &nearest_vertices)) {
+      rep.status = ExpandGraphStatus::kErrorKdTree;
+      return;
+    }
+
+    // To save the computation from collision checking, we save feasible list
+    // from this first step.
+    std::vector<Vertex*> feasible_neigbors;
+
+    Vertex* v_min = nearest_vertex;
+    double c_min = v_min->distance + direction_norm + planning_params_.terrain_cost_expand_w*v_min->terrain_cost
+                    +planning_params_.terrain_slop_change_w*angle;
+    origin << new_state[0], new_state[1], new_state[2];
+
+    for (int i = 0; i < nearest_vertices.size(); ++i) {
+      direction << nearest_vertices[i]->state[0] - new_state[0],
+          nearest_vertices[i]->state[1] - new_state[1],
+          nearest_vertices[i]->state[2] - new_state[2];
+      double d_norm = direction.norm();
+
+      ground_direction(direction[0],direction[1]);
+      ground_lane = ground_direction.norm();
+      hight_change = abs(direction[2]);
+      angle = std::atan(hight_change/ground_lane)*180/M_PI;
+
+      if (d_norm == 0.0) continue;
+      if(angle>26.0) continue;
+
+      Eigen::Vector3d p_start = origin + robot_params_.center_offset;
+      Eigen::Vector3d p_end = origin + robot_params_.center_offset + direction;
+
+      bool geofence_pass = true;
+      if (planning_params_.geofence_checking_enable &&
+          (GeofenceManager::CoordinateStatus::kViolated ==
+           geofence_manager_->getPathStatus(
+               Eigen::Vector2d(p_start[0], p_start[1]),
+               Eigen::Vector2d(p_end[0], p_end[1]),
+               Eigen::Vector2d(robot_box_size_[0], robot_box_size_[1])))) {
+        geofence_pass = false;
+      }
+
+      if (geofence_pass) {
+        if (MapManager::VoxelStatus::kFree ==
+            map_manager_->getPathStatus(p_start, p_end, robot_box_size_,
+                                        true)) {
+          feasible_neigbors.push_back(nearest_vertices[i]);
+          double cost_tmp = d_norm + nearest_vertices[i]->distance+ planning_params_.terrain_cost_expand_w*terrain_cost
+                    +planning_params_.terrain_slop_change_w*angle;
+          if (cost_tmp < c_min) {
+            v_min = nearest_vertices[i];
+            c_min = cost_tmp;
+          }
+        }
+      }
+    }
+    // Add the vertex with shortest distance to the tree (graph).
+    Vertex* new_vertex =
+        new Vertex(graph_manager->generateVertexID(), new_state, terrain_cost);
+    new_vertex->parent = v_min;
+    new_vertex->distance = c_min;
+    v_min->children.push_back(new_vertex);
+    graph_manager->addVertex(new_vertex);
+    ++rep.num_vertices_added;
+    rep.vertex_added = new_vertex;
+    graph_manager->addEdge(new_vertex, v_min, c_min - v_min->distance);
+    ++rep.num_edges_added;
+
+    // Rewire neigbor nodes through newly added vertex if found shorter path.
+    origin << new_vertex->state[0], new_vertex->state[1], new_vertex->state[2];
+    for (auto& near_vertex : feasible_neigbors) {
+      direction << near_vertex->state[0] - new_vertex->state[0],
+          near_vertex->state[1] - new_vertex->state[1],
+          near_vertex->state[2] - new_vertex->state[2];
+      double d_norm = direction.norm();
+      if (d_norm == 0.0) continue;
+
+      ground_direction(direction[0],direction[1]);
+      ground_lane = ground_direction.norm();
+      hight_change = abs(direction[2]);
+      angle = std::atan(hight_change/ground_lane)*180/M_PI;
+
+      if(angle>26.0) continue;
+
+      double cost_tmp = d_norm + new_vertex->distance + planning_params_.terrain_cost_expand_w*new_vertex->terrain_cost
+                    +planning_params_.terrain_slop_change_w*angle;
+      if (near_vertex->distance > cost_tmp) {
+        graph_manager->removeEdge(near_vertex, near_vertex->parent);
+        near_vertex->distance = cost_tmp;
+        near_vertex->parent = new_vertex;
+        graph_manager->addEdge(near_vertex, near_vertex->parent, d_norm);
+      }
+    }
+  } else {
+    stat_->num_edges_fail++;
+    if (stat_->num_edges_fail < 500) {
+      std::vector<double> vtmp = {start_pos[0], start_pos[1], start_pos[2],
+                                  end_pos[0],   end_pos[1],   end_pos[2]};
+      stat_->edges_fail.push_back(vtmp);
+    }
+    rep.status = ExpandGraphStatus::kErrorCollisionEdge;
+    return;
+  }
+  rep.status = ExpandGraphStatus::kSuccess;
+}
 
 void Rrg::expandTreeStar(std::shared_ptr<GraphManager> graph_manager,
                          StateVec& new_state, ExpandGraphReport& rep, Eigen::Vector4d& tcost_show) {
@@ -1334,11 +1539,9 @@ void Rrg::expandTreeStar(std::shared_ptr<GraphManager> graph_manager,
   if (world->has_map_)
   {
       calculate_tecost = pf_rrt_star->planner(terrain_cost, sample_point);//return bool
-      if(calculate_tecost && terrain_cost<0.98) //0.98
+      if(calculate_tecost && terrain_cost<0.6) //0.98
       {
           new_state[2] = sample_point[2];
-          tcost_show = new_state;
-          tcost_show[3] = terrain_cost;
       }
       else{
                rep.status = ExpandGraphStatus::kErrorGeofenceViolated;
@@ -2403,7 +2606,7 @@ void Rrg::expandGlobalGraphTimerCallback(const ros::TimerEvent& event) {
 
       loop_count_success++;
       ExpandGraphReport rep;
-      expandGraph(global_graph_, new_state, rep);
+      expandTreeStar(global_graph_, new_state, rep);//change_   ExpanGraph
       if (rep.status == ExpandGraphStatus::kSuccess) {
         computeVolumetricGainRayModel(rep.vertex_added->state,
                                       rep.vertex_added->vol_gain, false);
@@ -2561,7 +2764,7 @@ ConnectStatus Rrg::findPathToConnect(
     StateVec new_state;
     if (!sampleVertex(random_sampler_to_search_, source, new_state)) continue;
     ExpandGraphReport rep;
-    expandGraph(graph_manager, new_state, rep);
+    expandTreeStar(graph_manager, new_state, rep);//change_
     if (rep.status == ExpandGraphStatus::kSuccess) {
       num_vertices += rep.num_vertices_added;
       num_edges += rep.num_edges_added;
@@ -2602,7 +2805,7 @@ ConnectStatus Rrg::findPathToConnect(
         robot_box_size_, true);
     if (voxel_state == MapManager::VoxelStatus::kFree) {
       ExpandGraphReport rep;
-      expandGraph(graph_manager, target, rep);
+      expandTreeStar(graph_manager, target, rep);//change_
       if (rep.status == ExpandGraphStatus::kSuccess) {
         ROS_INFO("Added target to the graph successfully.");
         num_vertices += rep.num_vertices_added;
@@ -3265,7 +3468,7 @@ std::vector<geometry_msgs::Pose> Rrg::searchHomingPath(
   } else {
     ROS_WARN("[GlobalGraph] Try to add current state to the graph.");
     ExpandGraphReport rep;
-    expandGraph(global_graph_, cur_state, rep);
+    expandTreeStar(global_graph_, cur_state, rep);//change_
     if (rep.status == ExpandGraphStatus::kSuccess) {
       ROS_WARN("[GlobalGraph] Added successfully.");
       link_vertex = rep.vertex_added;
@@ -3920,7 +4123,7 @@ bool Rrg::addRefPathToGraph(const std::shared_ptr<GraphManager> graph_manager,
   } else {
     ROS_WARN("[GlobalGraph] Try to add current state to the graph.");
     ExpandGraphReport rep;
-    expandGraph(graph_manager, first_state, rep);
+    expandTreeStar(graph_manager, first_state, rep);//change_
     if (rep.status == ExpandGraphStatus::kSuccess) {
       ROS_WARN("[GlobalGraph] Added successfully.");
       parent_vertex = rep.vertex_added;
@@ -4067,7 +4270,7 @@ bool Rrg::addRefPathToGraph(const std::shared_ptr<GraphManager> graph_manager,
   } else {
     ROS_WARN("[GlobalGraph] Try to add current state to the graph.");
     ExpandGraphReport rep;
-    expandGraph(graph_manager, first_state, rep);
+    expandTreeStar(graph_manager, first_state, rep);//change_
     if (rep.status == ExpandGraphStatus::kSuccess) {
       ROS_WARN("[GlobalGraph] Added successfully.");
       parent_vertex = rep.vertex_added;
@@ -4280,7 +4483,7 @@ void Rrg::timerCallback(const ros::TimerEvent& event) {
       StateVec new_state;
       new_state = current_state_;
       ExpandGraphReport rep;
-      expandGraph(global_graph_, new_state, rep);
+      expandTreeStar(global_graph_, new_state, rep);//change_
       // ROS_INFO("From odometry, added %d vertices and %d edges",
       // rep.num_vertices_added, rep.num_edges_added);
     }
@@ -4498,7 +4701,7 @@ bool Rrg::connectStateToGraph(std::shared_ptr<GraphManager> graph,
   } else {
     ROS_WARN("[GlobalGraph] Try to add current state to the graph.");
     ExpandGraphReport rep;
-    expandGraph(graph, cur_state, rep);
+    expandTreeStar(graph, cur_state, rep);//change_
     if (rep.status == ExpandGraphStatus::kSuccess) {
       ROS_WARN("[GlobalGraph] Added successfully.");
       v_added = rep.vertex_added;
