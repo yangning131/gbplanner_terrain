@@ -241,11 +241,11 @@ void Visualization::visualizeGraph(
   edge_marker.ns = "edges";
   edge_marker.action = visualization_msgs::Marker::ADD;
   edge_marker.type = visualization_msgs::Marker::LINE_LIST;
-  edge_marker.scale.x = 0.04;
-  edge_marker.color.r = 200.0 / 255.0;
-  edge_marker.color.g = 100.0 / 255.0;
-  edge_marker.color.b = 0.0;
-  edge_marker.color.a = 1.0;
+  edge_marker.scale.x = 0.08;
+  edge_marker.color.r = 0.0;//200.0 / 255.0;
+  edge_marker.color.g = 0.9;//100.0 / 255.0;
+  edge_marker.color.b = 0.9;//0.0;
+  edge_marker.color.a = 0.6;//1.0;
   edge_marker.lifetime = ros::Duration(graph_lifetime);
   edge_marker.frame_locked = false;
 
@@ -323,11 +323,11 @@ void Visualization::visualizeGlobalGraph(
   edge_marker.ns = "edges";
   edge_marker.action = visualization_msgs::Marker::ADD;
   edge_marker.type = visualization_msgs::Marker::LINE_LIST;
-  edge_marker.scale.x = 0.1;
-  edge_marker.color.r = 200.0 / 255.0;
-  edge_marker.color.g = 100.0 / 255.0;
-  edge_marker.color.b = 0.0;
-  edge_marker.color.a = 1.0;
+  edge_marker.scale.x = 0.04;
+  edge_marker.color.r = 0.0;//200.0 / 255.0;
+  edge_marker.color.g = 0.9;//100.0 / 255.0;
+  edge_marker.color.b = 0.9;//0.0;
+  edge_marker.color.a = 0.2;
   edge_marker.lifetime = ros::Duration(graph_lifetime);
   edge_marker.frame_locked = false;
 

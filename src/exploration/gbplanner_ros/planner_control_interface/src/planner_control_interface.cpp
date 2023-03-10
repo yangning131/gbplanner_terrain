@@ -426,7 +426,6 @@ void PlannerControlInterface::run() {
   bool cont = true;
   while (cont) {
     PCIManager::PCIStatus pci_status = pci_manager_->getStatus();
-    ROS_INFO("test*****************************.");
     planner_goal_pub_.publish(set_waypoint_);
     if (pci_status == PCIManager::PCIStatus::kReady) {
       // Priority 1: Check if require homing.
@@ -463,7 +462,6 @@ void PlannerControlInterface::run() {
       }  // Priority 6: Go to waypoint.
       else if (go_to_waypoint_request_) {
         go_to_waypoint_request_ = false;
-        ROS_INFO("test111111111111111111111.");
         pci_manager_->goToWaypoint(set_waypoint_);
       }
     } else if (pci_status == PCIManager::PCIStatus::kError) {

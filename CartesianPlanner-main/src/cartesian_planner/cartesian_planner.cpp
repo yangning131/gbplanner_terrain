@@ -14,7 +14,7 @@
 
 namespace cartesian_planner {
 
-bool CartesianPlanner::Plan(const StartState &state, DiscretizedTrajectory &result) {
+bool CartesianPlanner::Plan( StartState &state, DiscretizedTrajectory &result) {
   std::vector<TrajectoryPoint> points;
   
   nav_msgs::Path reference_path;
@@ -162,7 +162,8 @@ bool CartesianPlanner::Plan(const StartState &state, DiscretizedTrajectory &resu
     point.x = fixedPath.poses[0].pose.position.x;
     point.y = fixedPath.poses[0].pose.position.y;
     point.z = state.z + config_.vehicle.car_height;
-    point.theta = tf::getYaw(fixedPath.poses[0].pose.orientation);
+    point.theta = Mod2Pi(tf::getYaw(fixedPath.poses[0].pose.orientation));
+    state.theta = point.theta;
     points.emplace_back(point);
   }
 
@@ -171,14 +172,14 @@ bool CartesianPlanner::Plan(const StartState &state, DiscretizedTrajectory &resu
     point.x = fixedPath.poses[i].pose.position.x;
     point.y = fixedPath.poses[i].pose.position.y;
     point.z = fixedPath.poses[i].pose.position.z;
-    point.theta = tf::getYaw(fixedPath.poses[i].pose.orientation);
+    point.theta = Mod2Pi(tf::getYaw(fixedPath.poses[i].pose.orientation));
     points.emplace_back(point);
   }
   DiscretizedTrajectory coarse_trajectory(points);
 
 
   Constraints opti_constraints;
-  opti_constraints.start_x = state.x; opti_constraints.start_y = state.y; opti_constraints.start_theta = state.theta;
+  opti_constraints.start_x = state.x; opti_constraints.start_y = state.y; opti_constraints.start_theta = state.theta;// opti_constraints.start_theta = state.theta;
   opti_constraints.start_v = state.v; opti_constraints.start_phi = state.phi; opti_constraints.start_a = state.a;
   opti_constraints.start_omega = state.omega;
 

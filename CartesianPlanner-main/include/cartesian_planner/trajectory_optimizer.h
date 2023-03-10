@@ -63,9 +63,9 @@ private:
     Eigen::Vector2d ground_direction(direction[0],direction[1]);
     double ground_lane = ground_direction.norm();
     double hight_change = abs(direction[2]);
-    if(ground_lane<=0.01||hight_change<=0.01)
-          return 0;
-    return std::atan(hight_change/ground_lane);
+    // if(ground_lane<=0.01||hight_change<=0.01)
+    //       return 0;
+    return std::atan2(hight_change,ground_lane);
   }
 
 };

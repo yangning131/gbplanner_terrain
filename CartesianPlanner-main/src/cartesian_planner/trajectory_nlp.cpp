@@ -113,6 +113,7 @@ void TrajectoryNLP::BuildIterativeNLP() {
   SX p_fit_alpha = SX::sym("fit_alpha", config_.nfe, 1);
 
 
+
   auto hi = tf / config_.nfe;
   auto prev = Slice(0, config_.nfe - 1);
   auto next = Slice(1, config_.nfe);
@@ -137,9 +138,13 @@ void TrajectoryNLP::BuildIterativeNLP() {
                                             g_yf_kin, g_xr_kin, g_yr_kin}));
 
   SX f_obj =
-    sumsqr(x - p_ref_x) + sumsqr(y - p_ref_y) + config_.opti_w_r_theta * sumsqr(theta - p_ref_theta) +
+    config_.opti_w_r_theta*sumsqr(x - p_ref_x) + config_.opti_w_r_theta*sumsqr(y - p_ref_y) + //config_.opti_w_r_theta * sumsqr(    pi- abs(abs(theta - p_ref_theta )-pi)           ) +
     config_.opti_w_u * (sumsqr(jerk) + config_.opti_w_rw * sumsqr(omega)) +
     p_inf_w * infeasibility;
+    // SX f_obj =
+    // sumsqr(x - p_ref_x) + sumsqr(y - p_ref_y) + config_.opti_w_r_theta * sumsqr(   theta - p_ref_theta  ) +
+    // config_.opti_w_u * (sumsqr(jerk) + config_.opti_w_rw * sumsqr(omega)) +
+    // p_inf_w * infeasibility;
 
   SX p = SX::vertcat({p_inf_w, p_ref_x, p_ref_y, p_ref_theta, p_fit_alpha});
   SX opti_x = SX::vertcat({x, y, theta, v, a, omega, jerk, xf, yf, xr, yr});

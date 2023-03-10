@@ -29,7 +29,7 @@ public:
   explicit CartesianPlanner(const CartesianPlannerConfig &config, const Env &env, const Wor &world)
     : config_(config), opti_(config, env, world), env_(env){}
 
-  bool Plan(const StartState &state, DiscretizedTrajectory &result);
+  bool Plan( StartState &state, DiscretizedTrajectory &result);
 
   float pointDistance(TrajectoryPoint p1, TrajectoryPoint p2)
   {
@@ -47,11 +47,23 @@ public:
     double ground_lane = ground_direction.norm();
 
     double hight_change = abs(direction[2]);
-    if(ground_lane<=0.01||hight_change<=0.01)
-          return 0;
+    // if(ground_lane<=0.01||hight_change<=0.01)
+    //       return 0;
           
-    return std::atan(hight_change/ground_lane);
+    return std::atan2(hight_change,ground_lane);
   }
+ double Mod2Pi(const double &x)  {
+    double v = fmod(x, 2 * M_PI);
+  
+      if (v < -M_PI) {
+        v += 2.0 * M_PI;
+    } else if (v > M_PI) {
+        v -= 2.0 * M_PI;
+    }
+    
+
+    return v;
+}
 
 
 private:

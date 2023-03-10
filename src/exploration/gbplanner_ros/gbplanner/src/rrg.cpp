@@ -433,7 +433,7 @@ bool Rrg::sampleVertex(StateVec& state) {
 
              state[2] = sample_point[2];
 
-              if(terrain_cost<0.98)  // 0.98/凹陷地形效果较好为0.6
+              if(terrain_cost<0.99)  // 0.98/凹陷地形效果较好为0.6
               { 
                 // std::cout<<"terrain_cost:"<<terrain_cost<<std::endl;
 
@@ -520,7 +520,7 @@ bool Rrg::sampleVertex(RandomSampler& random_sampler, StateVec& root_state,
 
              sampled_state[2] = sample_point[2];
 
-              if(terrain_cost<0.98) ////0.6
+              if(terrain_cost<0.99) ////0.6
               {
                 // std::cout<<"terrain_cost:"<<terrain_cost<<std::endl;
 
@@ -1332,7 +1332,7 @@ void Rrg::expandTreeStar(std::shared_ptr<GraphManager> graph_manager,
   if (world->has_map_)
   {
       calculate_tecost = pf_rrt_star->planner(terrain_cost, sample_point);//return bool
-      if(calculate_tecost && terrain_cost<0.98) //0.98
+      if(calculate_tecost && terrain_cost<0.99) //0.98
       {
           new_state[2] = sample_point[2];
       }
@@ -1355,7 +1355,7 @@ void Rrg::expandTreeStar(std::shared_ptr<GraphManager> graph_manager,
   Eigen::Vector2d ground_direction(direction[0],direction[1]);
   double ground_lane = ground_direction.norm();
   double hight_change = abs(direction[2]);
-  double angle = std::atan(hight_change/ground_lane)*180/M_PI;
+  double angle = std::atan2(hight_change,ground_lane)*180/M_PI;
   // std::cout<<"angle = :"<<angle<<std::endl;
   //   if(angle>10.0)
   // { 
@@ -1418,7 +1418,7 @@ void Rrg::expandTreeStar(std::shared_ptr<GraphManager> graph_manager,
       ground_direction(direction[0],direction[1]);
       ground_lane = ground_direction.norm();
       hight_change = abs(direction[2]);
-      angle = std::atan(hight_change/ground_lane)*180/M_PI;
+      angle = std::atan2(hight_change,ground_lane)*180/M_PI;
 
       if (d_norm == 0.0) continue;
       if(angle>26.0) continue;
@@ -1474,7 +1474,7 @@ void Rrg::expandTreeStar(std::shared_ptr<GraphManager> graph_manager,
       ground_direction(direction[0],direction[1]);
       ground_lane = ground_direction.norm();
       hight_change = abs(direction[2]);
-      angle = std::atan(hight_change/ground_lane)*180/M_PI;
+      angle = std::atan2(hight_change,ground_lane)*180/M_PI;
 
       if(angle>26.0) continue;
 
@@ -1539,7 +1539,7 @@ void Rrg::expandTreeStar(std::shared_ptr<GraphManager> graph_manager,
   if (world->has_map_)
   {
       calculate_tecost = pf_rrt_star->planner(terrain_cost, sample_point);//return bool
-      if(calculate_tecost && terrain_cost<0.98) //0.98
+      if(calculate_tecost && terrain_cost<0.99) //0.98
       {
           new_state[2] = sample_point[2];
           tcost_show = new_state;
@@ -1564,7 +1564,7 @@ void Rrg::expandTreeStar(std::shared_ptr<GraphManager> graph_manager,
   Eigen::Vector2d ground_direction(direction[0],direction[1]);
   double ground_lane = ground_direction.norm();
   double hight_change = abs(direction[2]);
-  double angle = std::atan(hight_change/ground_lane)*180/M_PI;
+  double angle = std::atan2(hight_change,ground_lane)*180/M_PI;
   // std::cout<<"angle = :"<<angle<<std::endl;
   //   if(angle>10.0)
   // { 
@@ -1627,7 +1627,7 @@ void Rrg::expandTreeStar(std::shared_ptr<GraphManager> graph_manager,
       ground_direction(direction[0],direction[1]);
       ground_lane = ground_direction.norm();
       hight_change = abs(direction[2]);
-      angle = std::atan(hight_change/ground_lane)*180/M_PI;
+      angle = std::atan2(hight_change,ground_lane)*180/M_PI;
 
       if (d_norm == 0.0) continue;
       if(angle>26.0) continue;
@@ -1683,7 +1683,7 @@ void Rrg::expandTreeStar(std::shared_ptr<GraphManager> graph_manager,
       ground_direction(direction[0],direction[1]);
       ground_lane = ground_direction.norm();
       hight_change = abs(direction[2]);
-      angle = std::atan(hight_change/ground_lane)*180/M_PI;
+      angle = std::atan2(hight_change,ground_lane)*180/M_PI;
 
       if(angle>26.0) continue;
 
@@ -2023,7 +2023,7 @@ double Rrg::getslopcost(Vertex* v1, Vertex* v2)
   Eigen::Vector2d ground_direction(direction[0],direction[1]);
   double ground_lane = ground_direction.norm();
   double hight_change = abs(direction[2]);
-  return std::atan(hight_change/ground_lane)*180/M_PI;
+  return std::atan2(hight_change,ground_lane)*180/M_PI;
 }
 
 // 找路径

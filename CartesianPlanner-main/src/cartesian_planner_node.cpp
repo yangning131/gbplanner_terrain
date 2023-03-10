@@ -80,6 +80,17 @@ public:
      return v;
   }
 
+  double Mod2Pi(const double &x)  {       
+    double v = fmod(x, 2 * M_PI);
+  
+      if (v < -M_PI) {
+        v += 2.0 * M_PI;
+    } else if (v > M_PI) {
+        v -= 2.0 * M_PI;
+    }
+    return v;
+}
+
   bool getRobotPosition()
   {
         try{listener.lookupTransform("map","base_link", ros::Time(0), transform); } 
@@ -92,7 +103,7 @@ public:
         double roll, pitch, yaw;
         tf::Matrix3x3 m(transform.getRotation());
         m.getRPY(roll, pitch, yaw);
-        state_.theta = NormalizeAngle_pi(yaw);
+        state_.theta =  Mod2Pi(yaw);
 
 
     state_.v = 0.3;

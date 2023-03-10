@@ -202,7 +202,7 @@ public:
             if(type == 2)pubPathSmooth_1.publish(pathSmooth);
 
         }
-        if(traj_pub.getNumSubscribers()!=0)
+        if(traj_pub.getNumSubscribers()!=0&&(type == 1))
         {
             lexicographic_planning::Polynome poly;
             for(int i = 0 ;i<pathSmooth.poses.size();++i)

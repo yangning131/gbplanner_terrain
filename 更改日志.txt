@@ -61,4 +61,13 @@ question:类变量是对象 编译不过   类变量是类的指针
  10.  launch优化  01仿真 02gb 03mpc/pure_p  commit -m "launch"
 
  11.ca mount add globleterrainexpand
+
+ /*/*/**/*/*/ 未完成：：不同的地形坡度 或者地形评分   施加不同的速度约束！！！！！！！ 和加速度约束！！
 https://blog.csdn.net/weixin_43879302/article/details/105880972
+
+
+schedule：
+15-18第一期 mpc  视频 + 代码
+19 :航天科工具体待遇
+20 :~算法 复杂度 时间复杂度 视频
+~论文第三章
