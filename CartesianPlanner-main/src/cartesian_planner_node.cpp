@@ -42,7 +42,7 @@ public:
 
   explicit CartesianPlannerNode(const ros::NodeHandle &nh) : nh_(nh) {
     env_ = std::make_shared<Environment>(config_);
-    world_ = std::make_shared<World>(0.2, 0.1);
+    world_ = std::make_shared<World>(0.2, 0.2);
 
     planner_ = std::make_shared<CartesianPlanner>(config_, env_, world_);
     
@@ -53,7 +53,7 @@ public:
     or_path_subscriber_ = nh_.subscribe("expath222", 1, &CartesianPlannerNode::Pathcallback, this); //planning/planning/execute_path  planning/server/path_blueprint_smooth
     subObstacleMap_ = nh_.subscribe<nav_msgs::OccupancyGrid>("planning/obstacle/map_inflated", 5, &CartesianPlannerNode::mapHandler, this);
     
-    cloud_terrain_sub = nh_.subscribe<sensor_msgs::PointCloud2>("/laser_cloud_map", 1,&CartesianPlannerNode::cloudHandler2,this);
+    cloud_terrain_sub = nh_.subscribe<sensor_msgs::PointCloud2>("/cloud_registered", 1,&CartesianPlannerNode::cloudHandler2,this);//cloud_registered   laser_cloud_map
 
     pathUpdateTimer = nh_.createTimer(ros::Duration(0.3), &CartesianPlannerNode::updatePath, this);
     path_pub_ = nh_.advertise<nav_msgs::Path>("planning/planning/execute_path_op", 1);
@@ -186,7 +186,7 @@ public:
 
         while (!timeQueue.empty())
         {
-          if(timeScanCur - timeQueue.front()> 10.0)
+          if(timeScanCur - timeQueue.front()> 20.0)
           {
             cloudQueue.pop_front();
             timeQueue.pop_front();

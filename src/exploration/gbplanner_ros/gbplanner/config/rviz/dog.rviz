@@ -10,6 +10,7 @@ Panels:
         - /Axes1/TF1
         - /Axes1/TF1/Frames1
         - /Axes1/TF1/Tree1
+        - /Odometry1
         - /Odometry1/Shape1
         - /Odometry1/Covariance1
         - /PlannerViz1
@@ -105,48 +106,16 @@ Visualization Manager:
           Frame Timeout: 15
           Frames:
             All Enabled: false
-            aft_mapped:
-              Value: true
-            base:
-              Value: true
             base_link:
-              Value: false
-            camera_init:
-              Value: true
-            chassis_link:
-              Value: true
-            fenders_link:
-              Value: true
-            front_laser:
-              Value: true
-            front_laser_mount:
-              Value: true
-            front_left_wheel_link:
-              Value: true
-            front_mount:
-              Value: true
-            front_right_wheel_link:
-              Value: true
-            imu_link:
               Value: false
             map:
               Value: true
-            mid_mount:
+            os_imu:
               Value: true
-            navsat_link:
+            os_lidar:
               Value: true
-            odom:
-              Value: false
-            rear_left_wheel_link:
+            os_sensor:
               Value: true
-            rear_mount:
-              Value: true
-            rear_right_wheel_link:
-              Value: true
-            velodyne:
-              Value: true
-            velodyne_base_link:
-              Value: false
           Marker Scale: 1
           Name: TF
           Show Arrows: true
@@ -154,36 +123,7 @@ Visualization Manager:
           Show Names: true
           Tree:
             map:
-              camera_init:
-                aft_mapped:
-                  base:
-                    base_link:
-                      chassis_link:
-                        fenders_link:
-                          {}
-                        front_left_wheel_link:
-                          {}
-                        front_right_wheel_link:
-                          {}
-                        imu_link:
-                          {}
-                        mid_mount:
-                          front_mount:
-                            front_laser_mount:
-                              front_laser:
-                                {}
-                          rear_mount:
-                            {}
-                        navsat_link:
-                          {}
-                        rear_left_wheel_link:
-                          {}
-                        rear_right_wheel_link:
-                          {}
-                      velodyne_base_link:
-                        velodyne:
-                          {}
-              odom:
+              base_link:
                 {}
           Update Interval: 0
           Value: true
@@ -234,7 +174,7 @@ Visualization Manager:
         Shaft Length: 1
         Shaft Radius: 0.20000000298023224
         Value: Arrow
-      Topic: /ground_truth/odometry_throttled
+      Topic: /aft_mapped_to_init
       Unreliable: false
       Value: true
     - Class: rviz/Group
@@ -276,13 +216,7 @@ Visualization Manager:
           Marker Topic: /vis/shortest_paths
           Name: ShortestPaths
           Namespaces:
-            best_leaf_vertices: true
-            frontiers: false
-            gain: false
-            heading: false
-            leaf_vertices: false
-            shortest_edges: false
-            vertices: false
+            {}
           Queue Size: 100
           Value: true
         - Class: rviz/MarkerArray
@@ -306,10 +240,7 @@ Visualization Manager:
           Marker Topic: /vis/planning_global_graph
           Name: GlobalGraph
           Namespaces:
-            edges: true
-            frontier: false
-            gain: false
-            vertices: true
+            {}
           Queue Size: 100
           Value: true
         - Class: rviz/MarkerArray
@@ -325,8 +256,7 @@ Visualization Manager:
           Marker Topic: /vis/planning_graph
           Name: PlanningGraph
           Namespaces:
-            edges: true
-            vertices: true
+            {}
           Queue Size: 100
           Value: true
         - Class: rviz/MarkerArray
@@ -452,13 +382,13 @@ Visualization Manager:
           Unreliable: false
           Value: false
         - Class: rviz/MarkerArray
-          Enabled: false
+          Enabled: true
           Marker Topic: /gbplanner_node/occupied_nodes
           Name: Occupied
           Namespaces:
-            {}
+            occupied_voxels: true
           Queue Size: 100
-          Value: false
+          Value: true
         - Alpha: 1
           Autocompute Intensity Bounds: true
           Autocompute Value Bounds:
@@ -811,8 +741,8 @@ Visualization Manager:
     - Alpha: 0.800000011920929
       Autocompute Intensity Bounds: true
       Autocompute Value Bounds:
-        Max Value: 1.620165228843689
-        Min Value: -1.5875334739685059
+        Max Value: 2.328625202178955
+        Min Value: -1.93140709400177
         Value: true
       Axis: Z
       Channel Name: intensity
@@ -846,81 +776,6 @@ Visualization Manager:
         Expand Link Details: false
         Expand Tree: false
         Link Tree Style: Links in Alphabetic Order
-        base_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        chassis_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        fenders_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        front_laser:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        front_laser_mount:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        front_left_wheel_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        front_mount:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        front_right_wheel_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        imu_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        mid_mount:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        navsat_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        rear_left_wheel_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        rear_mount:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        rear_right_wheel_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        velodyne:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        velodyne_base_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
       Name: RobotModel
       Robot Description: robot_description
       TF Prefix: ""
@@ -996,11 +851,7 @@ Visualization Manager:
       Marker Topic: /cartesian_planner_markers
       Name: MarkerArray
       Namespaces:
-        Coarse Trajectory: false
-        Front Corridor: true
-        Intermediate Trajectory: false
-        Optimized Trajectory: false
-        Rear Corridor: true
+        {}
       Queue Size: 100
       Value: true
     - Alpha: 1
@@ -1054,15 +905,15 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/ThirdPersonFollower
-      Distance: 16.171295166015625
+      Distance: 13.624781608581543
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 5.040435791015625
-        Y: -5.124669075012207
+        X: 3.099492073059082
+        Y: 0.14725184440612793
         Z: -1.9104759303445462e-6
       Focal Shape Fixed Size: false
       Focal Shape Size: 0.05000000074505806
@@ -1072,7 +923,7 @@ Visualization Manager:
       Pitch: 1.5697963237762451
       Target Frame: <Fixed Frame>
       Value: ThirdPersonFollower (rviz)
-      Yaw: 3.2258527278900146
+      Yaw: 4.0808515548706055
     Saved: ~
 Window Geometry:
   Displays:

@@ -2,8 +2,8 @@
   <!-- All settings -->
   <arg name="robot_name" default="dog"/>
   <!-- <arg name="robot_name" default="bulldog"/> -->
-  <arg name="gazebo_gui_en" default="true"/>
-  <arg name="use_sim_time" default="true"/>
+  <arg name="gazebo_gui_en" default="false"/>
+  <arg name="use_sim_time" default="false"/>
   <arg name="rviz_en" default="true" />
   <arg name="launch_prefix" default=""/> <!-- gdb -ex run //args -->
   <param name="use_sim_time" value="$(arg use_sim_time)"/>
@@ -58,28 +58,28 @@
   <!-- <arg name="odometry_topic" default="$(arg robot_name)/ground_truth/odometry_throttled"/> -->
   <!-- <arg name="odometry_topic" default="/odometry/filtered"/> -->
 
-  <include file="$(find aloam_velodyne)/launch/aloam_velodyne_HDL_32.launch">
+  <!-- <include file="$(find aloam_velodyne)/launch/aloam_velodyne_HDL_32.launch">
 	  <arg name="rviz" value="false"/>
   </include>
-  
+   -->
 
-  <node pkg="tf" type="static_transform_publisher" name="map_to_camera_init" args="0 0 0 0 0 0 /map /camera_init 10" />
+  <!-- <node pkg="tf" type="static_transform_publisher" name="map_to_camera_init" args="0 0 0 0 0 0 /map /camera_init 10" /> -->
 
 
   <!-- <node pkg="tf" type="static_transform_publisher" name="camera_to_base" args="0 0 0.0  0 0 0 /aft_mapped /base 10" /> -->
 
   <!-- 山地 -->
-  <node pkg="tf" type="static_transform_publisher" name="camera_to_base" args="0 0 -0.47 0 0 0 /aft_mapped /base 10" />  
+  <!-- <node pkg="tf" type="static_transform_publisher" name="camera_to_base" args="0 0 -0.47 0 0 0 /aft_mapped /base 10" />   -->
   
     <!-- 凹陷狗 -->
    <!-- <node pkg="tf" type="static_transform_publisher" name="camera_to_base" args="0 0 -0.2 0 0 0 /aft_mapped /base 10" />   -->
 
 
   
-  <node pkg="tf" type="static_transform_publisher" name="base_to_base_link" args="0 0 0 0 0 0 /base /base_link 10" />
+  <!-- <node pkg="tf" type="static_transform_publisher" name="base_to_base_link" args="0 0 0 0 0 0 /base /base_link 10" /> -->
 
 
-    <node pkg="tf" type="static_transform_publisher" name="maptoodom" args="0 0 0 0 0 0 map odom 100" /> 
+    <!-- <node pkg="tf" type="static_transform_publisher" name="maptoodom" args="0 0 0 0 0 0 map odom 100" />  -->
 
 
     <arg name="odometry_topic" default="/aft_mapped_to_init"/>
@@ -89,7 +89,7 @@
   <!-- Graph based planning -->
   <node pkg="gbplanner" type="gbplanner_node" name="gbplanner_node" output="screen" launch-prefix="$(arg launch_prefix)">
     <remap from="odometry" to="$(arg odometry_topic)" />
-    <remap from="/pointcloud" to="/velodyne_points" />
+    <remap from="/pointcloud" to="/velodyne_points_1" />
 
     
     <rosparam command="load" file="$(arg gbplanner_config_file)" />

@@ -139,7 +139,7 @@ class Visualization {
   ros::Publisher terraincost_pub_;
 
 
-  std::string world_frame_id = "world";
+  std::string world_frame_id = "map";
   
   const double ws_lifetime = 0;  // infinite
   const double graph_lifetime = 0.0;

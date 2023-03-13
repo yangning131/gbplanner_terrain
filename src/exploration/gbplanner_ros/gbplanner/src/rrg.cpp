@@ -48,8 +48,8 @@ Rrg::Rrg(const ros::NodeHandle& nh, const ros::NodeHandle& nh_private)
 
   grid_map_vis_pub = nh_.advertise<sensor_msgs::PointCloud2>("grid_map_vis", 1);
   cloud_sub = nh_.subscribe<sensor_msgs::PointCloud2>("/planning/registered_cloud", 1,&Rrg::cloudHandler,this);
-
-  cloud_terrain_sub = nh_.subscribe<sensor_msgs::PointCloud2>("/laser_cloud_map", 1,&Rrg::cloudHandler2,this);
+  
+  cloud_terrain_sub = nh_.subscribe<sensor_msgs::PointCloud2>("/laser_cloud_map", 1,&Rrg::cloudHandler2,this);///cloud_registered    laser_cloud_map
 
 
 
