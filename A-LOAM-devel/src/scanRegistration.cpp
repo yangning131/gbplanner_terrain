@@ -129,9 +129,7 @@ void laserCloudHandler(const sensor_msgs::PointCloud2ConstPtr &laserCloudMsg)
     std::vector<int> scanStartInd(N_SCANS, 0);
     std::vector<int> scanEndInd(N_SCANS, 0);
 
-    pcl::PointCloud<ouster_ros::Point> laserCloudIn;
-    // pcl::PointCloud<pcl::PointXYZ> laserCloudIn;
-
+    pcl::PointCloud<pcl::PointXYZ> laserCloudIn;
     pcl::fromROSMsg(*laserCloudMsg, laserCloudIn);
     std::vector<int> indices;
 
