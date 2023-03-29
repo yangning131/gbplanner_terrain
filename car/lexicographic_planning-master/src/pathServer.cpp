@@ -94,7 +94,7 @@ public:
         type = 2;
         pathsub.poses.push_back(createPoseStamped(mygoal.x, mygoal.y,robotPoint.z + 0.2));
         count++;
-        if(count>=2)
+        if(count>=6)
         {
         receive_goal = true;
         updatePath();

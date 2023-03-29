@@ -1160,7 +1160,7 @@ void RolloutGenerator::calculateRollInTrajectories(const UtilityNS::WayPoint& ca
         }
     }
 
-    // transition section
+    // transition section  roll in
     for (unsigned int j = smoothing_start_index; j < end_index; j++) {
         p = originalCenter.at(j);
         double original_speed = p.v;

@@ -27,7 +27,7 @@ SensorParams:
     max_range:      6.0                #为了避免山顶free增益太大   增益射线范围改小   原本凹陷地形为20
     center_offset:  [0.0, 0.0, 0.0]
     rotations:      [0.0, 0.0, 0.0]
-    fov:            [rad(2*pi), rad(pi/8)]   #rad(pi/18)
+    fov:            [rad(2*pi), rad(pi/12)]   #rad(pi/18)
     resolution:     [rad(5.0*pi/180), rad(5.0*pi/180)]
     frontier_percentage_threshold: 0.1  #0.1
     frame_id: velodyne

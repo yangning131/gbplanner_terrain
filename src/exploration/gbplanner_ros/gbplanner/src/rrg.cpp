@@ -433,7 +433,7 @@ bool Rrg::sampleVertex(StateVec& state) {
 
              state[2] = sample_point[2];
 
-              if(terrain_cost<0.99)  // 0.98/凹陷地形效果较好为0.6
+              if(terrain_cost<0.98)  // 0.98/凹陷地形效果较好为0.6
               { 
                 // std::cout<<"terrain_cost:"<<terrain_cost<<std::endl;
 
@@ -520,7 +520,7 @@ bool Rrg::sampleVertex(RandomSampler& random_sampler, StateVec& root_state,
 
              sampled_state[2] = sample_point[2];
 
-              if(terrain_cost<0.99) ////0.6
+              if(terrain_cost<0.98) ////0.6
               {
                 // std::cout<<"terrain_cost:"<<terrain_cost<<std::endl;
 
@@ -1332,7 +1332,7 @@ void Rrg::expandTreeStar(std::shared_ptr<GraphManager> graph_manager,
   if (world->has_map_)
   {
       calculate_tecost = pf_rrt_star->planner(terrain_cost, sample_point);//return bool
-      if(calculate_tecost && terrain_cost<0.99) //0.98
+      if(calculate_tecost && terrain_cost<0.98) //0.98
       {
           new_state[2] = sample_point[2];
       }
@@ -1539,7 +1539,7 @@ void Rrg::expandTreeStar(std::shared_ptr<GraphManager> graph_manager,
   if (world->has_map_)
   {
       calculate_tecost = pf_rrt_star->planner(terrain_cost, sample_point);//return bool
-      if(calculate_tecost && terrain_cost<0.99) //0.98
+      if(calculate_tecost && terrain_cost<0.98) //0.98
       {
           new_state[2] = sample_point[2];
           tcost_show = new_state;
