@@ -1367,7 +1367,13 @@ void Rrg::expandTreeStar(std::shared_ptr<GraphManager> graph_manager,
     rep.status = ExpandGraphStatus::kErrorGeofenceViolated;
     return;
   }
-
+  /*the slope of each point in the segment*/
+  // double slope_step = 0.2;
+  // double step_lenth = 0.0;
+  // while(step_lenth <= direction_norm_old)
+  // {
+    
+  // }
 
   // Since we are buiding graph,
   // Consider to check the overshoot for both 2 directions except root node.

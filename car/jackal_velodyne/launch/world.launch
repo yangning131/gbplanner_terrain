@@ -8,9 +8,11 @@
     <!-- <arg name="world_name" default="$(find lexicographic_planning)/world/terrain_world.world" /> -->
     <!-- <arg name="world_name" default="$(find jackal_velodyne)/worlds/terrain_mount5.world" /> -->
 
-    <arg name="world_name" default="$(find jackal_velodyne)/worlds/terrain_mount666.world" />
+    <!-- <arg name="world_name" default="$(find jackal_velodyne)/worlds/terrain_mount666.world" /> -->
 
+    <arg name="world_name" default="$(find jackal_velodyne)/worlds/terrain_mount_new_tree.world" />
 
+  
   
     <!-- Short-term hack to support the original front_laser:=true argument for spawning
          the simulator. This will be removed in favour of using the config:=x arg instead. -->
