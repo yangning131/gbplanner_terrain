@@ -212,7 +212,7 @@ public:
                 temp.y = pathSmooth.poses[i].pose.position.y;
                 temp.z = pathSmooth.poses[i].pose.position.z;
                 poly.pos_pts.push_back(temp);
-                poly.t_pts.push_back(_pathResolution);
+                poly.t_pts.push_back(_pathResolution/2);
             }
             poly.init_v.x = 0;
             poly.init_v.y = 0;

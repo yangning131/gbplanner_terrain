@@ -7,7 +7,9 @@
     <arg name="rviz"               default="false"/> <!-- Set to true to run rviz in parallel. -->
     <arg name="lite"               default="false" />  <!-- Set to true if you're using CHAMP lite version. Only useful for microcontrollers. -->
     <arg name="ros_control_file"   default="$(find aliengo_config)/config/ros_control/ros_control.yaml" /> <!-- Path to ROS Control configurations. Do not touch. -->
-    <arg name="gazebo_world"       default="$(find aliengo_config)/worlds/terrain_world3.world" /> 
+    <!-- <arg name="gazebo_world"       default="$(find aliengo_config)/worlds/terrain_world3.world" />  -->
+    <arg name="gazebo_world"       default="$(find aliengo_config)/worlds/terrain_world45.world" /> 
+
     <!-- terrain_world3.world 凹陷地形     -->
     <!--mywords23(走廊扩大后)   generated_world（走廊）door_room.world（探索进门扩大）  Path to Gazebo world you want to load. -->
     <!-- <arg name="gazebo_world"       default="$(find aliengo_config)/worlds/terrain/map1.world" />  -->

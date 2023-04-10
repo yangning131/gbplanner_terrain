@@ -120,7 +120,7 @@ PlanningParams:
   augment_free_voxels_time: 1
   free_frustum_before_planning: false
   auto_homing_enable: false
-  time_budget_limit: 600
+  time_budget_limit: 6000
   homing_backward: true
   geofence_checking_enable: true
   path_safety_enhance_enable: false #true  优化初始路径

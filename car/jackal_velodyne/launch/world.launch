@@ -10,8 +10,9 @@
 
     <!-- <arg name="world_name" default="$(find jackal_velodyne)/worlds/terrain_mount666.world" /> -->
 
-    <arg name="world_name" default="$(find jackal_velodyne)/worlds/terrain_mount_new_tree.world" />
+    <arg name="world_name" default="$(find jackal_velodyne)/worlds/terrain_mount_new_tree_de.world" />  
 
+    <!-- <arg name="world_name" default="$(find jackal_velodyne)/worlds/generated_world3_2.world" />   -->
   
   
     <!-- Short-term hack to support the original front_laser:=true argument for spawning
@@ -63,11 +64,21 @@
   
     <!-- Spawn Jackal -->
     <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model"
-                args="-urdf -model jackal -param robot_description -x 0 -y 0 -z 0.3" />
+    args="-urdf -model jackal -param robot_description -x 0 -y 0 -z 0.3" />
+
+    <!-- <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model"
+                args="-urdf -model jackal -param robot_description -x 5 -y 3 -z 4.5" /> -->
   
+                <!-- <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model"
+                args="-urdf -model jackal -param robot_description -x 5 -y 10 -z 15" /> -->
   
+      <!-- <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model"
+                args="-urdf -model jackal -param robot_description -x 23 -y 23 -z 6" /> -->
   
+    <!-- <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model"
+                args="-urdf -model jackal -param robot_description -x 5 -y 3 -z 4.5" /> -->
   
+
     <!-- TF -->
       <!-- //change1 map 到 odom的变换 -->
     <!-- <node pkg="jackal_velodyne" type="tf_publisher"    name="tf_publisher"    output="screen"/> -->

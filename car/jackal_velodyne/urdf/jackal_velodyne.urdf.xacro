@@ -2,10 +2,10 @@
 <robot name="jackal" xmlns:xacro="http://www.ros.org/wiki/xacro">
   <xacro:property name="PI" value="3.1415926535897931" />
 
-  <xacro:property name="wheelbase" value="0.262" />
-  <xacro:property name="track" value="0.37559" />
+  <xacro:property name="wheelbase" value="0.562" />
+  <xacro:property name="track" value="0.67559" />
   <xacro:property name="wheel_vertical_offset" value="0.0345" />
-  <xacro:property name="footprint_vertical_offset" value="-0.0655" />
+  <xacro:property name="footprint_vertical_offset" value="-0.1055" />
 
   <xacro:property name="wheel_radius" value="0.098" />
   <xacro:property name="wheel_width" value="0.040" />
@@ -225,7 +225,7 @@
   <!-- VLP-16 -->
   <!-- <xacro:include filename="$(find velodyne_description)/urdf/VLP-16.urdf.xacro"/>
   <VLP-16 parent="base_link" name="velodyne" topic="/velodyne_points" hz="10" samples="360" gpu="true" lasers="16" max_range="100">
-    <origin xyz="0 0 0.3" rpy="0 0 0" />
+    <origin xyz="0 0 0.3" rpy="0 0 0" /> 0.34
   </VLP-16> -->
 
   <!-- VHDL-32E -->

@@ -84,7 +84,7 @@ Visualization Manager:
       Cell Size: 0.10000000149011612
       Class: rviz/Grid
       Color: 160; 160; 164
-      Enabled: true
+      Enabled: false
       Line Style:
         Line Width: 0.029999999329447746
         Value: Lines
@@ -97,7 +97,7 @@ Visualization Manager:
       Plane: XY
       Plane Cell Count: 100
       Reference Frame: <Fixed Frame>
-      Value: true
+      Value: false
     - Class: rviz/Group
       Displays:
         - Class: rviz/TF
@@ -272,19 +272,13 @@ Visualization Manager:
           Queue Size: 100
           Value: false
         - Class: rviz/MarkerArray
-          Enabled: true
+          Enabled: false
           Marker Topic: /vis/shortest_paths
           Name: ShortestPaths
           Namespaces:
-            best_leaf_vertices: true
-            frontiers: false
-            gain: false
-            heading: false
-            leaf_vertices: false
-            shortest_edges: false
-            vertices: false
+            {}
           Queue Size: 100
-          Value: true
+          Value: false
         - Class: rviz/MarkerArray
           Enabled: false
           Marker Topic: /vis/robot_state
@@ -811,8 +805,8 @@ Visualization Manager:
     - Alpha: 0.800000011920929
       Autocompute Intensity Bounds: true
       Autocompute Value Bounds:
-        Max Value: 1.620165228843689
-        Min Value: -1.5875334739685059
+        Max Value: 6.107046127319336
+        Min Value: -0.7558531761169434
         Value: true
       Axis: Z
       Channel Name: intensity
@@ -996,11 +990,7 @@ Visualization Manager:
       Marker Topic: /cartesian_planner_markers
       Name: MarkerArray
       Namespaces:
-        Coarse Trajectory: false
-        Front Corridor: true
-        Intermediate Trajectory: false
-        Optimized Trajectory: false
-        Rear Corridor: true
+        {}
       Queue Size: 100
       Value: true
     - Alpha: 1
@@ -1054,25 +1044,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/ThirdPersonFollower
-      Distance: 16.171295166015625
+      Distance: 40.039527893066406
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 5.040435791015625
-        Y: -5.124669075012207
+        X: 6.4644999504089355
+        Y: -2.4964699745178223
         Z: -1.9104759303445462e-6
       Focal Shape Fixed Size: false
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 1.5697963237762451
+      Pitch: 1.1347967386245728
       Target Frame: <Fixed Frame>
       Value: ThirdPersonFollower (rviz)
-      Yaw: 3.2258527278900146
+      Yaw: 3.5658557415008545
     Saved: ~
 Window Geometry:
   Displays:
