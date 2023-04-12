@@ -2137,8 +2137,14 @@ Rrg::GraphStatus Rrg::evaluateGraph() {
   } else {
     gstatus = Rrg::GraphStatus::NO_GAIN;
   }
+
+  std_msgs::Float32 time_record;
+
+
   stat_->evaluate_graph_time = GET_ELAPSED_TIME(ttime);
   stat_->printTime();
+  time_record.data = stat_->total_time;
+  runtime_pub.publish(time_record);
   return gstatus;
 }
 
@@ -3887,19 +3893,19 @@ std::vector<geometry_msgs::Pose> Rrg::getBestPath(std::string tgt_frame,
 
 
   time_end = ros::Time::now();
-  ros::Duration duration = time_end - time_begin;
-   // ROS_INFO("Slept for %lf secs", duration.toSec());
-    std_msgs::Float32 time_record;
-    time_record.data=duration.toSec();
-  // time_record.data=time_record.data+1.25;
-    // if(1.5<= time_record.data<2)
-    // time_record.data=time_record.data-0.5;
-    //  else if(2<= time_record.data<2.5)
-    // time_record.data=time_record.data-1;
-    // else if(time_record.data>=2.5)
-    // time_record.data=time_record.data-1.5;
+  // ros::Duration duration = time_end - time_begin;
+  //  // ROS_INFO("Slept for %lf secs", duration.toSec());
+  //   std_msgs::Float32 time_record;
+  //   time_record.data=duration.toSec();
+  // // time_record.data=time_record.data+1.25;
+  //   // if(1.5<= time_record.data<2)
+  //   // time_record.data=time_record.data-0.5;
+  //   //  else if(2<= time_record.data<2.5)
+  //   // time_record.data=time_record.data-1;
+  //   // else if(time_record.data>=2.5)
+  //   // time_record.data=time_record.data-1.5;
     
-     runtime_pub.publish(time_record);
+  //    runtime_pub.publish(time_record);
 
 
   return ret;

@@ -319,13 +319,14 @@ Visualization Manager:
           Queue Size: 100
           Value: false
         - Class: rviz/MarkerArray
-          Enabled: false
+          Enabled: true
           Marker Topic: /vis/planning_graph
           Name: PlanningGraph
           Namespaces:
-            {}
+            edges: true
+            vertices: true
           Queue Size: 100
-          Value: false
+          Value: true
         - Class: rviz/MarkerArray
           Enabled: false
           Marker Topic: /vis/sampler
@@ -339,8 +340,7 @@ Visualization Manager:
           Marker Topic: /vis/ref_path
           Name: RefPath
           Namespaces:
-            ref_path: true
-            vertices: true
+            {}
           Queue Size: 100
           Value: true
         - Class: rviz/MarkerArray
@@ -450,13 +450,13 @@ Visualization Manager:
           Unreliable: false
           Value: false
         - Class: rviz/MarkerArray
-          Enabled: true
+          Enabled: false
           Marker Topic: /gbplanner_node/occupied_nodes
           Name: Occupied
           Namespaces:
-            occupied_voxels: true
+            {}
           Queue Size: 100
-          Value: true
+          Value: false
         - Alpha: 1
           Autocompute Intensity Bounds: true
           Autocompute Value Bounds:
@@ -806,11 +806,11 @@ Visualization Manager:
       Value: true
       VsColor: 0; 255; 0
       VsScale: 1
-    - Alpha: 0.800000011920929
+    - Alpha: 1
       Autocompute Intensity Bounds: true
       Autocompute Value Bounds:
-        Max Value: 6.519407272338867
-        Min Value: -1.130826711654663
+        Max Value: 6.65688419342041
+        Min Value: -1.3594038486480713
         Value: true
       Axis: Z
       Channel Name: intensity
@@ -818,7 +818,7 @@ Visualization Manager:
       Color: 255; 255; 255
       Color Transformer: AxisColor
       Decay Time: 0
-      Enabled: false
+      Enabled: true
       Invert Rainbow: false
       Max Color: 255; 255; 255
       Min Color: 0; 0; 0
@@ -833,7 +833,7 @@ Visualization Manager:
       Unreliable: false
       Use Fixed Frame: true
       Use rainbow: true
-      Value: false
+      Value: true
     - Alpha: 1
       Class: rviz/RobotModel
       Collision Enabled: false
@@ -994,10 +994,7 @@ Visualization Manager:
       Marker Topic: /cartesian_planner_markers
       Name: MarkerArray
       Namespaces:
-        Coarse Trajectory: true
-        Front Corridor: true
-        Intermediate Trajectory: true
-        Rear Corridor: true
+        {}
       Queue Size: 100
       Value: true
     - Alpha: 1
@@ -1048,21 +1045,21 @@ Visualization Manager:
         Alpha: 1
         Axes Length: 2
         Axes Radius: 0.30000001192092896
-        Color: 255; 25; 0
-        Head Length: 0.30000001192092896
-        Head Radius: 0.10000000149011612
-        Shaft Length: 1
-        Shaft Radius: 0.05000000074505806
-        Value: Axes
+        Color: 255; 255; 255
+        Head Length: 0.05000000074505806
+        Head Radius: 0.15000000596046448
+        Shaft Length: 0.30000001192092896
+        Shaft Radius: 0.15000000596046448
+        Value: Arrow
       Topic: /aft_mapped_to_init
       Unreliable: false
       Value: true
     - Class: rviz/Axes
       Enabled: true
-      Length: 3
+      Length: 1.5
       Name: Axes
-      Radius: 0.5
-      Reference Frame: base
+      Radius: 0.30000001192092896
+      Reference Frame: base_link
       Value: true
   Enabled: true
   Global Options:
@@ -1092,25 +1089,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/ThirdPersonFollower
-      Distance: 46.54895782470703
+      Distance: 88.08375549316406
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 22.57510757446289
-        Y: -18.46125030517578
-        Z: -3.1272975320462137e-9
+        X: 38.393131256103516
+        Y: -9.762958526611328
+        Z: 7.008025932009332e-6
       Focal Shape Fixed Size: false
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 1.5697963237762451
+      Pitch: 1.5547963380813599
       Target Frame: <Fixed Frame>
       Value: ThirdPersonFollower (rviz)
-      Yaw: 4.575850963592529
+      Yaw: 5.8508477210998535
     Saved: ~
 Window Geometry:
   Displays:

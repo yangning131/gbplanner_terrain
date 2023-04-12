@@ -208,7 +208,7 @@ bool CartesianPlanner::Plan( StartState &state, DiscretizedTrajectory &result) {
   Trajectory result_data;
   double incremental_s = 0.0;
   /*写文件*/
-  std::ofstream destFile("/home/ynp/gbplanner_ws/src/CartesianPlanner-main/txt/out.txt",std::ios::out); //以文本模式打开out.txt备写
+  std::ofstream destFile("/home/ynp/gbplanner_ws/txt/out.txt",std::ios::out); //以文本模式打开out.txt备写
   if(!destFile) {
       std::cout << "error opening destination file." << std::endl;
       return 0;
