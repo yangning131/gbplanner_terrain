@@ -55,7 +55,7 @@ bool CartesianPlanner::Plan( StartState &state, DiscretizedTrajectory &result) {
 
   //max_15m
   int num = config_.nfe;
-  double length_max = 10.0;
+  double length_max = 20.0;
   double lenth = 0.0;
   int end_index = reference_path.poses.size()-1;
   for(int i = 1 ;i<= end_index ;++i)
@@ -192,9 +192,9 @@ bool CartesianPlanner::Plan( StartState &state, DiscretizedTrajectory &result) {
   }
 
 
-  visualization::Plot(coarse_x, coarse_y,0.1, visualization::Color::Cyan, 1, "Coarse Trajectory");
+  visualization::Plot(coarse_x, coarse_y,0.1, visualization::Color::Green, 0.1, "Coarse Trajectory");
 
-  visualization::PlotPoints(coarse_x, coarse_y, 0.2, visualization::Color::Cyan, 2, "Coarse Trajectory");
+  visualization::PlotPoints(coarse_x, coarse_y, 0.1, visualization::Color::Green, 0.1, "Coarse Trajectory");
 
   visualization::Trigger();
 
@@ -208,7 +208,7 @@ bool CartesianPlanner::Plan( StartState &state, DiscretizedTrajectory &result) {
   Trajectory result_data;
   double incremental_s = 0.0;
   /*写文件*/
-  std::ofstream destFile("/home/ynp/gbplanner_ws/txt/out.txt",std::ios::out); //以文本模式打开out.txt备写
+  std::ofstream destFile("/home/ynp/gbplanner_ws/txt/out.txt",std::ios::out); //以文本模式打开out.txt备写  alpha,  theta, v, phi, a, omega, jerk,
   if(!destFile) {
       std::cout << "error opening destination file." << std::endl;
       return 0;
@@ -231,8 +231,12 @@ bool CartesianPlanner::Plan( StartState &state, DiscretizedTrajectory &result) {
       opti_y.push_back(tp.y);
       opti_v.push_back(tp.velocity);
 
+      destFile << optimized.alpha[i] << " "<< optimized.v[i] << " "<< optimized.a[i] << " "<< optimized.jerk[i] << " "<< optimized.theta[i]<< " " <<optimized.omega[i]<< " "<< tp.kappa<< " "<< optimized.phi[i]<<std::endl;
+
       result_data.push_back(tp);
     }
+      destFile.close();
+
   }
   else if(config_.vehicle.model==2)
   {
@@ -253,7 +257,8 @@ bool CartesianPlanner::Plan( StartState &state, DiscretizedTrajectory &result) {
       opti_y.push_back(tp.y);
       opti_v.push_back(tp.velocity);
 
-      destFile << optimized.alpha[i] << " "<< optimized.v[i] <<" "<<tp.omega<< " "<<tp.kappa<<std::endl;
+      // destFile << optimized.alpha[i] << " "<< optimized.v[i] <<" "<<tp.omega<< " "<<tp.kappa<<std::endl;
+      destFile << optimized.alpha[i] << " "<< optimized.v[i] << " "<< optimized.a[i] << " "<< optimized.jerk[i] << " "<< optimized.theta[i]<< " " <<optimized.omega[i]<< " "<< tp.kappa<<std::endl;
 
       result_data.push_back(tp);
   }

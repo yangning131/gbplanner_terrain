@@ -19,12 +19,12 @@ struct CartesianPlannerConfig {
   /**
    * Number of finite elements used to discretize an OCP
    */
-  int nfe = 160;//320
+  int nfe = 320;//320
 
   /**
    * Time horizon length (s)
    */
-  double tf = 8;//16
+  double tf = 16;//16
 
   /**
    * nominal velocity

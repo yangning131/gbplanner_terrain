@@ -198,6 +198,10 @@ double TrajectoryNLP::SolveIteratively(double w_inf, const Constraints &constrai
   lb_omega(end) = ub_omega(end) = 0.0;
   lb_jerk(end) = ub_jerk(end) = 0.0;
 
+  //   for (int i = 1; i < config_.nfe; i++) {
+  //   ub_v(i) = config_.vehicle.max_velocity * 1/(guess.alpha[i]*8+1); //    ub_v(i) = config_.vehicle.max_velocity * 1/(guess.alpha[i]*10+1);
+  // }
+
   lb_xf = lb_yf = lb_xr = lb_yr = -inf * identity;
   ub_xf = ub_yf = ub_xr = ub_yr = inf * identity;
   for (int i = 1; i < config_.nfe; i++) {

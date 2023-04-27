@@ -173,7 +173,7 @@ public:
             //     continue;
 
             float range = pointDistance(p, robot_point);
-            if (range < 0 || range > 15.0)
+            if (range < 0 || range > 20.0)
                 continue;
             Localcloud.push_back(p);
         }
