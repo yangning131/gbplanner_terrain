@@ -15,6 +15,8 @@ PCIMAV::PCIMAV(const ros::NodeHandle &nh,
       mav_msgs::default_topics::COMMAND_TRAJECTORY, 10);
 
   path_pub_= nh_.advertise<nav_msgs::Path>("/expath222",10);
+  // traj_pub      = nh_.advertise<pci_mav::Polynome>("trajectory_or",10);
+
   /* Example for getting the battery status from Matrice M100
    * then publish the status to the planner.
    */
@@ -378,7 +380,29 @@ int num_waypoint=0;
   local_goal_pub_.publish(pub_temp_pose);
   waypoint_list_pub_.publish(pose_array);
   path_pub_.publish(path_ex);
-  
+
+// if(traj_pub.getNumSubscribers()!=0)
+// {
+//               pci_mav::Polynome poly;
+//             for(int i = 0 ;i<path_ex.poses.size();++i)
+//             {
+//                 geometry_msgs::Point temp;
+//                 temp.x = path_ex.poses[i].pose.position.x;
+//                 temp.y = path_ex.poses[i].pose.position.y;
+//                 temp.z = path_ex.poses[i].pose.position.z;
+//                 poly.pos_pts.push_back(temp);
+//                 poly.t_pts.push_back(0.1);
+//             }
+//             poly.init_v.x = 0;
+//             poly.init_v.y = 0;
+//             poly.init_v.z = 0;
+//             poly.init_a.x = 0;
+//             poly.init_a.y = 0;
+//             poly.init_a.z = 0;
+//             poly.start_time = ros::Time::now();
+//             traj_pub.publish(poly);
+// }
+
   return m_arr;
 }
 

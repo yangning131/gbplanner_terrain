@@ -18,6 +18,9 @@
 #include "planner_control_interface/pci_manager.h"
 #include "planner_msgs/RobotStatus.h"
 
+#include "pci_mav/Polynome.h"
+
+
 namespace explorer {
 
 class PCIMAV : public PCIManager {
@@ -45,6 +48,8 @@ class PCIMAV : public PCIManager {
   ros::Publisher trajectory_pub_;
   
   ros::Publisher path_pub_;
+  ros::Publisher traj_pub;
+
 
   ros::Publisher waypoint_list_pub_;
   ros::Publisher local_goal_pub_;

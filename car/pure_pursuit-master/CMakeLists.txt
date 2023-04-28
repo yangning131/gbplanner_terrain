@@ -19,6 +19,12 @@ find_package(catkin REQUIRED COMPONENTS
 
 find_package(orocos_kdl REQUIRED)
 
+add_message_files(
+  FILES
+  Polynome.msg
+)
+generate_messages(DEPENDENCIES std_msgs geometry_msgs)
+
 ############################
 ## dynamic reconfiure api ##
 ############################

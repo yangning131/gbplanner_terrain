@@ -29,6 +29,9 @@
 #include <dynamic_reconfigure/server.h>
 #include <pure_p/PurePursuitConfig.h>
 
+#include "pure_p/Polynome.h"
+
+
 using std::string;
 
 class PurePursuit
@@ -110,6 +113,7 @@ private:
   ros::Publisher pub_vel_, pub_acker_;
   ros::Publisher pub_path;
   ros::Publisher pub_path_show;
+    ros::Publisher traj_pub;
 
 
   tf2_ros::Buffer tf_buffer_;
@@ -161,6 +165,8 @@ PurePursuit::PurePursuit() : ld_(1.0), v_max_(0.3), v_(v_max_), w_max_(0.5), pos
 
   pub_path = nh_.advertise<nav_msgs::Path>("mypath", 1);
   pub_path_show = nh_.advertise<nav_msgs::Path>("mypath_show", 1);
+
+  traj_pub      = nh_.advertise<pure_p::Polynome>("trajectory_or",3);
 
   // pub_acker_ = nh_.advertise<ackermann_msgs::AckermannDriveStamped>("cmd_acker", 1);
 
@@ -217,6 +223,30 @@ void PurePursuit::computeVelocities(nav_msgs::Odometry odom)
 
 
           pub_path.publish(path_p);
+
+
+
+        if(traj_pub.getNumSubscribers()!=0)
+        {
+            pure_p::Polynome poly;
+            for(int i = 0 ;i<path_p.poses.size();++i)
+            {
+                geometry_msgs::Point temp;
+                temp.x = path_p.poses[i].pose.position.x;
+                temp.y = path_p.poses[i].pose.position.y;
+                temp.z = path_p.poses[i].pose.position.z;
+                poly.pos_pts.push_back(temp);
+                poly.t_pts.push_back(0.1);
+            }
+            poly.init_v.x = 0;
+            poly.init_v.y = 0;
+            poly.init_v.z = 0;
+            poly.init_a.x = 0;
+            poly.init_a.y = 0;
+            poly.init_a.z = 0;
+            poly.start_time = ros::Time::now();
+            traj_pub.publish(poly);
+        }
 
 
           path_show = path_;
@@ -408,7 +438,7 @@ void PurePursuit::receivePath(nav_msgs::Path new_path)
    
     idx_ = 0;
     std::cout<<"origin path size: "<<new_path.poses.size()<<std::endl;
-    if (new_path.poses.size() > 0)
+    if (new_path.poses.size() >=2)
     { 
       //path dense
       double pathdensity = 0.1;

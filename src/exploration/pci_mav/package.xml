@@ -14,4 +14,7 @@
   <depend>planner_msgs</depend>
   <depend>planner_control_interface</depend>
 
+  <depend>std_msgs</depend>
+  <depend>geometry_msgs</depend>
+
 </package>

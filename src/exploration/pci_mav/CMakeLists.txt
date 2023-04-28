@@ -6,6 +6,20 @@ add_definitions(-std=c++11)
 find_package(catkin_simple REQUIRED)
 find_package(Eigen3 REQUIRED)
 
+find_package(catkin REQUIRED COMPONENTS
+  std_msgs
+  geometry_msgs
+  nav_msgs
+)
+
+
+
+add_message_files(
+  FILES
+  Polynome.msg
+)
+
+
 catkin_simple(ALL_DEPS_REQUIRED)
 
 include_directories(
