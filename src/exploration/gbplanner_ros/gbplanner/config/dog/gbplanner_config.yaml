@@ -30,7 +30,7 @@ SensorParams:
     fov:            [rad(2*pi), rad(pi/12)]   #rad(pi/18)
     resolution:     [rad(5.0*pi/180), rad(5.0*pi/180)]
     frontier_percentage_threshold: 0.1  #0.1
-    frame_id: velodyne
+    frame_id: base_link
 #-------------------------------------------------------------------------------
 # SAMPLING SPACE CONFIGURATION
 #   Global: Strictly defined bounds for the whole environment.

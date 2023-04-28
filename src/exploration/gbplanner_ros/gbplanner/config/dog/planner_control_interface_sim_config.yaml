@@ -1,4 +1,4 @@
-run_mode: kSim
+run_mode: kReal
 trigger_mode: kManual
 init_motion_enable: false
 planner_trigger_lead_time: 1.5 #1.5  1.5_pure  5.0_mpc

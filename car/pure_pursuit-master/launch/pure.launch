@@ -10,10 +10,10 @@
     <!-- <remap from="/pathsmooth" to="/planning/planning/execute_path" /> -->
 
     <!-- 不加优化  原始路径 -->
-    <!-- <remap from="/pathsmooth" to="/expath222" />  -->
+    <remap from="/pathsmooth" to="/expath222" /> 
 
     <!-- 优化路径 -->
-    <remap from="/pathsmooth" to="/planning/planning/execute_path_op" />
+    <!-- <remap from="/pathsmooth" to="/planning/planning/execute_path_op" /> -->
 
      <remap from="/odom" to="/aft_mapped_to_init" />
     <param name = "max_rotational_velocity" value = "0.5"/>
@@ -22,10 +22,10 @@
     <param name = "acceleration" value = "100.0"/>
     <param name = "jerk" value = "100.0"/>
     <param name = "steering_angle_limit" value = "1.57"/>
-    <!-- <param name = "map_frame_id" value = "map"/> -->
-    <!-- <param name = "robot_frame_id" value = "base_link"/> -->
     <param name = "map_frame_id" value = "map"/>
-    <param name = "robot_frame_id" value = "velodyne"/>
+    <param name = "robot_frame_id" value = "base_link"/>
+    <!-- <param name = "map_frame_id" value = "map"/>
+    <param name = "robot_frame_id" value = "velodyne"/> -->
 </node>
 
 <include file="$(find pure_pursuit)/launch/pure.launch"/>

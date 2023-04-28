@@ -42,7 +42,7 @@ public:
 
   explicit CartesianPlannerNode(const ros::NodeHandle &nh) : nh_(nh) {
     env_ = std::make_shared<Environment>(config_);
-    world_ = std::make_shared<World>(0.2, 0.1);
+    world_ = std::make_shared<World>(0.2, 0.2);
 
     planner_ = std::make_shared<CartesianPlanner>(config_, env_, world_);
     
