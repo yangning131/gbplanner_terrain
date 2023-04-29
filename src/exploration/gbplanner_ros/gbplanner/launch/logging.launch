@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<launch>
+    <!-- Records the processed transforms -->
+    <node name="record_data" pkg="rosbag" type="record" args="
+    --split  --size=2048
+    -o $(env HOME)/datasheet_my/data_6_27
+    /aft_mapped_to_init
+    /gbplanner_node/occupied_nodes
+    /expath222
+    /vis/shortest_paths
+    /vis/planning_global_graph
+    /vis/planning_graph
+    /planning/planning/execute_path_op
+    /cartesian_planner_markers
+    /tf
+    "
+    output="screen"/>
+</launch>
