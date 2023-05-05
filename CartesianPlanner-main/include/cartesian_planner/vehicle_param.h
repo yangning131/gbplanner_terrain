@@ -46,12 +46,12 @@ public:
   /**
    * Upper bound of v(t) (m/s)
    */
-  double max_velocity = 2.0;//arc 12.0   diff 1.5
+  double max_velocity = 5.0;//arc 12.0   diff 1.5
 
   /**
    * Lower and upper bounds of a(t) (m/s^2)
    */
-  double min_acceleration = -5.0, max_acceleration = 5.0;
+  double min_acceleration = -3.0, max_acceleration = 3.0;
 
   /**
    * Upper bound of |jerk(t)| (m/s^3)

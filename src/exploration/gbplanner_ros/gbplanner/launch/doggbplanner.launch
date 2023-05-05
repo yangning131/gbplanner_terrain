@@ -110,9 +110,9 @@
     <rosparam command="load" file="$(arg pci_file)" />
   </node>
 
-  <include file="$(find cartesian_planner)/launch/pedestrian_test.launch">
+  <!-- <include file="$(find cartesian_planner)/launch/pedestrian_test.launch">
 	  <arg name="rviz" value="false"/>
-  </include>
+  </include> -->
   <node pkg="lexicographic_planning" type="lexicographic_planning_pathServer"     name="lexicographic_planning_pathServer"  output="screen" respawn="false"/>
 
 

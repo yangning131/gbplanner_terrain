@@ -3,7 +3,7 @@
     <!-- Records the processed transforms -->
     <node name="record_data" pkg="rosbag" type="record" args="
     --split  --size=2048
-    -o $(env HOME)/datasheet_my/data_6_27
+    -o $(env HOME)/datasheet_my/data_5_03
     /aft_mapped_to_init
     /gbplanner_node/occupied_nodes
     /expath222
@@ -13,6 +13,8 @@
     /planning/planning/execute_path_op
     /cartesian_planner_markers
     /tf
+    /cloud_registered
+    /runtime
     "
     output="screen"/>
 </launch>

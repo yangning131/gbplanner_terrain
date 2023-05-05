@@ -71,7 +71,7 @@ public:
         type = 1;
         pathsub.poses.push_back(createPoseStamped(mygoal.x, mygoal.y,robotPoint.z + 0.2));
         count++;
-        if(count>=1)
+        if(count>=2)
         {
         receive_goal = true;
         updatePath();
@@ -94,7 +94,7 @@ public:
         type = 2;
         pathsub.poses.push_back(createPoseStamped(mygoal.x, mygoal.y,robotPoint.z + 0.2));
         count++;
-        if(count>=1)//optimatiom count
+        if(count>=4)//optimatiom count
         {
         receive_goal = true;
         updatePath();

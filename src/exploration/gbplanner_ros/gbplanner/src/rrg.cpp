@@ -68,7 +68,7 @@ Rrg::Rrg(const ros::NodeHandle& nh, const ros::NodeHandle& nh_private)
   surroundMapCloud.reset(new pcl::PointCloud<pcl::PointXYZ>());
   surroundMapCloudDS.reset(new pcl::PointCloud<pcl::PointXYZ>());
 
-  world = new World(0.1);
+  world = new World(0.2);
   pf_rrt_star = new PFRRTStar(0.6, world);//0.6   0.9  
   pf_rrt_star->setFitPlaneArg(fit_plane_arg);
   pf_rrt_star->setFitPlaneRadius(0.4);//1.0
