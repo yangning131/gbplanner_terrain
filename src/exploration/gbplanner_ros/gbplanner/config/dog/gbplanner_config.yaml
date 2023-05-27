@@ -39,8 +39,8 @@ SensorParams:
 BoundedSpaceParams:
   Global:
     type:           kCuboid
-    min_val:        [0.0 , -40.0, -1.0]          # [0.0 , -50.0, 0.0]凹陷地形较好
-    max_val:        [200.0, 70.0, 3.5]         # [100.0, 50.0, 3.0]凹陷地形较好
+    min_val:        [0.0 , -20.0, -1.0]          # [0.0 , -50.0, 0.0]凹陷地形较好
+    max_val:        [60.0, 30.0, 3.5]         # [100.0, 50.0, 3.0]凹陷地形较好
   Local:
     type:           kCuboid
     min_val:        [-15.0, -15.0, -1.0]        #凹陷地形较好[-13.0, -13.0, 0.0]
@@ -98,7 +98,7 @@ PlanningParams:
   exp_sensor_list:  ["VLP16"]
   yaw_tangent_correction: true
   edge_length_min:  0.2
-  edge_length_max:  2.0 #                        5.0
+  edge_length_max:  4.0 #                        5.0                              2.0
   edge_overshoot:   0.0
   num_vertices_max: 500  #500
   num_edges_max:    3000 #3000 
@@ -106,7 +106,7 @@ PlanningParams:
   num_loops_max:    20000
   nearest_range:    1.5 #                        3.0
   nearest_range_min: 0.2 # >= edge_length_min    0.35
-  nearest_range_max: 1.0 # <= edge_length_max  #  5.0
+  nearest_range_max: 2.0 # <= edge_length_max  #  5.0                              1.0
   use_current_state: true
   use_ray_model_for_volumetric_gain: true
   path_length_penalty: 0.02

@@ -244,7 +244,7 @@ void PurePursuit::computeVelocities(nav_msgs::Odometry odom)
       // Lateral error is the y-value of the lookahead point (in base_link frame)
       double yt = lookahead_.transform.translation.y;
       double ld_2 = ld_ * ld_;
-      cmd_vel_.angular.z = std::min( 2*v_ / ld_2 * yt, w_max_ );
+      cmd_vel_.angular.z = std::min( 2*v_ / ld_2 * yt, w_max_ );//2*v_ / ld_2 * yt, w_max_
 
       // Compute desired Ackermann steering angle
       cmd_acker_.drive.steering_angle = std::min( atan2(2 * yt * L_, ld_2), delta_max_ );

@@ -10,10 +10,10 @@
     <!-- <remap from="/pathsmooth" to="/planning/planning/execute_path" /> -->
 
     <!-- 不加优化  原始路径 -->
-    <!-- <remap from="/pathsmooth" to="/expath222" />  -->
+    <remap from="/pathsmooth" to="/expath222" /> 
 
     <!-- 优化路径 -->
-    <remap from="/pathsmooth" to="/planning/planning/execute_path_op" />
+    <!-- <remap from="/pathsmooth" to="/planning/planning/execute_path_op" /> -->
 
      <remap from="/odom" to="/aft_mapped_to_init" />
     <param name = "max_rotational_velocity" value = "0.5"/>
