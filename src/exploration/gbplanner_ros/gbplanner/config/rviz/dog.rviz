@@ -745,8 +745,8 @@ Visualization Manager:
     - Alpha: 1
       Autocompute Intensity Bounds: true
       Autocompute Value Bounds:
-        Max Value: 11.54422664642334
-        Min Value: -1.6237400770187378
+        Max Value: 6.763723373413086
+        Min Value: -3.812896251678467
         Value: true
       Axis: Z
       Channel Name: intensity
@@ -779,7 +779,56 @@ Visualization Manager:
         Expand Joint Details: false
         Expand Link Details: false
         Expand Tree: false
+        GPS_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
         Link Tree Style: Links in Alphabetic Order
+        base_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        camera_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        front_left_wheel_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        front_right_wheel_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        imu_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        inertial_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        installation_plate_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        rear_left_wheel_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        rear_right_wheel_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        top_plate_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
       Name: RobotModel
       Robot Description: robot_description
       TF Prefix: ""
@@ -919,7 +968,7 @@ Visualization Manager:
       Enabled: true
       Length: 1.600000023841858
       Name: Axes
-      Radius: 1.5
+      Radius: 0.800000011920929
       Reference Frame: base_link
       Value: true
   Enabled: true
@@ -965,10 +1014,10 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 1.0447967052459717
+      Pitch: 1.3747963905334473
       Target Frame: base_link
       Value: ThirdPersonFollower (rviz)
-      Yaw: 3.03197979927063
+      Yaw: 3.00697922706604
     Saved: ~
 Window Geometry:
   Displays:

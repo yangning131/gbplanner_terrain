@@ -786,10 +786,15 @@ bool PFRRTStar::planner(float &terrain_cost, Eigen::Vector3d &sample_point)
             // closeCheck(new_node);
 
             // if(planning_state_==Global) generatePath();
+            delete new_node;
             return true;
         }
         else  
+        {
+            delete new_node;
             return false;
+        }
+            
     // }
 
     // if(planning_state_==Roll) generatePath();

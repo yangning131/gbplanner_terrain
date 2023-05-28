@@ -41,7 +41,7 @@ public:
   /**
    * L_B, width of the ego vehicle (m)
    */
-  double width = 0.5; //1.942
+  double width = 1.2; //1.942  0.5
 
   /**
    * Upper bound of v(t) (m/s)

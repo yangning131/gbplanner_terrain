@@ -7,7 +7,7 @@
 #-------------------------------------------------------------------------------
 RobotParams:
   type:               kAerialRobot
-  size:               [0.5, 0.5, 0.1]  # 凹陷地形较好 机器狗[0.5, 0.5, 0.1]
+  size:               [0.9, 0.9, 0.1]  # 凹陷地形较好 机器狗[0.5, 0.5, 0.1]
   size_extension_min: [0.1, 0.1, 0.02] # minimum extension allowed to operate.
   size_extension:     [0.1, 0.1, 0.1]
   center_offset:      [0.0, 0.0, 0.0]
@@ -39,8 +39,8 @@ SensorParams:
 BoundedSpaceParams:
   Global:
     type:           kCuboid
-    min_val:        [0.0 , -20.0, -1.0]          # [0.0 , -50.0, 0.0]凹陷地形较好
-    max_val:        [60.0, 30.0, 3.5]         # [100.0, 50.0, 3.0]凹陷地形较好
+    min_val:        [0.0 , -15.0, -2.0]          # [0.0 , -50.0, 0.0]凹陷地形较好
+    max_val:        [45.0, 35.0, 3.5]         # [100.0, 50.0, 3.0]凹陷地形较好
   Local:
     type:           kCuboid
     min_val:        [-15.0, -15.0, -1.0]        #凹陷地形较好[-13.0, -13.0, 0.0]
