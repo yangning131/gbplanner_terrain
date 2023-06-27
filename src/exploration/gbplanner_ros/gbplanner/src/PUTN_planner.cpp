@@ -423,13 +423,10 @@ Node* PFRRTStar::fitPlane(const Vector2d &p_original)
     //make sure that p_original can be projected to the surface,otherwise the nullptr will be returned
     if(world_->project2surface(p_original(0),p_original(1),&p_surface))  //判断是否在表面  判断方法  点在点云上  加上一个分辨率不在点云上
     {   
-        // std::cout<<"done"<<std::endl;
         node=new Node;
         node->plane_=new Plane(p_surface,world_,radius_fit_plane_,fit_plane_arg_);//p_surface  地图表面点  由此点评价周围半径内的平坦度 坡度 稀疏度
         node->position_ = p_surface + h_surf_ * node->plane_->normal_vector;
     }
-    // std::cout<<"not done"<<std::endl;
-
     return node;
 }
 
